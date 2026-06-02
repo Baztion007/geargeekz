@@ -8,9 +8,10 @@ import { Disclosure } from './Disclosure';
 import { CheckPriceButton } from './AffiliateLink';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { Tag, Package, Heart, BarChart3, Eye, Award } from 'lucide-react';
+import { Tag, Package, Heart, BarChart3, Eye, CheckCircle, Bookmark } from 'lucide-react';
 import { useWishlistStore } from '@/lib/wishlist';
 import { useCompareStore } from '@/lib/compare';
+import { useBookmarkStore } from '@/lib/bookmarks';
 import { QuickViewModal } from './QuickViewModal';
 
 interface ProductCardProps {
@@ -27,14 +28,21 @@ export function ProductCard({ product, showAffiliate = true }: ProductCardProps)
   const toggleCompare = useCompareStore((s) => s.toggleItem);
   const isInCompare = useCompareStore((s) => s.isInCompare);
   const isCompared = isInCompare(product.slug);
+  const addBookmark = useBookmarkStore((s) => s.addBookmark);
+  const removeBookmark = useBookmarkStore((s) => s.removeBookmark);
+  const isBookmarked = useBookmarkStore((s) => s.isBookmarked(product.slug));
+  const [mounted, setMounted] = useState(false);
   const [imgError, setImgError] = useState(false);
   const [quickViewOpen, setQuickViewOpen] = useState(false);
 
+  // Fix hydration mismatch - bookmark state from localStorage differs from SSR
+  React.useEffect(() => { setMounted(true); }, []);
+
   return (
-    <Card className="group overflow-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl card-hover-lift border-glow hover:border-[#febd69]/40">
+    <Card className="group overflow-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl transition-all duration-300 hover:shadow-xl hover:shadow-amber-500/5 dark:hover:shadow-amber-500/10 hover:border-[#febd69]/40">
       {/* Image */}
       <div
-        className="relative cursor-pointer overflow-hidden bg-gray-50 dark:bg-gray-700 aspect-square image-zoom"
+        className="relative cursor-pointer overflow-hidden bg-gray-50 dark:bg-gray-700 aspect-square"
         onClick={() => goToProduct(product.slug)}
       >
         {product.image && !imgError ? (
@@ -53,29 +61,48 @@ export function ProductCard({ product, showAffiliate = true }: ProductCardProps)
           </div>
         )}
 
-        {/* Heart/Wishlist button */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            toggleWishlist(product.slug);
-          }}
-          className="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-200 z-10 hover:scale-110"
-          aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
-          style={{ color: isWishlisted ? '#ef4444' : undefined }}
-        >
-          <Heart
-            size={16}
-            className={isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-400 hover:text-red-400'}
-          />
-        </button>
+        {/* Gradient overlay — visible on hover */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-        {/* Review status badge */}
+        {/* Verified Review Badge — top-left, more prominent */}
         {product.reviewStatus === 'verified' && (
-          <div className="absolute bottom-2 right-2 bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 font-semibold px-2 py-0.5 rounded-full shadow-sm flex items-center gap-1" style={{ fontSize: '10px' }}>
-            <Award size={8} />
+          <div className="absolute top-2 left-2 verified-badge z-10">
+            <CheckCircle size={10} />
             Verified
           </div>
         )}
+
+        {/* Heart/Wishlist button — top-right */}
+        <div className="absolute top-2 right-2 flex items-center gap-1 z-10">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              if (isBookmarked) removeBookmark(product.slug);
+              else addBookmark(product.slug);
+            }}
+            className="w-8 h-8 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-200 hover:scale-110"
+            aria-label={mounted && isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
+          >
+            <Bookmark
+              size={16}
+              className={mounted && isBookmarked ? 'fill-amber-500 text-amber-500' : 'text-gray-400 hover:text-amber-400'}
+            />
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleWishlist(product.slug);
+            }}
+            className="w-8 h-8 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-200 hover:scale-110"
+            aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+            style={{ color: isWishlisted ? '#ef4444' : undefined }}
+          >
+            <Heart
+              size={16}
+              className={isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-400 hover:text-red-400'}
+            />
+          </button>
+        </div>
       </div>
 
       {/* Content */}
@@ -159,7 +186,7 @@ export function ProductCard({ product, showAffiliate = true }: ProductCardProps)
               merchant={product.merchant}
               productId={product.asin}
               size="sm"
-              className="w-full mt-2 cta-shimmer bg-gradient-to-r from-[#febd69] via-[#f3a847] to-[#febd69] hover:shadow-md hover:shadow-amber-500/20 rounded-lg font-semibold transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full mt-2 cta-primary rounded-lg text-sm py-2.5"
             />
           </div>
         )}
@@ -184,7 +211,7 @@ export function ProductCardHorizontal({ product }: ProductCardHorizontalProps) {
   const [imgError, setImgError] = useState(false);
 
   return (
-    <div className="flex gap-4 p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl hover:shadow-xl transition-all duration-300 cursor-pointer card-hover-lift border-glow hover:border-[#febd69]/40"
+    <div className="flex gap-4 p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl hover:shadow-xl transition-all duration-300 cursor-pointer card-hover-lift hover:border-[#febd69]/40"
       onClick={() => goToProduct(product.slug)}
     >
       {/* Image */}
@@ -206,9 +233,17 @@ export function ProductCardHorizontal({ product }: ProductCardHorizontalProps) {
 
       {/* Content */}
       <div className="flex-1 min-w-0">
-        <h3 className="font-semibold text-gray-900 dark:text-white text-sm leading-tight mb-1 hover:text-amber-600 dark:hover:text-amber-400 transition-colors duration-200 line-clamp-2">
-          {product.title}
-        </h3>
+        <div className="flex items-center gap-2 mb-1">
+          <h3 className="font-semibold text-gray-900 dark:text-white text-sm leading-tight hover:text-amber-600 dark:hover:text-amber-400 transition-colors duration-200 line-clamp-2">
+            {product.title}
+          </h3>
+          {product.reviewStatus === 'verified' && (
+            <div className="verified-badge shrink-0">
+              <CheckCircle size={10} />
+              Verified
+            </div>
+          )}
+        </div>
         <StarRating rating={product.rating} size="sm" />
         <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 line-clamp-2 leading-relaxed">{product.excerpt}</p>
         {product.bestFor && product.bestFor.length > 0 && (

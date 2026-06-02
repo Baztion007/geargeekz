@@ -107,9 +107,9 @@ export function BrandPage({ brandSlug }: BrandPageProps) {
         <Card className="mb-6 overflow-hidden border-0 shadow-lg">
           <div className="bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] p-6 sm:p-8 md:p-10">
             <div className="flex flex-col md:flex-row items-start gap-6">
-              {/* Brand Logo/Icon */}
-              <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center shrink-0 border border-white/10">
-                <Building2 size={48} className="text-[#febd69]" />
+              {/* Brand Logo/Icon — large circle */}
+              <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center shrink-0 border-2 border-white/10 shadow-xl shadow-black/20">
+                <Building2 size={56} className="text-[#febd69]" />
               </div>
 
               {/* Brand Info */}
@@ -145,18 +145,18 @@ export function BrandPage({ brandSlug }: BrandPageProps) {
                   )}
                 </div>
 
-                {/* Stats row */}
+                {/* Stats row — elegant pill badges */}
                 <div className="flex flex-wrap gap-3">
-                  <Badge className="bg-[#febd69]/20 text-[#febd69] border-[#febd69]/30 px-3 py-1 text-sm font-semibold">
+                  <Badge className="bg-[#febd69]/20 text-[#febd69] border-[#febd69]/30 px-4 py-1.5 text-sm font-semibold rounded-full">
                     <Package size={14} className="mr-1.5" />
                     {brand.productCount} Product{brand.productCount !== 1 ? 's' : ''} Reviewed
                   </Badge>
                   {avgRating > 0 && (
-                    <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30 px-3 py-1 text-sm font-semibold">
+                    <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30 px-4 py-1.5 text-sm font-semibold rounded-full">
                       <StarRating rating={avgRating} size="sm" showValue /> Avg. Rating
                     </Badge>
                   )}
-                  <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/30 px-3 py-1 text-sm font-semibold">
+                  <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/30 px-4 py-1.5 text-sm font-semibold rounded-full">
                     <Users size={14} className="mr-1.5" />
                     {brand.categories.length} Categor{brand.categories.length !== 1 ? 'ies' : 'y'}
                   </Badge>

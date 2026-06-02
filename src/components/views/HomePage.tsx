@@ -47,6 +47,7 @@ import {
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import type { GuideType } from '@/lib/types';
+import { RecentlyViewedWidget } from '@/components/affiliate/RecentlyViewedWidget';
 
 // ─── Category icon map ──────────────────────────────────────────────────────
 const categoryIcons: Record<string, React.ReactNode> = {
@@ -216,8 +217,8 @@ function HeroSection() {
             </div>
           </div>
 
-          {/* Right visual — featured guide card */}
-          <div className="flex-shrink-0 w-full max-w-sm">
+          {/* Right visual — featured guide card with parallax float */}
+          <div className="flex-shrink-0 w-full max-w-sm parallax-float">
             {featuredGuide && (
               <Card className="bg-white/10 backdrop-blur-md border border-white/20 text-white overflow-hidden shadow-2xl hover:shadow-3xl hover:bg-white/15 transition-all duration-300">
                 <div className="p-5">
@@ -376,7 +377,7 @@ function EditorsPicksSection() {
         <Disclosure />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4 stagger-children">
-          {editorPicks.slice(0, 8).map((product) => (
+          {editorPicks.slice(0, 4).map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
@@ -387,7 +388,9 @@ function EditorsPicksSection() {
 
 // ─── Trending Products Section ──────────────────────────────────────────────
 function TrendingSection() {
-  const trending = getTrending();
+  const editorPicks = getEditorPicks();
+  const editorPickIds = new Set(editorPicks.slice(0, 4).map((p) => p.id));
+  const trending = getTrending().filter((p) => !editorPickIds.has(p.id));
 
   return (
     <section className="py-12 sm:py-16 bg-white dark:bg-gray-900">
@@ -918,7 +921,73 @@ function NewsletterCTA() {
   );
 }
 
-// ─── Main HomePage Component ────────────────────────────────────────────────
+// ─── Browse All Categories Section ─────────────────────────────────────────
+function BrowseAllCategoriesSection() {
+  const goToCategory = useRouterStore((s) => s.goToCategory);
+
+  const allCategoryIcons: Record<string, React.ReactNode> = {
+    'travel-gear': <Luggage className="w-6 h-6" />,
+    'travel-gadgets': <Zap className="w-6 h-6" />,
+    'electronics': <Headphones className="w-6 h-6" />,
+    'home-office': <Laptop className="w-6 h-6" />,
+    'fitness': <Dumbbell className="w-6 h-6" />,
+    'outdoor': <Mountain className="w-6 h-6" />,
+    'audio': <Speaker className="w-6 h-6" />,
+    'luggage': <MapPin className="w-6 h-6" />,
+  };
+
+  const allCategoryColors: Record<string, string> = {
+    'travel-gear': 'from-teal-500 to-emerald-600',
+    'travel-gadgets': 'from-sky-500 to-cyan-600',
+    'electronics': 'from-violet-500 to-purple-600',
+    'home-office': 'from-stone-500 to-stone-600',
+    'fitness': 'from-rose-500 to-pink-600',
+    'outdoor': 'from-emerald-500 to-green-600',
+    'audio': 'from-amber-500 to-orange-600',
+    'luggage': 'from-slate-500 to-slate-600',
+  };
+
+  return (
+    <section id="all-categories" className="py-12 sm:py-16 bg-gray-50 dark:bg-gray-800/50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-10">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
+            <Compass className="w-7 h-7 inline-block text-amber-500 mr-2 -mt-1" />
+            Browse All Categories
+          </h2>
+          <p className="text-gray-500 dark:text-gray-400 mt-2 text-sm">
+            Explore all {categories.length} product categories on GearScope
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 stagger-children">
+          {categories.map((cat) => (
+            <Card
+              key={cat.id}
+              className="group cursor-pointer overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 card-hover-lift rounded-xl"
+              onClick={() => goToCategory(cat.slug)}
+            >
+              <CardContent className="p-5 flex items-center gap-4">
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${allCategoryColors[cat.slug] || 'from-gray-500 to-gray-600'} flex items-center justify-center text-white shrink-0 shadow-md group-hover:scale-110 transition-transform duration-300`}>
+                  {allCategoryIcons[cat.slug] || <Package className="w-6 h-6" />}
+                </div>
+                <div className="min-w-0">
+                  <h3 className="font-bold text-sm text-gray-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors leading-tight">
+                    {cat.name}
+                  </h3>
+                  <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
+                    {cat.productCount} product{cat.productCount !== 1 ? 's' : ''}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function HomePage() {
   return (
     <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
@@ -931,6 +1000,8 @@ export default function HomePage() {
       <FeaturedBrandsSection />
       <TrustBlock />
       <TestimonialsSection />
+      <BrowseAllCategoriesSection />
+      <RecentlyViewedWidget />
       <NewsletterCTA />
     </div>
   );

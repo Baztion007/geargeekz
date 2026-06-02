@@ -18,6 +18,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { X, Check, Package, ShoppingBag, BarChart3, Plus, ChevronLeft, ChevronRight, ArrowLeftRight } from 'lucide-react';
+import { ComparisonTable } from '@/components/affiliate/ComparisonTable';
 
 export function ComparePage() {
   const items = useCompareStore((s) => s.items);
@@ -433,6 +434,14 @@ export function ComparePage() {
                 </Card>
               ))}
             </div>
+          </div>
+
+          <Separator className="my-6" />
+
+          {/* Quick Comparison Table */}
+          <div className="mb-6">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-3">Quick Comparison Table</h2>
+            <ComparisonTable productSlugs={items} />
           </div>
 
           <Separator className="my-6" />

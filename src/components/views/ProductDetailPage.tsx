@@ -45,6 +45,8 @@ import {
 } from 'lucide-react';
 import { ImageLightbox } from '@/components/affiliate/ImageLightbox';
 import { useRecentlyViewedStore } from '@/lib/recently-viewed';
+import { ProductQuickStats } from '@/components/affiliate/ProductQuickStats';
+import { RecentlyViewedWidget } from '@/components/affiliate/RecentlyViewedWidget';
 import { toast } from '@/hooks/use-toast';
 
 interface ProductDetailPageProps {
@@ -95,6 +97,7 @@ function getReviewStatusBadge(status: string) {
 // ─── Social Share Buttons ────────────────────────────────────────────────────
 function SocialShareButtons({ title }: { title: string }) {
   const [copied, setCopied] = useState(false);
+  const canShare = typeof navigator !== 'undefined' && !!navigator.share;
 
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
   const shareText = `Check out this review: ${title} — GearScope`;
@@ -110,8 +113,26 @@ function SocialShareButtons({ title }: { title: string }) {
     }
   };
 
+  const handleNativeShare = async () => {
+    try {
+      await navigator.share({
+        title: `${title} — GearScope`,
+        text: shareText,
+        url: shareUrl,
+      });
+    } catch {
+      // User cancelled or share failed
+    }
+  };
+
+  const handleEmailShare = () => {
+    const subject = encodeURIComponent(`${title} — GearScope Review`);
+    const body = encodeURIComponent(`Check out this review: ${shareUrl}`);
+    window.open(`mailto:?subject=${subject}&body=${body}`);
+  };
+
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 flex-wrap">
       <span className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
         <Share2 size={12} />
         Share:
@@ -121,7 +142,7 @@ function SocialShareButtons({ title }: { title: string }) {
         target="_blank"
         rel="noopener noreferrer"
         className="w-8 h-8 rounded-full bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 flex items-center justify-center hover:bg-sky-200 dark:hover:bg-sky-900/50 transition-colors"
-        aria-label="Share on Twitter"
+        aria-label="Share on X / Twitter"
       >
         <Twitter size={14} />
       </a>
@@ -135,12 +156,35 @@ function SocialShareButtons({ title }: { title: string }) {
         <Facebook size={14} />
       </a>
       <button
+        onClick={handleEmailShare}
+        className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center hover:bg-emerald-200 dark:hover:bg-emerald-900/50 transition-colors"
+        aria-label="Share via email"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect width="20" height="16" x="2" y="4" rx="2" />
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+        </svg>
+      </button>
+      <button
         onClick={handleCopyLink}
-        className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+        className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+          copied
+          ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400'
+          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+        }`}
         aria-label="Copy link"
       >
         <Link2 size={14} />
       </button>
+      {canShare && (
+        <button
+          onClick={handleNativeShare}
+          className="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 flex items-center justify-center hover:bg-amber-200 dark:hover:bg-amber-900/50 transition-colors"
+          aria-label="Share via device"
+        >
+          <Share2 size={14} />
+        </button>
+      )}
     </div>
   );
 }
@@ -187,10 +231,10 @@ function TableOfContents() {
   };
 
   return (
-    <Card className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-      <CardContent className="p-4">
-        <h3 className="font-bold text-sm text-gray-900 dark:text-white flex items-center gap-2 mb-3">
-          <List size={14} />
+    <Card className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm">
+      <CardContent className="p-5">
+        <h3 className="font-bold text-sm text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+          <List size={14} className="text-amber-500" />
           Table of Contents
         </h3>
         <nav>
@@ -270,10 +314,10 @@ function ImageGallery({ gallery, title }: { gallery: string[]; title: string }) 
             <button
               key={idx}
               onClick={() => setSelectedIndex(idx)}
-              className={`w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 shrink-0 thumbnail-select ${
+              className={`w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 shrink-0 thumbnail-select shadow-sm ${
                 idx === selectedIndex
-                  ? 'border-amber-500 ring-2 ring-amber-500/20 scale-105'
-                  : 'border-gray-200 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-400 hover:scale-105'
+                  ? 'border-amber-500 ring-2 ring-amber-500/20 scale-105 shadow-md shadow-amber-500/10'
+                  : 'border-gray-200 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-400 hover:scale-105 hover:shadow-md'
               }`}
               aria-label={`View image ${idx + 1}`}
             >
@@ -313,17 +357,17 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
   const goToCategory = useRouterStore((s) => s.goToCategory);
   const goToAuthor = useRouterStore((s) => s.goToAuthor);
   const goToBrand = useRouterStore((s) => s.goToBrand);
-  const addView = useRecentlyViewedStore((s) => s.addView);
-  const recentlyViewedItems = useRecentlyViewedStore((s) => s.items);
+  const addRecentlyViewed = useRecentlyViewedStore((s) => s.addRecentlyViewed);
+  const recentlyViewedItems = useRecentlyViewedStore((s) => s.recentlyViewed);
 
   const product = getProductBySlug(productSlug);
 
   // Track recently viewed product
   useEffect(() => {
     if (productSlug) {
-      addView(productSlug);
+      addRecentlyViewed(productSlug);
     }
-  }, [productSlug, addView]);
+  }, [productSlug, addRecentlyViewed]);
 
   // Calculate reading time estimate
   const readingTime = useMemo(() => {
@@ -361,12 +405,9 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
     .filter((p) => p.slug !== productSlug)
     .slice(0, 3);
 
-  // Get recently viewed products (excluding current product), max 5
-  const recentlyViewedProducts = recentlyViewedItems
-    .filter((slug) => slug !== productSlug)
-    .map((slug) => getProductBySlug(slug))
-    .filter(Boolean)
-    .slice(0, 5);
+  // Check if there are recently viewed items (excluding current product)
+  const hasRecentlyViewed = recentlyViewedItems
+    .filter((slug) => slug !== productSlug).length > 0;
 
   const breadcrumbItems = [
     ...(category
@@ -388,6 +429,11 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
     <article className="max-w-5xl mx-auto px-4 py-6 pb-28 md:pb-6">
       {/* 1. Breadcrumbs */}
       <Breadcrumbs items={breadcrumbItems} />
+
+      {/* Product Quick Stats */}
+      <div className="mb-4">
+        <ProductQuickStats product={product} />
+      </div>
 
       {/* Content freshness info */}
       <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-4">
@@ -560,9 +606,14 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Pros & Cons</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Pros */}
-              <Card className="border-emerald-200 dark:border-emerald-800/30 pros-card">
+              <Card className="border-emerald-200 dark:border-emerald-800/30 pros-card rounded-xl shadow-sm">
                 <CardContent className="p-5">
-                  <h3 className="font-bold text-emerald-800 dark:text-emerald-300 mb-3 text-lg flex items-center gap-2">Pros</h3>
+                  <h3 className="font-bold text-emerald-800 dark:text-emerald-300 mb-3 text-lg flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-full bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center">
+                      <Check size={14} className="text-emerald-600 dark:text-emerald-400" />
+                    </div>
+                    Pros
+                  </h3>
                   <ul className="space-y-2.5">
                     {product.pros.map((pro, index) => (
                       <li key={index} className="flex items-start gap-2">
@@ -577,9 +628,14 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
               </Card>
 
               {/* Cons */}
-              <Card className="border-red-200 dark:border-red-800/30 cons-card">
+              <Card className="border-red-200 dark:border-red-800/30 cons-card rounded-xl shadow-sm">
                 <CardContent className="p-5">
-                  <h3 className="font-bold text-red-800 dark:text-red-300 mb-3 text-lg flex items-center gap-2">Cons</h3>
+                  <h3 className="font-bold text-red-800 dark:text-red-300 mb-3 text-lg flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-full bg-red-100 dark:bg-red-900/40 flex items-center justify-center">
+                      <X size={14} className="text-red-600 dark:text-red-400" />
+                    </div>
+                    Cons
+                  </h3>
                   <ul className="space-y-2.5">
                     {product.cons.map((con, index) => (
                       <li key={index} className="flex items-start gap-2">
@@ -623,11 +679,11 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
           {/* Specifications Table */}
           <section id="specifications" className="mb-8 section-entrance">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Specifications</h2>
-            <Card className="overflow-hidden">
+            <Card className="overflow-hidden rounded-xl shadow-sm">
               <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
                 <Table>
                   <TableHeader>
-                    <TableRow className="bg-gray-50 dark:bg-gray-700/50">
+                    <TableRow className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700/50 dark:to-gray-700/30">
                       <TableHead className="w-1/3 font-semibold text-gray-700 dark:text-gray-300">
                         Specification
                       </TableHead>
@@ -636,7 +692,7 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
                   </TableHeader>
                   <TableBody>
                     {Object.entries(product.specifications).map(([key, value], index) => (
-                      <TableRow key={key} className={`${index % 2 === 0 ? 'bg-gray-50/50 dark:bg-gray-800/50' : ''} hover:bg-amber-50/50 dark:hover:bg-amber-900/10 transition-colors`}>
+                      <TableRow key={key} className={`${index % 2 === 0 ? 'spec-table-row-even' : 'spec-table-row-odd'} hover:bg-amber-50/50 dark:hover:bg-amber-900/10 transition-colors`}>
                         <TableCell className="font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">{key}</TableCell>
                         <TableCell className="text-gray-600 dark:text-gray-400">{value}</TableCell>
                       </TableRow>
@@ -808,17 +864,9 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
       )}
 
       {/* Recently Viewed Products */}
-      {recentlyViewedProducts.length > 0 && (
+      {hasRecentlyViewed && (
         <section className="mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <History size={20} className="text-gray-600 dark:text-gray-400" />
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">Recently Viewed</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {recentlyViewedProducts.map((rvProduct) => (
-              <ProductCard key={rvProduct!.id} product={rvProduct!} />
-            ))}
-          </div>
+          <RecentlyViewedWidget />
         </section>
       )}
 

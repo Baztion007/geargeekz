@@ -16,6 +16,7 @@ interface RouterState {
   goToBlogPost: (slug: string) => void;
   goToGuides: () => void;
   goToTrending: () => void;
+  goToBookmarks: () => void;
   goToPage: (page: RoutePath['page']) => void;
 }
 
@@ -148,6 +149,15 @@ export const useRouterStore = create<RouterState>((set) => ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
     return { route };
   }),
+
+  goToBookmarks: () => set((state) => {
+    const route: RoutePath = { page: 'bookmarks' };
+    if (typeof window !== 'undefined') {
+      window.history.pushState({ route }, '', '#bookmarks');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return { route };
+  }),
 }))
 
 function routeToHash(route: RoutePath): string {
@@ -165,6 +175,7 @@ function routeToHash(route: RoutePath): string {
     case 'blog-post': return `blog/${route.slug}`;
     case 'guides': return 'guides';
     case 'trending': return 'trending';
+    case 'bookmarks': return 'bookmarks';
     case 'roundups': return 'roundups';
     default: return route.page;
   }
@@ -196,7 +207,7 @@ export function hashToRoute(hash: string): RoutePath {
       }
       return { page: 'blog' };
     default:
-      if (['about', 'contact', 'privacy', 'terms', 'editorial-policy', 'how-we-test', 'trending', 'roundups', 'wishlist', 'compare', 'guides', 'not-found'].includes(type)) {
+      if (['about', 'contact', 'privacy', 'terms', 'editorial-policy', 'how-we-test', 'trending', 'roundups', 'wishlist', 'compare', 'guides', 'bookmarks', 'not-found'].includes(type)) {
         return { page: type as RoutePath['page'] } as RoutePath;
       }
       return { page: 'not-found' };

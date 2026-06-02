@@ -95,9 +95,9 @@ export function Header() {
               </div>
             </button>
 
-            {/* Search Bar — more prominent */}
+            {/* Search Bar — premium focus animation */}
             <form onSubmit={handleSearch} className="hidden sm:flex flex-1 max-w-3xl">
-              <div className={`flex w-full rounded-lg overflow-hidden transition-shadow duration-300 ${searchFocused ? 'ring-2 ring-[#febd69]/60 shadow-lg shadow-amber-500/10' : 'ring-0'}`}>
+              <div className={`flex w-full rounded-lg overflow-hidden transition-all duration-300 ${searchFocused ? 'ring-2 ring-[#febd69]/60 shadow-lg shadow-amber-500/10 scale-[1.02]' : 'ring-0'}`}>
                 <Input
                   type="text"
                   value={searchQuery}
@@ -185,7 +185,7 @@ export function Header() {
                   onClick={() => {
                     navigate({ page: item.page } as any);
                   }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 hover:bg-[#37475a] rounded-md text-gray-200 hover:text-white transition-all duration-200 amazon-link relative group"
+                  className="flex items-center gap-1.5 px-3 py-1.5 hover:bg-[#37475a] rounded-md text-gray-200 hover:text-white transition-all duration-200 nav-underline"
                 >
                   <Icon size={14} className="text-[#febd69] opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                   {item.label}

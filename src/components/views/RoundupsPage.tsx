@@ -108,16 +108,20 @@ export function RoundupsPage() {
         <Breadcrumbs items={[{ label: 'Roundups' }]} />
 
         {/* Header */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden mb-6">
-          <div className="bg-gradient-to-r from-[#131921] to-[#37475a] p-8 md:p-12 text-white">
+        <div className="relative rounded-xl overflow-hidden mb-6 shadow-lg">
+          <div className="bg-gradient-to-r from-[#131921] via-[#1e293b] to-[#0f172a] p-8 md:p-12 text-white">
             <div className="flex items-center gap-3 mb-4">
-              <Layers className="w-10 h-10 text-[#febd69]" />
-              <h1 className="text-3xl md:text-4xl font-bold">Product Roundups & Collections</h1>
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/20">
+                <Layers className="w-7 h-7 text-white" />
+              </div>
+              <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
+                Product <span className="text-gradient">Roundups</span>
+              </h1>
             </div>
-            <p className="text-lg text-gray-300 max-w-3xl">
+            <p className="text-lg text-gray-300 max-w-3xl leading-relaxed">
               Curated collections of our top-rated products organized by use case. Whether you&apos;re building a home office, packing for travel, or upgrading your fitness gear, we&apos;ve got the right picks.
             </p>
-            <div className="flex items-center gap-4 mt-4 text-sm">
+            <div className="flex items-center gap-4 mt-5 text-sm">
               <span className="flex items-center gap-1.5 text-[#febd69]">
                 <Layers size={14} />
                 {roundups.length} Collections
@@ -128,6 +132,7 @@ export function RoundupsPage() {
               </span>
             </div>
           </div>
+          <div className="h-1 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500" />
         </div>
 
         {/* Roundup Collections */}
@@ -142,7 +147,7 @@ export function RoundupsPage() {
               : null;
 
             return (
-              <div key={roundup.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
+              <div key={roundup.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-700">
                 {/* Collection Header */}
                 <div className={`${roundup.bgColor} p-6 border-b border-gray-200 dark:border-gray-700`}>
                   <div className="flex items-start gap-4">
@@ -208,9 +213,9 @@ export function RoundupsPage() {
         </div>
 
         {/* Buying Guides Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 md:p-8 mb-6 border border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-3 mb-6">
-            <BookOpen className="w-6 h-6 text-[#c7511f]" />
+            <BookOpen className="w-6 h-6 text-amber-500" />
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Our Buying Guides</h2>
           </div>
           <p className="text-gray-600 dark:text-gray-400 mb-6">
@@ -220,7 +225,7 @@ export function RoundupsPage() {
             {buyingGuides.map((guide) => (
               <Card
                 key={guide.id}
-                className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow border border-gray-200 dark:border-gray-700"
+                className="overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:border-[#febd69]/30 rounded-xl"
                 onClick={() => goToBuyingGuide(guide.slug)}
               >
                 <CardContent className="p-5">
@@ -248,7 +253,7 @@ export function RoundupsPage() {
         </div>
 
         {/* Affiliate Disclosure */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-6 border border-gray-200 dark:border-gray-700">
           <Disclosure />
         </div>
       </div>

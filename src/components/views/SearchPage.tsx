@@ -268,7 +268,7 @@ export function SearchPage({ query }: SearchPageProps) {
                 onClick={() => setActiveTab(tab.key)}
                 className={`flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-t-lg whitespace-nowrap transition-colors ${
                   activeTab === tab.key
-                    ? 'bg-white dark:bg-gray-800 text-[#131921] dark:text-white border border-b-transparent border-gray-200 dark:border-gray-700 -mb-px'
+                    ? 'text-[#131921] dark:text-white tab-active-indicator'
                     : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                 }`}
               >
@@ -340,7 +340,7 @@ export function SearchPage({ query }: SearchPageProps) {
                 {(activeTab === 'all' ? searchResults.categories.slice(0, 4) : searchResults.categories).map((cat) => (
                   <Card
                     key={cat.slug}
-                    className="group cursor-pointer hover:shadow-lg transition-all bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-[#febd69]/30 card-hover-lift overflow-hidden"
+                    className="group cursor-pointer hover:shadow-lg transition-all bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-[#febd69]/30 card-hover-lift overflow-hidden rounded-xl"
                     onClick={() => goToCategory(cat.slug)}
                   >
                     <div className="h-24 bg-gradient-to-br from-slate-700 to-slate-900 relative">

@@ -1,34 +1,29 @@
+'use client';
+
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 interface RecentlyViewedState {
-  items: string[]; // product slugs (max 10)
-  addView: (slug: string) => void;
-  clearHistory: () => void;
+  recentlyViewed: string[];
+  addRecentlyViewed: (slug: string) => void;
+  clearRecentlyViewed: () => void;
 }
-
-const MAX_RECENTLY_VIEWED = 10;
 
 export const useRecentlyViewedStore = create<RecentlyViewedState>()(
   persist(
-    (set, get) => ({
-      items: [],
-
-      addView: (slug: string) => {
-        const { items } = get();
-        // Remove duplicate if exists
-        const filtered = items.filter((item) => item !== slug);
-        // Add to front
-        const updated = [slug, ...filtered].slice(0, MAX_RECENTLY_VIEWED);
-        set({ items: updated });
-      },
-
-      clearHistory: () => {
-        set({ items: [] });
-      },
+    (set) => ({
+      recentlyViewed: [],
+      addRecentlyViewed: (slug: string) =>
+        set((state) => {
+          const filtered = state.recentlyViewed.filter((s) => s !== slug);
+          return {
+            recentlyViewed: [slug, ...filtered].slice(0, 10),
+          };
+        }),
+      clearRecentlyViewed: () => set({ recentlyViewed: [] }),
     }),
     {
-      name: 'brewhub-recently-viewed',
+      name: 'gearscope-recently-viewed',
     }
   )
 );

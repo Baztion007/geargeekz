@@ -203,7 +203,7 @@ export function CategoryPage({ categorySlug }: CategoryPageProps) {
         />
 
         {/* Category Hero Section */}
-        <div className="relative rounded-xl overflow-hidden mb-6">
+        <div className="relative rounded-xl overflow-hidden mb-6 shadow-lg">
           <div className="aspect-[21/9] sm:aspect-[3/1] relative">
             {category.image ? (
               <img
@@ -223,8 +223,9 @@ export function CategoryPage({ categorySlug }: CategoryPageProps) {
             >
               <Compass className="w-16 h-16 text-white/30" />
             </div>
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
+            {/* Full-width gradient overlay — more dramatic */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-amber-900/20" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
             <div className="absolute inset-0 flex items-center">
               <div className="px-6 sm:px-8 max-w-2xl">
                 <Badge className="bg-amber-500/20 text-amber-300 border border-amber-500/20 mb-3">
@@ -297,14 +298,14 @@ export function CategoryPage({ categorySlug }: CategoryPageProps) {
         )}
 
         {/* Filter Bar */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 mb-4">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 mb-4 shadow-sm">
           <div className="flex items-center gap-2 mb-3">
-            <SlidersHorizontal size={16} className="text-gray-500 dark:text-gray-400" />
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Filters & Sort</span>
+            <SlidersHorizontal size={16} className="text-amber-500" />
+            <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">Filters & Sort</span>
             {hasActiveFilters && (
               <button
                 onClick={clearFilters}
-                className="ml-auto flex items-center gap-1 text-xs text-[#007185] dark:text-[#5cc7d4] hover:text-[#c7511f] hover:underline"
+                className="ml-auto flex items-center gap-1 text-xs text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 font-medium"
               >
                 <X size={12} />
                 Clear all
@@ -317,7 +318,7 @@ export function CategoryPage({ categorySlug }: CategoryPageProps) {
               value={brandFilter}
               onValueChange={(v) => setBrandFilter(v)}
             >
-              <SelectTrigger className="w-[160px] text-sm" size="sm">
+              <SelectTrigger className="w-[160px] text-sm rounded-full" size="sm">
                 <SelectValue placeholder="Brand" />
               </SelectTrigger>
               <SelectContent>
@@ -335,7 +336,7 @@ export function CategoryPage({ categorySlug }: CategoryPageProps) {
               value={ratingFilter}
               onValueChange={(v) => setRatingFilter(v as RatingFilter)}
             >
-              <SelectTrigger className="w-[150px] text-sm" size="sm">
+              <SelectTrigger className="w-[150px] text-sm rounded-full" size="sm">
                 <SelectValue placeholder="Rating" />
               </SelectTrigger>
               <SelectContent>
@@ -353,7 +354,7 @@ export function CategoryPage({ categorySlug }: CategoryPageProps) {
                 value={bestForFilter}
                 onValueChange={(v) => setBestForFilter(v)}
               >
-                <SelectTrigger className="w-[180px] text-sm" size="sm">
+                <SelectTrigger className="w-[180px] text-sm rounded-full" size="sm">
                   <SelectValue placeholder="Best For" />
                 </SelectTrigger>
                 <SelectContent>
@@ -372,7 +373,7 @@ export function CategoryPage({ categorySlug }: CategoryPageProps) {
               value={sortOption}
               onValueChange={(v) => setSortOption(v as SortOption)}
             >
-              <SelectTrigger className="w-[160px] text-sm" size="sm">
+              <SelectTrigger className="w-[160px] text-sm rounded-full" size="sm">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent>

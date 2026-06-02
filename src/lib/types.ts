@@ -154,4 +154,5 @@ export type RoutePath =
   | { page: 'wishlist' }
   | { page: 'compare' }
   | { page: 'guides' }
+  | { page: 'bookmarks' }
   | { page: 'not-found' };

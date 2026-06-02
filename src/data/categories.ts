@@ -44,7 +44,7 @@ export const categories: Category[] = [
     description: 'Fitness trackers, massage guns, adjustable weights, and recovery gear',
     image: '/images/category-fitness.jpg',
     productCount: 3,
-    featured: false,
+    featured: true,
   },
   {
     id: '6',
@@ -53,7 +53,7 @@ export const categories: Category[] = [
     description: 'Camp stoves, water filters, survival gear, and adventure essentials',
     image: '/images/category-outdoor.jpg',
     productCount: 2,
-    featured: false,
+    featured: true,
   },
   {
     id: '7',
@@ -62,7 +62,7 @@ export const categories: Category[] = [
     description: 'Speakers, headphones, microphones, and sound systems',
     image: '/images/category-audio.jpg',
     productCount: 2,
-    featured: false,
+    featured: true,
   },
   {
     id: '8',
@@ -71,7 +71,7 @@ export const categories: Category[] = [
     description: 'Carry-ons, checked bags, garment bags, and travel sets',
     image: '/images/category-luggage.jpg',
     productCount: 1,
-    featured: false,
+    featured: true,
   },
 ];
 

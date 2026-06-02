@@ -30,6 +30,7 @@ import { GuidesPage } from '@/components/views/GuidesPage';
 import { RoundupsPage } from '@/components/views/RoundupsPage';
 import { BrandPage } from '@/components/views/BrandPage';
 import { TrendingPage } from '@/components/views/TrendingPage';
+import { BookmarksPage } from '@/components/views/BookmarksPage';
 import { CompareBar } from '@/components/affiliate/CompareBar';
 import { useThemeStore } from '@/lib/theme';
 import { MobileCompareFab } from '@/components/affiliate/MobileCompareFab';
@@ -106,6 +107,8 @@ export default function Home() {
         return <BlogPostPage postSlug={route.slug} />;
       case 'guides':
         return <GuidesPage />;
+      case 'bookmarks':
+        return <BookmarksPage />;
       case 'not-found':
         return <NotFoundPage />;
       default:
@@ -129,7 +132,7 @@ export default function Home() {
       <main className="flex-1">
         <AnimatePresence mode="wait">
           <motion.div
-            key={route.page === 'product' ? `product-${route.slug}` : route.page === 'category' ? `cat-${route.slug}` : route.page === 'brand' ? `brand-${route.slug}` : route.page === 'search' ? `search-${route.query}` : route.page === 'blog-post' ? `blog-${route.slug}` : route.page}
+            key={route.page === 'product' ? `product-${route.slug}` : route.page === 'category' ? `cat-${route.slug}` : route.page === 'brand' ? `brand-${route.slug}` : route.page === 'search' ? `search-${route.query}` : route.page === 'blog-post' ? `blog-${route.slug}` : route.page === 'buying-guide' ? `guide-${route.slug}` : route.page}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
