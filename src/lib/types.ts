@@ -155,4 +155,5 @@ export type RoutePath =
   | { page: 'compare' }
   | { page: 'guides' }
   | { page: 'bookmarks' }
+  | { page: 'gear-finder' }
   | { page: 'not-found' };

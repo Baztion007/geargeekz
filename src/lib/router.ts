@@ -17,6 +17,7 @@ interface RouterState {
   goToGuides: () => void;
   goToTrending: () => void;
   goToBookmarks: () => void;
+  goToGearFinder: () => void;
   goToPage: (page: RoutePath['page']) => void;
 }
 
@@ -158,6 +159,15 @@ export const useRouterStore = create<RouterState>((set) => ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
     return { route };
   }),
+
+  goToGearFinder: () => set((state) => {
+    const route: RoutePath = { page: 'gear-finder' };
+    if (typeof window !== 'undefined') {
+      window.history.pushState({ route }, '', '#gear-finder');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return { route };
+  }),
 }))
 
 function routeToHash(route: RoutePath): string {
@@ -176,6 +186,7 @@ function routeToHash(route: RoutePath): string {
     case 'guides': return 'guides';
     case 'trending': return 'trending';
     case 'bookmarks': return 'bookmarks';
+    case 'gear-finder': return 'gear-finder';
     case 'roundups': return 'roundups';
     default: return route.page;
   }
@@ -207,7 +218,7 @@ export function hashToRoute(hash: string): RoutePath {
       }
       return { page: 'blog' };
     default:
-      if (['about', 'contact', 'privacy', 'terms', 'editorial-policy', 'how-we-test', 'trending', 'roundups', 'wishlist', 'compare', 'guides', 'bookmarks', 'not-found'].includes(type)) {
+      if (['about', 'contact', 'privacy', 'terms', 'editorial-policy', 'how-we-test', 'trending', 'roundups', 'wishlist', 'compare', 'guides', 'bookmarks', 'gear-finder', 'not-found'].includes(type)) {
         return { page: type as RoutePath['page'] } as RoutePath;
       }
       return { page: 'not-found' };

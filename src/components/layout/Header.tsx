@@ -61,7 +61,7 @@ export function Header() {
   };
 
   return (
-    <header className={`z-50 transition-all duration-300 header-glow ${isSticky ? 'shadow-lg shadow-black/10 scrolled' : ''}`}>
+    <header className={`z-50 transition-all duration-300 header-glow header-glow-intense ${isSticky ? 'shadow-lg shadow-black/10 scrolled' : ''}`}>
       {/* Primary Header */}
       <div className={`transition-all duration-300 ${isSticky ? 'bg-[#131921]/95 backdrop-blur-md' : 'bg-[#131921]/98 backdrop-blur-sm'} text-white`}>
         <div className="max-w-7xl mx-auto px-4 py-2.5">
@@ -78,10 +78,10 @@ export function Header() {
             {/* Logo */}
             <button
               onClick={goHome}
-              className="flex items-center gap-2 shrink-0 hover:opacity-90 rounded-lg p-1 transition-opacity duration-200"
+              className="flex items-center gap-2 shrink-0 hover:opacity-90 rounded-lg p-1 transition-all duration-300 logo-hover"
               aria-label="Go to homepage"
             >
-              <div className="w-9 h-9 bg-gradient-to-br from-[#febd69] to-[#f59e0b] rounded-full flex items-center justify-center shadow-md shadow-amber-500/20">
+              <div className="w-9 h-9 bg-gradient-to-br from-[#febd69] to-[#f59e0b] rounded-full flex items-center justify-center shadow-md shadow-amber-500/30">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#131921" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="11" cy="11" r="8" />
                   <path d="m21 21-4.3-4.3" />
@@ -97,7 +97,7 @@ export function Header() {
 
             {/* Search Bar — premium focus animation */}
             <form onSubmit={handleSearch} className="hidden sm:flex flex-1 max-w-3xl">
-              <div className={`flex w-full rounded-full overflow-hidden transition-all duration-300 border ${searchFocused ? 'ring-2 ring-[#febd69]/60 shadow-lg shadow-amber-500/10 scale-[1.02] border-[#febd69]/30' : 'border-[#3a4a5c] hover:border-[#4a5a6d]'}`}>
+              <div className={`flex w-full rounded-full overflow-hidden transition-all duration-300 border ${searchFocused ? 'ring-2 ring-[#febd69]/70 shadow-lg shadow-amber-500/15 scale-[1.02] border-[#febd69]/40' : 'border-[#3a4a5c] hover:border-[#4a5a6d]'}`}>
                 <div className="flex items-center pl-4 bg-white">
                   <Search size={18} className="text-gray-400" />
                 </div>
@@ -108,7 +108,7 @@ export function Header() {
                   onFocus={() => setSearchFocused(true)}
                   onBlur={() => setSearchFocused(false)}
                   placeholder="Search gear, reviews, and guides..."
-                  className="border-0 bg-white text-gray-900 placeholder:text-gray-500 focus-visible:ring-0 focus-visible:ring-offset-0 h-11 text-sm rounded-none shadow-none"
+                  className="border-0 bg-white text-gray-900 placeholder:text-gray-500 focus-visible:ring-0 focus-visible:ring-offset-0 h-11 text-sm rounded-none shadow-none min-w-[200px]"
                   aria-label="Search"
                 />
                 <Button

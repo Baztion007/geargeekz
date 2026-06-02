@@ -31,10 +31,12 @@ import { RoundupsPage } from '@/components/views/RoundupsPage';
 import { BrandPage } from '@/components/views/BrandPage';
 import { TrendingPage } from '@/components/views/TrendingPage';
 import { BookmarksPage } from '@/components/views/BookmarksPage';
+import { GearFinderQuiz } from '@/components/affiliate/GearFinderQuiz';
 import { CompareBar } from '@/components/affiliate/CompareBar';
 import { useThemeStore } from '@/lib/theme';
 import { MobileCompareFab } from '@/components/affiliate/MobileCompareFab';
 import { ReadingProgressBar } from '@/components/affiliate/ReadingProgressBar';
+import { KeyboardShortcuts } from '@/components/affiliate/KeyboardShortcuts';
 import { BackToTopButton } from '@/components/affiliate/BackToTopButton';
 
 export default function Home() {
@@ -110,6 +112,8 @@ export default function Home() {
         return <GuidesPage />;
       case 'bookmarks':
         return <BookmarksPage />;
+      case 'gear-finder':
+        return <GearFinderQuiz />;
       case 'not-found':
         return <NotFoundPage />;
       default:
@@ -118,7 +122,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#eaeded] dark:bg-gray-900">
+    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950">
       {/* JSON-LD Organization Schema */}
       <script
         type="application/ld+json"
@@ -149,6 +153,7 @@ export default function Home() {
       <BackToTopButton />
       <CompareBar />
       <MobileCompareFab />
+      <KeyboardShortcuts />
     </div>
   );
 }

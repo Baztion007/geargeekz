@@ -435,7 +435,10 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
   const affiliateLinkProps = getAffiliateLinkProps(affiliateUrl);
 
   return (
-    <article className="max-w-5xl mx-auto px-4 py-6 pb-28 md:pb-6">
+    <article className="max-w-5xl mx-auto px-4 py-6 pb-28 md:pb-6 relative">
+      {/* Subtle background pattern for visual depth */}
+      <div className="fixed inset-0 dot-pattern pointer-events-none z-0 opacity-40" />
+      <div className="relative z-10">
       {/* 1. Breadcrumbs */}
       <Breadcrumbs items={breadcrumbItems} />
 
@@ -988,6 +991,7 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
           </div>
         </div>
       </div>
+      </div>{/* end z-10 wrapper */}
     </article>
   );
 }

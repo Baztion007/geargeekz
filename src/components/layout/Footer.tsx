@@ -34,8 +34,8 @@ export function Footer() {
 
   return (
     <footer className="bg-[#232f3e] text-gray-300 relative wave-separator">
-      {/* Top gradient border — warm amber accent */}
-      <div className="h-1 bg-gradient-to-r from-transparent via-[#febd69] to-transparent" />
+      {/* Top gradient border — warm amber accent gradient */}
+      <div className="h-1 bg-gradient-to-r from-amber-500 via-orange-400 to-amber-500" />
 
       {/* Back to top */}
       <button
@@ -79,13 +79,13 @@ export function Footer() {
           {Object.entries(footerLinks).map(([title, links], idx) => (
             <div key={title}>
               <h3 className="text-white font-bold mb-4 text-sm uppercase tracking-wider">{title}</h3>
-              <div className="h-0.5 w-8 bg-gradient-to-r from-[#febd69] to-transparent mb-4 rounded-full" />
+              <div className="h-0.5 w-10 bg-gradient-to-r from-[#febd69] to-transparent mb-4 rounded-full" />
               <ul className="space-y-2.5">
                 {links.map((link) => (
                   <li key={link.label}>
                     <button
                       onClick={link.action}
-                      className="text-gray-400 hover:text-[#febd69] text-sm transition-colors duration-200 amazon-link py-0.5"
+                      className="text-gray-400 hover:text-[#febd69] text-sm transition-colors duration-200 amazon-link py-0.5 footer-link-hover"
                     >
                       {link.label}
                     </button>
@@ -100,8 +100,8 @@ export function Footer() {
       {/* Gradient separator */}
       <div className="h-px bg-gradient-to-r from-transparent via-gray-500/30 to-transparent" />
 
-      {/* Newsletter section with gradient background — more prominent CTA */}
-      <div className="bg-gradient-to-r from-[#131921] via-[#1a2332] to-[#131921] py-10 relative overflow-hidden">
+      {/* Newsletter section with premium animated background */}
+      <div className="newsletter-premium-bg py-10 relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-48 h-48 bg-[#febd69]/5 rounded-full -translate-y-1/2 translate-x-1/4 blur-2xl" />
         <div className="absolute bottom-0 left-0 w-36 h-36 bg-amber-500/5 rounded-full translate-y-1/2 -translate-x-1/4 blur-2xl" />
@@ -161,7 +161,7 @@ export function Footer() {
       {/* Bottom bar with social links */}
       <div className="bg-[#131921] py-5">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <button onClick={goHome} className="text-white font-bold text-lg hover:opacity-90 transition-opacity">
+          <button onClick={goHome} className="text-white font-bold text-lg hover:opacity-90 transition-opacity logo-hover">
             Gear<span className="gradient-text">Scope</span>
           </button>
           {/* Social media icons */}

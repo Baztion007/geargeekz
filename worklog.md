@@ -815,3 +815,72 @@ Stage Summary:
 - Amber/orange accent system preserved throughout (no indigo/blue as primary)
 - Build passes cleanly, lint passes with no errors
 - All existing functionality preserved
+
+---
+Task ID: 6-features-round3
+Agent: Feature Developer
+Task: Add new features to GearScope
+
+Work Log:
+- Created `/src/components/affiliate/GearFinderQuiz.tsx` — Interactive multi-step product recommendation quiz
+  - 5 steps: Category → Use Case → Priority → Brand Preference → Results
+  - Local matching algorithm with category match (40pts), bestFor match (25pts), priority alignment (20pts), brand preference (15pts), rating bonus (10pts)
+  - Animated step transitions with Framer Motion slide animation
+  - Progress bar showing quiz progress
+  - Match percentage displayed in circular SVG badge with color coding (green/amber/orange)
+  - Recommendation cards with "Best Match", "Runner Up", "Also Consider" labels and Trophy/Medal/ThumbsUp icons
+  - LLM-powered explanation fetched from `/api/gear-finder` endpoint
+  - "Take Quiz Again" and "Browse All Reviews" action buttons
+- Created `/src/app/api/gear-finder/route.ts` — Gear finder API with LLM explanations
+  - POST endpoint accepting `{ category, useCase, priority, brandPreference? }`
+  - Calculates match scores using same algorithm as frontend for consistency
+  - Attempts LLM (z-ai-web-dev-sdk) for personalized explanations; falls back to local explanations on failure
+  - Returns top 3 recommendations with productSlug, matchScore, explanation, label
+- Updated `/src/components/views/SearchPage.tsx` — Enhanced search with suggestions dropdown
+  - Debounced suggestions (300ms) as user types
+  - Recent searches from localStorage (key: 'gearscope-recent-searches')
+  - Trending searches (hardcoded: travel gadgets, noise cancelling, standing desk, anker)
+  - Product suggestions matching query
+  - Category suggestions matching query with arrow navigation
+  - Keyboard navigation (ArrowUp/Down, Enter, Escape) for suggestions
+  - Clear search history button with Trash2 icon
+  - Clear input button (X) inside search field
+  - Outside click closes suggestions dropdown
+- Created `/src/components/affiliate/KeyboardShortcuts.tsx` — Keyboard shortcuts for power users
+  - `/` or `Ctrl+K` — Focus search
+  - `Escape` — Close modals/dialogs
+  - `H` — Go home
+  - `G` — Go to guides
+  - `T` — Go to trending
+  - `?` — Toggle keyboard shortcuts help dialog
+  - Floating "?" button in bottom-left corner
+  - Modal dialog showing all shortcuts with key badges
+  - Ignores shortcuts when typing in input/textarea
+- Updated `/src/components/views/HomePage.tsx` — Added stats counter and Gear Finder CTA
+  - `StatsCounterBar` section between hero and categories with IntersectionObserver-triggered count-up animation
+  - 5 stats: 25+ Products Reviewed, 8 Categories, 6 Buying Guides, 12 Brands, 2 Expert Reviewers
+  - Each stat has an icon (Eye, Compass, BookOpen, UsersRound, Star) with amber accent
+  - `GearFinderCTA` banner with gradient background (amber-to-orange), animated floating elements
+  - "Find Your Gear" button navigates to gear-finder route
+  - Added Target, Eye, UsersRound icon imports
+- Updated `/src/components/affiliate/RecentlyViewedWidget.tsx` — Compact horizontal strip
+  - Compact horizontal strip below header with thumbnail + title + rating in scrollable row
+  - Auto-hide after 5 seconds on mobile with "Show recently viewed" expand button
+  - "Clear All" button with Trash2 icon
+  - Close button (X) on mobile
+  - Max 8 items displayed
+- Updated `/src/lib/types.ts` — Added `gear-finder` to RoutePath union type
+- Updated `/src/lib/router.ts` — Added goToGearFinder() method, gear-finder hash route
+- Updated `/src/app/page.tsx` — Added gear-finder route, GearFinderQuiz import, KeyboardShortcuts import
+- Ran `bun run lint` — All errors fixed, lint passes cleanly
+
+Stage Summary:
+- AI Gear Finder Quiz: Full multi-step quiz with local matching + LLM explanations
+- Enhanced Search: Suggestions dropdown with recent/trending/product/category suggestions + keyboard navigation
+- Keyboard Shortcuts: 6 shortcuts with floating help button and modal dialog
+- Animated Stats Counter: 5 stats with IntersectionObserver count-up animation
+- Gear Finder CTA: Prominent gradient banner on homepage linking to quiz
+- Recently Viewed: Compact horizontal strip with mobile auto-hide
+- New route: `#gear-finder` for the quiz page
+- All new components use 'use client' directive with named exports
+- Lint passes cleanly, dev server compiles without errors

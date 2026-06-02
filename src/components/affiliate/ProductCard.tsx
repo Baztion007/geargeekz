@@ -41,10 +41,10 @@ export function ProductCard({ product, showAffiliate = true }: ProductCardProps)
   React.useEffect(() => { setMounted(true); }, []);
 
   return (
-    <Card className="group overflow-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl card-glow-hover">
+    <Card className="group overflow-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl card-border-animate card-entrance-scroll">
       {/* Image */}
       <div
-        className="relative cursor-pointer overflow-hidden bg-gray-50 dark:bg-gray-700 aspect-square"
+        className="relative cursor-pointer overflow-hidden bg-gray-50 dark:bg-gray-700 aspect-square image-shine"
         onClick={() => goToProduct(product.slug)}
       >
         {/* Skeleton loading state */}
@@ -71,9 +71,14 @@ export function ProductCard({ product, showAffiliate = true }: ProductCardProps)
         {/* Gradient overlay — visible on hover */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-        {/* Verified Review Badge — top-left, more prominent */}
+        {/* Score Circle — top-left, overlapping image, circular badge */}
+        <div className="absolute top-2 left-2 z-10">
+          <ScoreBadge rating={product.rating} size="sm" />
+        </div>
+
+        {/* Verified Review Badge — top-left below score, more prominent with pulse */}
         {product.reviewStatus === 'verified' && (
-          <div className="absolute top-2 left-2 verified-badge z-10">
+          <div className="absolute top-14 left-2 verified-badge verified-badge-pulse z-10">
             <CheckCircle size={10} />
             Verified
           </div>
@@ -113,27 +118,27 @@ export function ProductCard({ product, showAffiliate = true }: ProductCardProps)
       </div>
 
       {/* Content */}
-      <CardContent className="p-3 sm:p-4">
-        {/* Category */}
+      <CardContent className="p-4 sm:p-5">
+        {/* Category — colored left border accent */}
         <button
           onClick={() => goToCategory(product.categorySlug)}
-          className="text-[11px] sm:text-xs bg-[#007185]/10 text-[#007185] dark:bg-[#007185]/20 dark:text-[#5cc7d4] hover:text-[#c7511f] hover:bg-[#c7511f]/10 px-2 py-0.5 rounded-full font-medium transition-colors duration-200 mb-1.5"
+          className="category-pill-accent mb-2"
         >
           {product.category}
         </button>
 
-        {/* Title */}
+        {/* Title — bolder, slightly larger */}
         <h3
-          className="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm leading-tight mb-1.5 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 transition-colors duration-200 line-clamp-2"
+          className="font-bold text-gray-900 dark:text-white text-sm sm:text-base leading-tight mb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 transition-colors duration-200 line-clamp-2"
           onClick={() => goToProduct(product.slug)}
         >
           {product.title}
         </h3>
 
-        {/* Best For Tags — elegant badge chips */}
+        {/* Best For Tags — compact and elegant */}
         {product.bestFor && product.bestFor.length > 0 && (
           <div className="flex flex-wrap gap-1 mb-2">
-            {product.bestFor.slice(0, 3).map((tag) => (
+            {product.bestFor.slice(0, 2).map((tag) => (
               <span
                 key={tag}
                 className="badge-chip bg-amber-100/80 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 hover:bg-amber-200 dark:hover:bg-amber-900/50"
@@ -145,17 +150,14 @@ export function ProductCard({ product, showAffiliate = true }: ProductCardProps)
           </div>
         )}
 
-        {/* Score Badge */}
-        <div className="flex items-center gap-2">
-          <ScoreBadge rating={product.rating} size="sm" />
-          <StarRating rating={product.rating} size="sm" showValue={false} />
-        </div>
+        {/* Star Rating only (ScoreBadge is now in the image) */}
+        <StarRating rating={product.rating} size="sm" showValue />
 
         {/* Excerpt */}
         <p className="text-[11px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 line-clamp-2 leading-relaxed">{product.excerpt}</p>
 
         {/* Subtle divider */}
-        <div className="border-t border-gray-100 dark:border-gray-700/50 my-2.5" />
+        <div className="border-t border-gray-100 dark:border-gray-700/50 my-3" />
 
         {/* Compare & Quick View */}
         <div className="flex sm:flex-col gap-2 sm:gap-0">
@@ -188,7 +190,7 @@ export function ProductCard({ product, showAffiliate = true }: ProductCardProps)
           </button>
         </div>
 
-        {/* Affiliate CTA */}
+        {/* Affiliate CTA — with shimmer sweep animation */}
         {showAffiliate && (
           <div className="mt-3">
             <Disclosure compact />
@@ -196,7 +198,7 @@ export function ProductCard({ product, showAffiliate = true }: ProductCardProps)
               merchant={product.merchant}
               productId={product.asin}
               size="sm"
-              className="w-full mt-2 cta-primary rounded-lg text-sm py-2.5 hover:shadow-lg hover:shadow-amber-500/25"
+              className="w-full mt-2 cta-primary cta-sweep rounded-lg text-sm py-2.5 hover:shadow-lg hover:shadow-amber-500/25"
             />
           </div>
         )}

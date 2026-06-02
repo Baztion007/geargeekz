@@ -1158,3 +1158,437 @@ html.dark *::after {
   background: #1e293b;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GearScope v4 — Round 3 Premium Styling Utilities
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Hero Mesh Background — CSS-only mesh gradient animation ──────────── */
+.hero-mesh-bg {
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(245, 158, 11, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(249, 115, 22, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(251, 191, 36, 0.06) 0%, transparent 50%),
+    linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  background-size: 200% 200%, 200% 200%, 200% 200%, 200% 200%;
+  animation: meshShift 12s ease-in-out infinite;
+}
+@keyframes meshShift {
+  0%, 100% { background-position: 0% 50%, 100% 0%, 50% 100%, 0% 50%; }
+  33% { background-position: 100% 50%, 0% 100%, 100% 0%, 100% 50%; }
+  66% { background-position: 50% 0%, 50% 50%, 0% 50%, 50% 100%; }
+}
+
+/* ─── Dot Grid Animation — subtle particle/dot grid for hero ──────────── */
+@keyframes dotPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+.hero-dot-grid {
+  background-image: radial-gradient(circle, rgba(251, 191, 36, 0.15) 1px, transparent 1px);
+  background-size: 32px 32px;
+  animation: dotPulse 4s ease-in-out infinite;
+}
+.dark .hero-dot-grid {
+  background-image: radial-gradient(circle, rgba(251, 191, 36, 0.1) 1px, transparent 1px);
+}
+
+/* ─── Noise Texture Overlay — editorial feel ───────────────────────────── */
+.noise-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+.dark .noise-overlay::after {
+  opacity: 0.05;
+}
+
+/* ─── Score Circle — circular score badge with animated fill ────────────── */
+.score-circle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.score-circle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--score-color, #f59e0b) calc(var(--score-pct, 0) * 1%),
+    rgba(128, 128, 128, 0.15) calc(var(--score-pct, 0) * 1%)
+  );
+  transition: --score-pct 1s ease;
+}
+.score-circle::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: white;
+  z-index: 1;
+}
+.dark .score-circle::after {
+  background: #1e293b;
+}
+
+/* ─── Section Divider Wave — wave separator between sections ──────────── */
+.section-divider-wave {
+  position: relative;
+}
+.section-divider-wave::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 48'%3E%3Cpath fill='%23ffffff' d='M0,24 C240,48 480,0 720,24 C960,48 1200,0 1440,24 L1440,48 L0,48 Z'/%3E%3C/svg%3E") no-repeat center bottom;
+  background-size: cover;
+  z-index: 2;
+}
+.dark .section-divider-wave::before {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 48'%3E%3Cpath fill='%231f2937' d='M0,24 C240,48 480,0 720,24 C960,48 1200,0 1440,24 L1440,48 L0,48 Z'/%3E%3C/svg%3E") no-repeat center bottom;
+  background-size: cover;
+}
+.section-divider-wave-gray::before {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 48'%3E%3Cpath fill='%23f9fafb' d='M0,24 C240,48 480,0 720,24 C960,48 1200,0 1440,24 L1440,48 L0,48 Z'/%3E%3C/svg%3E") no-repeat center bottom;
+  background-size: cover;
+}
+.dark .section-divider-wave-gray::before {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 48'%3E%3Cpath fill='%23111827' d='M0,24 C240,48 480,0 720,24 C960,48 1200,0 1440,24 L1440,48 L0,48 Z'/%3E%3C/svg%3E") no-repeat center bottom;
+  background-size: cover;
+}
+
+/* ─── Card Border Animate — animated gradient border on hover ──────────── */
+.card-border-animate {
+  position: relative;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+.card-border-animate:hover {
+  border-color: rgba(245, 158, 11, 0.4);
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.15), 0 0 20px -4px rgba(245, 158, 11, 0.12), 0 12px 28px -8px rgba(0,0,0,0.12);
+}
+.dark .card-border-animate:hover {
+  border-color: rgba(245, 158, 11, 0.3);
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.1), 0 0 20px -4px rgba(245, 158, 11, 0.08), 0 12px 28px -8px rgba(0,0,0,0.3);
+}
+
+/* ─── Text Shimmer — text shimmer animation ────────────────────────────── */
+@keyframes textShimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    #f59e0b 0%,
+    #fbbf24 25%,
+    #ffffff 50%,
+    #fbbf24 75%,
+    #f59e0b 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: textShimmer 4s linear infinite;
+}
+.dark .text-shimmer {
+  background: linear-gradient(
+    90deg,
+    #f59e0b 0%,
+    #fbbf24 25%,
+    #fef3c7 50%,
+    #fbbf24 75%,
+    #f59e0b 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Glow Pulse — subtle glow pulse for trust indicators ──────────────── */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.15); }
+  50% { box-shadow: 0 0 16px 4px rgba(16, 185, 129, 0.1); }
+}
+.glow-pulse {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+.dark .glow-pulse {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+@keyframes glowPulseAmber {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.15); }
+  50% { box-shadow: 0 0 16px 4px rgba(245, 158, 11, 0.1); }
+}
+.glow-pulse-amber {
+  animation: glowPulseAmber 3s ease-in-out infinite;
+}
+
+/* ─── Counter Animate — count-up animation for stats ──────────────────── */
+@keyframes counterUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.counter-animate {
+  animation: counterUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* ─── Accent Underline — amber gradient underline for section titles ───── */
+.accent-underline {
+  position: relative;
+  display: inline-block;
+}
+.accent-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #f59e0b, #f97316, transparent);
+}
+
+/* ─── Premium Typography — tighter headings, readable body ─────────────── */
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.02em;
+}
+body, p, li, td, th {
+  line-height: 1.7;
+}
+
+/* ─── Scroll Down Indicator — smooth bounce animation ─────────────────── */
+@keyframes scrollBounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+  40% { transform: translateY(-8px) translateX(-50%); }
+  60% { transform: translateY(-4px) translateX(-50%); }
+}
+.scroll-indicator {
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+
+/* ─── Image Shine — reflection/shine animation on hover ────────────────── */
+.image-shine {
+  position: relative;
+  overflow: hidden;
+}
+.image-shine::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.15) 45%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.15) 55%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  transition: none;
+}
+.image-shine:hover::after {
+  animation: shineSweep 0.6s ease-out;
+}
+@keyframes shineSweep {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
+
+/* ─── CTA Shimmer Sweep — for "Check Price" buttons ───────────────────── */
+@keyframes ctaSweep {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
+.cta-sweep {
+  position: relative;
+  overflow: hidden;
+}
+.cta-sweep::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.35) 45%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0.35) 55%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+}
+.cta-sweep:hover::after {
+  animation: ctaSweep 0.6s ease-out;
+}
+
+/* ─── Verified Badge Subtle Pulse ─────────────────────────────────────── */
+@keyframes verifiedPulse {
+  0%, 100% { box-shadow: 0 1px 3px rgba(6, 95, 70, 0.1); }
+  50% { box-shadow: 0 1px 8px rgba(16, 185, 129, 0.25); }
+}
+.verified-badge-pulse {
+  animation: verifiedPulse 2.5s ease-in-out infinite;
+}
+
+/* ─── Animated Timeline Border — for Recently Updated section ─────────── */
+@keyframes timelinePulse {
+  0%, 100% { border-left-color: #f59e0b; }
+  50% { border-left-color: #fbbf24; }
+}
+.timeline-border {
+  border-left: 3px solid #f59e0b;
+  animation: timelinePulse 3s ease-in-out infinite;
+}
+.timeline-border::before {
+  content: '';
+  position: absolute;
+  left: -7px;
+  top: 12px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+}
+
+/* ─── Brand Ring Animation — animated ring around brand logos on hover ── */
+@keyframes brandRing {
+  0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.4); }
+  70% { box-shadow: 0 0 0 8px rgba(251, 191, 36, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+}
+.brand-ring-hover {
+  transition: all 0.3s ease;
+}
+.brand-ring-hover:hover {
+  animation: brandRing 1s ease-out;
+}
+
+/* ─── Newsletter Premium Dark Gradient with Animated Background ──────── */
+@keyframes newsletterBgShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.newsletter-premium-bg {
+  background: linear-gradient(135deg, #131921 0%, #1a1f2e 25%, #1e293b 50%, #1a1f2e 75%, #131921 100%);
+  background-size: 300% 300%;
+  animation: newsletterBgShift 10s ease infinite;
+}
+
+/* ─── Dramatic Quote — larger, more editorial quote marks ─────────────── */
+.dramatic-quote {
+  position: relative;
+}
+.dramatic-quote::before {
+  content: '\201C';
+  position: absolute;
+  top: -28px;
+  left: -8px;
+  font-size: 5rem;
+  font-family: Georgia, 'Times New Roman', serif;
+  line-height: 1;
+  color: rgba(245, 158, 11, 0.12);
+  pointer-events: none;
+  user-select: none;
+}
+.dark .dramatic-quote::before {
+  color: rgba(245, 158, 11, 0.08);
+}
+
+/* ─── Card Entrance on Scroll (fade-in-up) ───────────────────────────── */
+@keyframes cardFadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-entrance-scroll {
+  opacity: 0;
+  animation: cardFadeInUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* ─── Category Pill with Colored Left Border Accent ───────────────────── */
+.category-pill-accent {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px 3px 8px;
+  border-left: 3px solid #f59e0b;
+  border-radius: 0 9999px 9999px 0;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(245, 158, 11, 0.06);
+  color: #92400e;
+  transition: all 0.2s ease;
+}
+.category-pill-accent:hover {
+  background: rgba(245, 158, 11, 0.12);
+  border-left-color: #d97706;
+}
+.dark .category-pill-accent {
+  background: rgba(245, 158, 11, 0.1);
+  color: #fbbf24;
+  border-left-color: #f59e0b;
+}
+.dark .category-pill-accent:hover {
+  background: rgba(245, 158, 11, 0.2);
+  border-left-color: #fbbf24;
+}
+
+/* ─── Footer Link Hover Animation ─────────────────────────────────────── */
+.footer-link-hover {
+  position: relative;
+  transition: color 0.2s ease, padding-left 0.2s ease;
+}
+.footer-link-hover:hover {
+  padding-left: 4px;
+}
+.footer-link-hover::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%) scaleX(0);
+  width: 6px;
+  height: 2px;
+  background: #febd69;
+  border-radius: 1px;
+  transition: transform 0.2s ease;
+}
+.footer-link-hover:hover::before {
+  transform: translateY(-50%) scaleX(1);
+}
+
+/* ─── Header Glow Intensify on Scroll ─────────────────────────────────── */
+.header-glow-intense.scrolled::after {
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(251, 191, 36, 0.8) 20%, rgba(251, 191, 36, 1) 50%, rgba(251, 191, 36, 0.8) 80%, transparent 100%);
+  opacity: 1;
+  box-shadow: 0 0 12px rgba(251, 191, 36, 0.3);
+}
+
+/* ─── Logo Hover Animation ─────────────────────────────────────────────── */
+.logo-hover {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.logo-hover:hover {
+  transform: scale(1.05) rotate(-2deg);
+}

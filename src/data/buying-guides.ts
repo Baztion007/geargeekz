@@ -6,7 +6,7 @@ export const buyingGuides: BuyingGuide[] = [
     slug: 'best-travel-gadgets-2026',
     title: 'Best Travel Gadgets of 2026',
     excerpt: 'Our comprehensive guide to the tech essentials every traveler needs, from portable chargers to smart trackers and international adapters.',
-    image: '/images/guide-best-travel-gadgets-2026.jpg',
+    image: '/images/guide-travel-gadgets.png',
     category: 'Travel Gadgets',
     categorySlug: 'travel-gadgets',
     guideType: 'best-products',
