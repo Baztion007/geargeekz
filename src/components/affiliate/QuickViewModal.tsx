@@ -13,7 +13,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import { Coffee, CheckCircle2, XCircle, Tag, BookOpen } from 'lucide-react';
+import { Package, CheckCircle2, XCircle, Tag, BookOpen } from 'lucide-react';
 
 interface QuickViewModalProps {
   productSlug: string | null;
@@ -46,7 +46,7 @@ export function QuickViewModal({ productSlug, isOpen, onClose }: QuickViewModalP
       <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto p-0 gap-0">
         <DialogTitle className="sr-only">Quick View: {product.title}</DialogTitle>
         <DialogDescription className="sr-only">
-          Quick overview of {product.title} including rating, price, pros, and cons.
+          Quick overview of {product.title} including rating, pros, and cons.
         </DialogDescription>
 
         <div className="flex flex-col md:flex-row">
@@ -62,7 +62,7 @@ export function QuickViewModal({ productSlug, isOpen, onClose }: QuickViewModalP
                 />
               ) : (
                 <div className="w-full h-full rounded-lg bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center text-amber-400">
-                  <Coffee className="w-24 h-24" />
+                  <Package className="w-24 h-24" />
                 </div>
               )}
             </div>
@@ -83,20 +83,16 @@ export function QuickViewModal({ productSlug, isOpen, onClose }: QuickViewModalP
             {/* Star Rating + Rating Number */}
             <StarRating rating={product.rating} size="sm" showValue />
 
-            {/* Price */}
-            <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold text-gray-900">{product.price}</span>
-              {product.originalPrice && (
-                <span className="text-base text-gray-400 line-through">{product.originalPrice}</span>
-              )}
-            </div>
-
-            {/* Best For Badge */}
-            {product.bestFor && (
-              <Badge className="w-fit bg-[#febd69] text-[#131921] hover:bg-[#f3a847] text-xs font-semibold">
-                <Tag size={10} className="mr-1" />
-                {product.bestFor}
-              </Badge>
+            {/* Best For Tags */}
+            {product.bestFor && product.bestFor.length > 0 && (
+              <div className="flex flex-wrap gap-1.5">
+                {product.bestFor.map((tag) => (
+                  <Badge key={tag} className="bg-[#febd69] text-[#131921] hover:bg-[#f3a847] text-xs font-semibold">
+                    <Tag size={10} className="mr-1" />
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
             )}
 
             {/* Summary */}
@@ -139,7 +135,7 @@ export function QuickViewModal({ productSlug, isOpen, onClose }: QuickViewModalP
 
             {/* CTA Buttons */}
             <div className="flex flex-col gap-2 mt-1">
-              <CheckPriceButton asin={product.asin} size="md" className="w-full" />
+              <CheckPriceButton merchant={product.merchant} productId={product.asin} size="md" className="w-full" />
               <button
                 onClick={handleReadFullReview}
                 className="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold text-[#007185] border border-[#007185]/30 rounded-lg hover:bg-[#007185]/5 transition-colors"

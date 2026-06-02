@@ -19,7 +19,7 @@ export function PrivacyPage() {
               <h1 className="text-3xl md:text-4xl font-bold">Privacy Policy</h1>
             </div>
             <p className="text-lg text-gray-300 max-w-3xl">
-              Your privacy is important to us. This policy explains how BrewHub Reviews collects,
+              Your privacy is important to us. This policy explains how GearScope collects,
               uses, and protects your information.
             </p>
             <p className="text-sm text-gray-400 mt-3">Last updated: March 1, 2026</p>
@@ -29,9 +29,9 @@ export function PrivacyPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 mb-6">
           {/* Introduction */}
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-            BrewHub Reviews (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to protecting your privacy.
+            GearScope (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to protecting your privacy.
             This Privacy Policy explains how we collect, use, disclose, and safeguard your information
-            when you visit our website brewhubreviews.com (the &quot;Site&quot;). Please read this policy
+            when you visit our website gearscope.com (the &quot;Site&quot;). Please read this policy
             carefully. If you do not agree with the terms of this privacy policy, please do not
             access the Site.
           </p>
@@ -42,14 +42,14 @@ export function PrivacyPage() {
           <section className="mb-8">
             <div className="flex items-center gap-3 mb-4">
               <Eye className="w-6 h-6 text-[#007185]" />
-              <h2 className="text-2xl font-bold text-gray-900">1. Information We Collect</h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">1. Information We Collect</h2>
             </div>
 
-            <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Personal Information</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3">Personal Information</h3>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
               We may collect personal information that you voluntarily provide to us when you:
             </p>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 ml-4 mb-6">
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300 ml-4 mb-6">
               <li>Fill out a contact form on our Site</li>
               <li>Subscribe to our newsletter</li>
               <li>Leave a comment or review</li>
@@ -61,12 +61,12 @@ export function PrivacyPage() {
               information you choose to provide.
             </p>
 
-            <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Automatically Collected Information</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3">Automatically Collected Information</h3>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
               When you visit our Site, we may automatically collect certain information about your
               device and usage, including:
             </p>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 ml-4 mb-6">
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300 ml-4 mb-6">
               <li>IP address and approximate geographic location</li>
               <li>Browser type and version</li>
               <li>Operating system</li>
@@ -83,12 +83,12 @@ export function PrivacyPage() {
           <section className="mb-8">
             <div className="flex items-center gap-3 mb-4">
               <Database className="w-6 h-6 text-[#007185]" />
-              <h2 className="text-2xl font-bold text-gray-900">2. How We Use Your Information</h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">2. How We Use Your Information</h2>
             </div>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
               We use the information we collect for the following purposes:
             </p>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 ml-4 mb-6">
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300 ml-4 mb-6">
               <li>To respond to your inquiries and provide customer support</li>
               <li>To send you newsletters and marketing communications (with your consent)</li>
               <li>To improve our website, content, and user experience</li>
@@ -105,7 +105,7 @@ export function PrivacyPage() {
           <section className="mb-8">
             <div className="flex items-center gap-3 mb-4">
               <Cookie className="w-6 h-6 text-[#007185]" />
-              <h2 className="text-2xl font-bold text-gray-900">3. Cookies and Tracking Technologies</h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">3. Cookies and Tracking Technologies</h2>
             </div>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
               We use cookies and similar tracking technologies to track activity on our Site and
@@ -115,29 +115,29 @@ export function PrivacyPage() {
 
             <div className="space-y-4 mb-6">
               <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-100 dark:border-gray-600">
-                <h4 className="font-semibold text-gray-900 mb-1">Essential Cookies</h4>
-                <p className="text-sm text-gray-600">
+                <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Essential Cookies</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
                   Required for the Site to function properly. These cannot be disabled.
                 </p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-100 dark:border-gray-600">
-                <h4 className="font-semibold text-gray-900 mb-1">Analytics Cookies</h4>
-                <p className="text-sm text-gray-600">
+                <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Analytics Cookies</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
                   Help us understand how visitors interact with our Site by collecting and reporting
                   information anonymously. We use Google Analytics to collect this data.
                 </p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-100 dark:border-gray-600">
-                <h4 className="font-semibold text-gray-900 mb-1">Affiliate Cookies</h4>
-                <p className="text-sm text-gray-600">
-                  When you click on an Amazon affiliate link, a cookie is set on your device to track
+                <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Affiliate Cookies</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  When you click on an affiliate link, a cookie is set on your device to track
                   any purchases you make. This allows us to receive a commission at no extra cost to
-                  you. Amazon&apos;s cookie typically lasts 24 hours.
+                  you. Affiliate cookies from different retailers may have different durations.
                 </p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-100 dark:border-gray-600">
-                <h4 className="font-semibold text-gray-900 mb-1">Advertising Cookies</h4>
-                <p className="text-sm text-gray-600">
+                <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Advertising Cookies</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
                   Used to deliver advertisements that are relevant to you. These cookies may be set
                   by third-party advertising partners.
                 </p>
@@ -157,28 +157,19 @@ export function PrivacyPage() {
           <section className="mb-8">
             <div className="flex items-center gap-3 mb-4">
               <ExternalLink className="w-6 h-6 text-[#007185]" />
-              <h2 className="text-2xl font-bold text-gray-900">4. Third-Party Services</h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">4. Third-Party Services</h2>
             </div>
 
-            <h3 className="text-lg font-semibold text-gray-900 mt-4 mb-3">Amazon Associates Program</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mt-4 mb-3">Affiliate Programs</h3>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-              BrewHub Reviews participates in the Amazon Services LLC Associates Program. When you
-              click on an Amazon affiliate link on our Site, you will be redirected to Amazon.com.
-              Amazon may set cookies on your device and collect information about your browsing and
-              purchasing behavior. Please refer to{' '}
-              <a
-                href="https://www.amazon.com/privacy"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#007185] hover:text-[#c7511f] hover:underline inline-flex items-center gap-1"
-              >
-                Amazon&apos;s Privacy Notice
-                <ExternalLink size={12} />
-              </a>{' '}
-              for more information about their data practices.
+              GearScope participates in affiliate programs with multiple retailers including Amazon,
+              Walmart, Best Buy, REI, and B&amp;H Photo. When you click on an affiliate link on our Site,
+              you will be redirected to the retailer&apos;s website. The retailer may set cookies on your
+              device and collect information about your browsing and purchasing behavior. Please refer
+              to each retailer&apos;s privacy policy for more information about their data practices.
             </p>
 
-            <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Google Analytics</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3">Google Analytics</h3>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
               We use Google Analytics to analyze website traffic and usage patterns. Google Analytics
               collects information anonymously and reports website trends without identifying
@@ -195,7 +186,7 @@ export function PrivacyPage() {
               .
             </p>
 
-            <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Other Third-Party Services</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3">Other Third-Party Services</h3>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
               We may use other third-party services that collect, monitor, and analyze data. These
               may include email service providers, advertising networks, and social media platforms.
@@ -210,10 +201,10 @@ export function PrivacyPage() {
           <section className="mb-8">
             <div className="flex items-center gap-3 mb-4">
               <Lock className="w-6 h-6 text-[#007185]" />
-              <h2 className="text-2xl font-bold text-gray-900">5. Data Protection</h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">5. Data Protection</h2>
             </div>
 
-            <h3 className="text-lg font-semibold text-gray-900 mt-4 mb-3">Data Security</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mt-4 mb-3">Data Security</h3>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
               We implement appropriate technical and organizational security measures to protect your
               personal information against unauthorized access, alteration, disclosure, or destruction.
@@ -221,17 +212,17 @@ export function PrivacyPage() {
               100% secure.
             </p>
 
-            <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Data Retention</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3">Data Retention</h3>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
               We retain your personal information only for as long as necessary to fulfill the purposes
               outlined in this Privacy Policy, unless a longer retention period is required by law.
             </p>
 
-            <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Your Rights</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3">Your Rights</h3>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
               Depending on your location, you may have the following rights regarding your personal data:
             </p>
-            <ul className="list-disc list-inside space-y-2 text-gray-700 ml-4 mb-6">
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300 ml-4 mb-6">
               <li>The right to access your personal data</li>
               <li>The right to rectify inaccurate personal data</li>
               <li>The right to erasure (&quot;right to be forgotten&quot;)</li>
@@ -242,10 +233,10 @@ export function PrivacyPage() {
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
               To exercise any of these rights, please contact us at{' '}
               <a
-                href="mailto:privacy@brewhubreviews.com"
+                href="mailto:privacy@gearscope.com"
                 className="text-[#007185] hover:text-[#c7511f] hover:underline"
               >
-                privacy@brewhubreviews.com
+                privacy@gearscope.com
               </a>
               .
             </p>
@@ -274,10 +265,10 @@ export function PrivacyPage() {
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
               If you have any questions or concerns about this Privacy Policy, please contact us at:{' '}
               <a
-                href="mailto:privacy@brewhubreviews.com"
+                href="mailto:privacy@gearscope.com"
                 className="text-[#007185] hover:text-[#c7511f] hover:underline"
               >
-                privacy@brewhubreviews.com
+                privacy@gearscope.com
               </a>
             </p>
           </section>

@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-// Create a fresh PrismaClient to avoid stale cache issues
-const prisma = new PrismaClient();
+import { db } from '@/lib/db';
 
 // GET /api/reviews?productSlug=xxx
 export async function GET(request: NextRequest) {
@@ -17,7 +14,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const reviews = await prisma.userReview.findMany({
+    const reviews = await db.userReview.findMany({
       where: { productSlug },
       orderBy: [{ helpful: 'desc' }, { createdAt: 'desc' }],
     });
@@ -74,7 +71,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const review = await prisma.userReview.create({
+    const review = await db.userReview.create({
       data: {
         productSlug,
         author: author.trim(),
@@ -109,7 +106,7 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    const review = await prisma.userReview.update({
+    const review = await db.userReview.update({
       where: { id: reviewId },
       data: { helpful: { increment: 1 } },
     });

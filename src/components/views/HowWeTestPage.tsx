@@ -15,10 +15,12 @@ import {
   UserCheck,
   ShieldCheck,
   BookOpen,
-  Thermometer,
-  Timer,
-  Coffee,
+  Package,
   Award,
+  Timer,
+  Battery,
+  Ruler,
+  Thermometer,
 } from 'lucide-react';
 
 export function HowWeTestPage() {
@@ -46,7 +48,7 @@ export function HowWeTestPage() {
           <div className="flex items-start gap-3">
             <ShieldCheck className="w-6 h-6 text-emerald-600 shrink-0 mt-0.5" />
             <div>
-              <h3 className="font-bold text-gray-900 mb-1">Our Testing Promise</h3>
+              <h3 className="font-bold text-gray-900 dark:text-white mb-1">Our Testing Promise</h3>
               <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
                 We purchase every product we review at retail price whenever possible. Each product
                 is tested for a minimum of two weeks of daily use before we publish our findings.
@@ -61,7 +63,7 @@ export function HowWeTestPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 mb-6">
           <div className="flex items-center gap-3 mb-4">
             <BookOpen className="w-6 h-6 text-[#c7511f]" />
-            <h2 className="text-2xl font-bold text-gray-900">Research Process</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Research Process</h2>
           </div>
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
             Before we even unbox a product, we invest significant time in research to understand
@@ -89,7 +91,7 @@ export function HowWeTestPage() {
               <Card key={item.title} className="border border-gray-200 dark:border-gray-700">
                 <CardContent className="p-5">
                   <item.icon className="w-8 h-8 text-[#007185] mb-3" />
-                  <h3 className="font-bold text-gray-900 mb-2">{item.title}</h3>
+                  <h3 className="font-bold text-gray-900 dark:text-white mb-2">{item.title}</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{item.desc}</p>
                 </CardContent>
               </Card>
@@ -99,7 +101,7 @@ export function HowWeTestPage() {
           <div className="space-y-4">
             {[
               'We compile a list of the most important features and performance metrics for the product category.',
-              'We establish baseline expectations based on price point and intended audience.',
+              'We establish baseline expectations based on product positioning and intended audience.',
               'We identify potential design compromises or trade-offs based on the product\'s specifications.',
               'We create a standardized testing protocol specific to the product category.',
             ].map((item, index) => (
@@ -117,7 +119,7 @@ export function HowWeTestPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 mb-6">
           <div className="flex items-center gap-3 mb-4">
             <GitCompare className="w-6 h-6 text-[#c7511f]" />
-            <h2 className="text-2xl font-bold text-gray-900">Product Comparison Framework</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Product Comparison Framework</h2>
           </div>
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
             No product exists in a vacuum. We evaluate every product against its direct competitors
@@ -128,23 +130,23 @@ export function HowWeTestPage() {
             {[
               {
                 title: 'Side-by-Side Testing',
-                desc: 'Whenever possible, we test products simultaneously using the same beans, water, and environmental conditions for the fairest comparison.',
+                desc: 'Whenever possible, we test products simultaneously under the same conditions for the fairest comparison.',
                 icon: GitCompare,
               },
               {
-                title: 'Price-Tier Grouping',
-                desc: 'We compare products within the same price range. A $200 grinder is evaluated against other $200 grinders, not against a $600 model.',
+                title: 'Category-Tier Grouping',
+                desc: 'We compare products within the same category and tier. A budget option is evaluated against other budget options, not against premium alternatives.',
                 icon: BadgeDollarSign,
               },
               {
                 title: 'Category Benchmarks',
-                desc: 'We maintain category benchmarks that every product is measured against. These represent the minimum acceptable performance for the price.',
+                desc: 'We maintain category benchmarks that every product is measured against. These represent the minimum acceptable performance for the category.',
                 icon: Gauge,
               },
               {
                 title: 'Cross-Category Context',
-                desc: 'When relevant, we provide cross-category context — explaining when a slightly more expensive product from another category might be a better choice.',
-                icon: Coffee,
+                desc: 'When relevant, we provide cross-category context — explaining when a product from another category might be a better choice for specific needs.',
+                icon: Package,
               },
             ].map((item) => (
               <div
@@ -155,7 +157,7 @@ export function HowWeTestPage() {
                   <item.icon size={20} />
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900 mb-1">{item.title}</h3>
+                  <h3 className="font-bold text-gray-900 dark:text-white mb-1">{item.title}</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{item.desc}</p>
                 </div>
               </div>
@@ -167,7 +169,7 @@ export function HowWeTestPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 mb-6">
           <div className="flex items-center gap-3 mb-4">
             <ListChecks className="w-6 h-6 text-[#c7511f]" />
-            <h2 className="text-2xl font-bold text-gray-900">Evaluation Criteria</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Evaluation Criteria</h2>
           </div>
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
             Our evaluation goes beyond specs on paper. We test the things that actually matter
@@ -177,29 +179,29 @@ export function HowWeTestPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
               {
-                icon: Thermometer,
-                title: 'Temperature Consistency',
-                desc: 'We measure water temperature at the group head and steam wand using calibrated thermometers and thermocouples.',
+                icon: Battery,
+                title: 'Battery & Power',
+                desc: 'For electronics and gadgets, we measure real-world battery life against manufacturer claims, charging speed, and power efficiency.',
               },
               {
-                icon: Coffee,
-                title: 'Extraction Quality',
-                desc: 'For espresso machines, we measure extraction yield using refractometers. For brewers, we evaluate cup quality using standardized cupping protocols.',
+                icon: Ruler,
+                title: 'Build & Dimensions',
+                desc: 'We measure actual dimensions and weight (not just listed specs) and evaluate materials, construction quality, and how the product feels in hand.',
               },
               {
                 icon: Timer,
                 title: 'Speed & Efficiency',
-                desc: 'We time heat-up, extraction, and cleanup. How does the product fit into a busy morning routine?',
+                desc: 'We time real-world operations — how fast does it charge? How quick is setup? How does the product fit into a busy daily routine?',
               },
               {
                 icon: Wrench,
-                title: 'Maintenance',
-                desc: 'We evaluate cleaning difficulty, descaling requirements, and long-term maintenance needs after extended use.',
+                title: 'Maintenance & Durability',
+                desc: 'We evaluate cleaning difficulty, maintenance requirements, and look for signs of wear after extended testing periods.',
               },
               {
-                icon: Microscope,
-                title: 'Grind Consistency',
-                desc: 'For grinders, we use sieve analysis to measure particle size distribution and evaluate grind consistency across settings.',
+                icon: Thermometer,
+                title: 'Environmental Resilience',
+                desc: 'For outdoor and travel gear, we test water resistance, temperature tolerance, and how products handle rough conditions.',
               },
               {
                 icon: UserCheck,
@@ -210,7 +212,7 @@ export function HowWeTestPage() {
               <Card key={item.title} className="border border-gray-200 dark:border-gray-700">
                 <CardContent className="p-5">
                   <item.icon className="w-8 h-8 text-[#007185] mb-3" />
-                  <h3 className="font-bold text-gray-900 mb-2">{item.title}</h3>
+                  <h3 className="font-bold text-gray-900 dark:text-white mb-2">{item.title}</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{item.desc}</p>
                 </CardContent>
               </Card>
@@ -222,7 +224,7 @@ export function HowWeTestPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 mb-6">
           <div className="flex items-center gap-3 mb-4">
             <Gauge className="w-6 h-6 text-[#c7511f]" />
-            <h2 className="text-2xl font-bold text-gray-900">Performance Scoring</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Performance Scoring</h2>
           </div>
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
             Our performance score is the heart of every review. It reflects how well a product
@@ -246,7 +248,7 @@ export function HowWeTestPage() {
               {
                 range: '3.5 – 3.9',
                 label: 'Good',
-                desc: 'Solid performance with noticeable trade-offs. Best for specific use cases or budgets.',
+                desc: 'Solid performance with noticeable trade-offs. Best for specific use cases or priorities.',
                 color: 'bg-amber-400',
               },
               {
@@ -264,9 +266,9 @@ export function HowWeTestPage() {
             ].map((item) => (
               <div key={item.range} className="flex items-center gap-4">
                 <div className={`w-3 h-3 shrink-0 rounded-full ${item.color}`} />
-                <span className="font-mono font-bold text-gray-900 w-24">{item.range}</span>
-                <span className="font-semibold text-gray-700 w-28">{item.label}</span>
-                <span className="text-sm text-gray-600">{item.desc}</span>
+                <span className="font-mono font-bold text-gray-900 dark:text-white w-24">{item.range}</span>
+                <span className="font-semibold text-gray-700 dark:text-gray-300 w-28">{item.label}</span>
+                <span className="text-sm text-gray-600 dark:text-gray-400">{item.desc}</span>
               </div>
             ))}
           </div>
@@ -276,19 +278,18 @@ export function HowWeTestPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 mb-6">
           <div className="flex items-center gap-3 mb-4">
             <BadgeDollarSign className="w-6 h-6 text-[#c7511f]" />
-            <h2 className="text-2xl font-bold text-gray-900">Value-for-Money Scoring</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Value-for-Money Scoring</h2>
           </div>
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-            A high-end product with outstanding performance isn&apos;t always the best recommendation.
-            Our value score considers what you get relative to what you pay.
+            A premium product with outstanding performance isn&apos;t always the best recommendation.
+            Our value score considers what you get relative to the competition.
           </p>
 
           <div className="space-y-4">
             {[
-              'We compare each product against the best available alternative at the same price point.',
-              'Products that deliver 90% of the performance at 50% of the price score higher on value.',
-              'We factor in long-term costs: filter replacements, maintenance, and energy consumption.',
-              'Price drops and frequent sales are considered — a product that\'s often discounted may offer better real-world value.',
+              'We compare each product against the best available alternative in its category and tier.',
+              'Products that deliver 90% of the performance at a lower price point score higher on value.',
+              'We factor in long-term costs: replacement parts, maintenance, and energy consumption where applicable.',
               'We clearly state when spending more gets you meaningfully better results and when it doesn\'t.',
             ].map((item, index) => (
               <div key={index} className="flex gap-3">
@@ -305,10 +306,10 @@ export function HowWeTestPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 mb-6">
           <div className="flex items-center gap-3 mb-4">
             <Wrench className="w-6 h-6 text-[#c7511f]" />
-            <h2 className="text-2xl font-bold text-gray-900">Durability Considerations</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Durability Considerations</h2>
           </div>
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-            Coffee equipment is an investment. We evaluate long-term durability and reliability
+            Quality gear is an investment. We evaluate long-term durability and reliability
             to help you choose products that last.
           </p>
 
@@ -316,15 +317,15 @@ export function HowWeTestPage() {
             {[
               {
                 title: 'Material Quality',
-                desc: 'We assess the quality of materials used — stainless steel vs. plastic, glass thickness, rubber gasket quality, and overall construction heft.',
+                desc: 'We assess the quality of materials used — metal vs. plastic, fabric durability, rubber quality, and overall construction heft.',
               },
               {
                 title: 'Wear & Tear Testing',
-                desc: 'During our extended testing period, we look for signs of premature wear: loose fittings, degraded gaskets, fading markings, and mechanical issues.',
+                desc: 'During our extended testing period, we look for signs of premature wear: loose fittings, degraded components, fading markings, and mechanical issues.',
               },
               {
                 title: 'Parts Availability',
-                desc: 'We check whether replacement parts are readily available and reasonably priced. A machine that can be repaired is better than one that must be replaced.',
+                desc: 'We check whether replacement parts are readily available and reasonably priced. A product that can be repaired is better than one that must be replaced.',
               },
               {
                 title: 'Warranty Coverage',
@@ -335,7 +336,7 @@ export function HowWeTestPage() {
                 key={item.title}
                 className="bg-gray-50 dark:bg-gray-700 rounded-lg p-5 border border-gray-100 dark:border-gray-600"
               >
-                <h3 className="font-bold text-gray-900 mb-2">{item.title}</h3>
+                <h3 className="font-bold text-gray-900 dark:text-white mb-2">{item.title}</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{item.desc}</p>
               </div>
             ))}
@@ -346,7 +347,7 @@ export function HowWeTestPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 mb-6">
           <div className="flex items-center gap-3 mb-4">
             <UserCheck className="w-6 h-6 text-[#c7511f]" />
-            <h2 className="text-2xl font-bold text-gray-900">User Experience Considerations</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">User Experience Considerations</h2>
           </div>
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
             Great specs don&apos;t matter if a product is frustrating to use. Our UX evaluation
@@ -357,15 +358,15 @@ export function HowWeTestPage() {
             {[
               {
                 title: 'Setup & First Use',
-                desc: 'How easy is it to go from unboxing to your first cup? We evaluate the out-of-box experience, including instruction quality, initial calibration, and any required assembly.',
+                desc: 'How easy is it to go from unboxing to first use? We evaluate the out-of-box experience, including instruction quality, initial configuration, and any required assembly.',
               },
               {
                 title: 'Daily Routine',
-                desc: 'What\'s it like to use this product every morning? We assess workflow efficiency, ergonomics, noise levels, and how the product fits into a realistic morning routine.',
+                desc: 'What\'s it like to use this product every day? We assess workflow efficiency, ergonomics, noise levels, and how the product fits into a realistic daily routine.',
               },
               {
                 title: 'Cleaning & Maintenance',
-                desc: 'Cleaning is a crucial but often overlooked aspect of ownership. We evaluate how easy each product is to clean, how often maintenance is required, and what tools are needed.',
+                desc: 'Cleaning and maintenance are crucial aspects of ownership. We evaluate how easy each product is to maintain, how often maintenance is required, and what tools are needed.',
               },
               {
                 title: 'Learning Curve',
@@ -373,7 +374,7 @@ export function HowWeTestPage() {
               },
               {
                 title: 'Storage & Footprint',
-                desc: 'Counter space is precious. We measure actual dimensions (not just listed specs) and evaluate how easily the product can be stored when not in use.',
+                desc: 'Space matters. We measure actual dimensions (not just listed specs) and evaluate how easily the product can be stored or transported when not in use.',
               },
             ].map((item, index) => (
               <div key={item.title}>
@@ -382,7 +383,7 @@ export function HowWeTestPage() {
                     {index + 1}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">{item.title}</h3>
+                    <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{item.title}</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
@@ -396,7 +397,7 @@ export function HowWeTestPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 mb-6">
           <div className="flex items-center gap-3 mb-4">
             <Award className="w-6 h-6 text-emerald-600" />
-            <h2 className="text-2xl font-bold text-gray-900">Our Testing Standards</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Our Testing Standards</h2>
           </div>
           <EditorialIndependence />
           <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -416,10 +417,10 @@ export function HowWeTestPage() {
             ].map((item) => (
               <div
                 key={item.label}
-                className="text-center p-4 bg-gray-50 rounded-lg border border-gray-100"
+                className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-100 dark:border-gray-600"
               >
-                <div className="text-3xl font-bold text-[#131921] mb-1">{item.number}</div>
-                <div className="text-sm text-gray-600">{item.label}</div>
+                <div className="text-3xl font-bold text-[#131921] dark:text-white mb-1">{item.number}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">{item.label}</div>
               </div>
             ))}
           </div>

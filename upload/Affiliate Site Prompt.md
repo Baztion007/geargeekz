@@ -382,3 +382,486 @@ Create reusable templates for:
 - Brand Reviews
 
 All templates should follow consistent editorial standards and trust elements.
+
+## Website Positioning
+
+Build the website as a premium product review and recommendation publication rather than a niche-specific affiliate site.
+
+The site must support unlimited product categories and product types without requiring architectural changes.
+
+The initial sample content should focus on travel products and travel gadgets, but the system should be designed to support any category in the future.
+
+Examples of categories include:
+
+- Travel Gear
+- Travel Gadgets
+- Electronics
+- Smart Home
+- Home & Kitchen
+- Office & Productivity
+- Health & Wellness
+- Fitness Equipment
+- Outdoor & Camping
+- Automotive Accessories
+- Pet Products
+- Baby Products
+- Photography
+- Gaming
+- Audio Equipment
+- Wearables
+- Luggage
+- Everyday Carry (EDC)
+- Fashion Accessories
+- Gifts
+
+All categories should be dynamically generated from content data.
+
+---
+
+## Homepage Architecture
+
+The homepage should resemble a premium product discovery platform.
+
+Sections:
+
+### Hero Section
+
+Featured buying guide or featured product collection.
+
+Examples:
+
+- Best Travel Gadgets of 2026
+- Best Carry-On Luggage
+- Best Noise Cancelling Headphones
+- Best Home Office Setups
+
+### Popular Categories
+
+Display category cards dynamically.
+
+Each category includes:
+
+- Image
+- Name
+- Product Count
+- Explore Button
+
+### Editor's Picks
+
+Curated products selected by editors.
+
+### Trending Products
+
+Most popular products across all categories.
+
+### Recently Updated Reviews
+
+Latest reviewed or refreshed content.
+
+### Best Product Roundups
+
+Feature category buying guides.
+
+Examples:
+
+- Best Travel Backpacks
+- Best Portable Chargers
+- Best Standing Desks
+- Best Wireless Earbuds
+
+### Featured Brands
+
+Display brands appearing within reviews.
+
+### Browse by Category
+
+Large category exploration section.
+
+### Newsletter CTA
+
+Optional newsletter signup component.
+
+---
+
+## Dynamic Category System
+
+Create a content-driven category architecture.
+
+Routes:
+
+/category/[slug]
+
+Examples:
+
+/category/travel-gear  
+/category/travel-gadgets  
+/category/electronics  
+/category/home-kitchen  
+/category/fitness  
+/category/outdoor
+
+Each category page should contain:
+
+- Category hero section
+- Category description
+- Featured products
+- Buying guides
+- Latest reviews
+- Popular products
+- Related categories
+
+---
+
+## Dynamic Brand System
+
+Create brand pages:
+
+/brands/[slug]
+
+Examples:
+
+/brands/anker  
+/brands/samsonite  
+/brands/apple  
+/brands/bose
+
+Each page includes:
+
+- Brand overview
+- Products reviewed
+- Buying guides mentioning the brand
+- Related products
+
+## Product Data Model
+
+Expand product frontmatter to include:
+{
+  title: string
+  slug: string
+  category: string
+  subcategory: string
+  brand: string
+  image: string
+  gallery: string[]
+  rating: number
+  price: string
+  asin: string
+  pros: string[]
+  cons: string[]
+  features: string[]
+  bestFor: string[]
+  tags: string[]
+  publishedDate: string
+  updatedDate: string
+}
+
+## Sample Content Requirements
+
+Do NOT use coffee makers.
+
+Use realistic sample products from multiple categories.
+
+Travel Gear:
+
+- Carry-On Luggage
+- Travel Backpacks
+- Packing Cubes
+- Travel Pillows
+- RFID Wallets
+
+Travel Gadgets:
+
+- Portable Power Banks
+- Universal Travel Adapters
+- Bluetooth Trackers
+- Portable Wi-Fi Hotspots
+- Portable Chargers
+
+Electronics:
+
+- Wireless Earbuds
+- Noise Cancelling Headphones
+- Portable SSDs
+- Mechanical Keyboards
+
+Home & Office:
+
+- Standing Desks
+- Office Chairs
+- Monitor Arms
+
+Fitness:
+
+- Fitness Trackers
+- Massage Guns
+- Adjustable Dumbbells
+
+Create enough sample content to demonstrate a scalable architecture.
+
+---
+
+## Buying Guide Templates
+
+Support:
+
+### Best Products
+
+Examples:
+
+- Best Travel Gadgets
+- Best Portable Chargers
+- Best Carry-On Luggage
+
+### Product Comparisons
+
+Examples:
+
+- Product A vs Product B
+
+### Brand Reviews
+
+Examples:
+
+- Is Brand X Worth It?
+
+### Category Guides
+
+Examples:
+
+- How To Choose A Travel Backpack
+
+---
+
+## Advanced Search
+
+Search should index:
+
+- Products
+- Categories
+- Brands
+- Buying Guides
+- Comparisons
+- Reviews
+
+Results should be grouped by content type.
+
+---
+
+## Premium UX Features
+
+Add:
+
+- Sticky mobile CTA
+- Product image gallery
+- Product comparison tables
+- Recently viewed products
+- Related product recommendations
+- Reading progress bar
+- Share buttons
+- Save for later/bookmark system using local storage
+- Breadcrumbs
+- Back-to-top button
+- Table of contents for long articles
+- Estimated reading time
+
+---
+
+## Revenue Optimization
+
+Support multiple affiliate programs in the future.
+
+Do not hardcode Amazon-only architecture.
+
+Create an affiliate abstraction layer:
+
+getAffiliateUrl({
+  merchant,
+  productId,
+  trackingId
+})
+
+Supported merchants:
+
+- Amazon
+- Walmart
+- Best Buy
+- Target
+- REI
+- B&H Photo
+
+Amazon should be the default implementation.
+
+This allows future expansion without rewriting the site.
+
+---
+
+## Long-Term Scalability
+
+The architecture should support:
+
+- 10 categories
+- 100+ categories
+- 1,000+ reviews
+- 10,000+ products
+
+without requiring major refactoring.
+
+All pages, categories, brands, reviews, buying guides, and comparison pages should be generated dynamically from content data and MDX files.
+
+## Pricing & Affiliate Compliance Rules (Critical)
+
+The website is an affiliate content publication and should **not display fixed product prices anywhere on the site**.
+
+### Do Not Display
+
+Avoid showing:
+
+- Product prices
+- Sale prices
+- Discount percentages
+- "Only $XX"
+- "Save XX%"
+- Historical pricing
+- Price comparison charts
+- Hardcoded pricing data
+
+Prices change frequently and should be viewed directly on the merchant website.
+
+### Replace Price Areas With Affiliate CTAs
+
+Instead of displaying prices, use action-oriented buttons such as:
+
+- Check Price on Amazon
+- View Latest Price
+- View on Amazon
+- See Current Pricing
+- Check Availability
+- View Today's Deal
+- Learn More on Amazon
+
+### Product Cards
+
+Product cards should display:
+
+- Product image
+- Product title
+- Product category
+- Star rating (editorial)
+- Short summary
+- Best For label
+- Affiliate CTA button
+
+Do not include a price field.
+
+### Product Review Pages
+
+Review pages should focus on:
+
+- Features
+- Benefits
+- Performance
+- Use cases
+- Pros and cons
+- Comparisons
+- Editorial ratings
+
+Do not display static pricing.
+
+Instead include:
+
+- Check Current Price on Amazon
+- View Latest Deal on Amazon
+
+CTA buttons.
+
+### Product Schema
+
+When implementing structured data:
+
+- Omit offer price fields unless dynamically provided.
+- Prioritize:
+    - Product schema
+    - Review schema
+    - AggregateRating schema
+    - Article schema
+
+Avoid hardcoded pricing metadata.
+
+### Data Model Update
+
+Remove:
+
+price: string
+from the product schema.
+
+Use:
+{
+  title: string
+  slug: string
+  category: string
+  subcategory: string
+  brand: string
+  image: string
+  gallery: string[]
+  rating: number
+  asin: string
+  pros: string[]
+  cons: string[]
+  features: string[]
+  bestFor: string[]
+  tags: string[]
+  publishedDate: string
+  updatedDate: string
+}
+
+### Homepage
+
+Do not display prices in:
+
+- Trending Products
+- Editor's Picks
+- Featured Products
+- Recently Reviewed Products
+
+Display:
+
+- Product image
+- Product name
+- Editorial rating
+- Best For label
+- Affiliate CTA
+
+only.
+
+### Category Pages
+
+Do not provide price filtering.
+
+Replace price filters with:
+
+- Category
+- Brand
+- Rating
+- Best For
+- Product Type
+
+### Comparison Tables
+
+Comparison tables should compare:
+
+- Features
+- Specifications
+- Ratings
+- Best Use Cases
+- Pros
+- Cons
+
+Do not compare prices.
+
+### Editorial Philosophy
+
+The website should position itself as helping users discover the right products, not helping users find the lowest price.
+
+The purchasing decision and current pricing should always be handled on the merchant's website after the user clicks the affiliate link.
+
+"The site should feel closer to a premium editorial publication such as a product review magazine than an e-commerce storefront. The primary focus is expert recommendations, product research, comparisons, buying guides, and reviews—not price shopping."

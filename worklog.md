@@ -210,3 +210,359 @@ Priority Recommendations for Next Phase:
 - Add product video reviews section
 - Add user reviews/comments on blog posts
 - Add A/B testing for affiliate CTA buttons
+
+---
+Task ID: 1-foundation
+Agent: Foundation Developer
+Task: Rebuild data foundation from coffee niche (BrewHub) to premium product review publication (GearScope)
+
+Work Log:
+
+### 1. `/src/lib/types.ts` — COMPLETE REWRITE
+- Removed `price` and `originalPrice` fields from Product interface (NO PRICES anywhere)
+- Added `Merchant` type: `'amazon' | 'walmart' | 'bestbuy' | 'target' | 'rei' | 'bhphoto'`
+- Added `Brand` interface with slug, name, logo, description, founded, headquarters, website, categories, productCount
+- Added `GuideType` type: `'best-products' | 'comparison' | 'brand-review' | 'category-guide'`
+- Changed `bestFor` from `string` to `string[]` (array of strings)
+- Added `subcategory` and `brandSlug` fields to Product
+- Added `gallery` as required `string[]` (was optional)
+- Added `merchant` field (Merchant type) to Product
+- Added `readingTime` field to BuyingGuide and BlogPost
+- Added `guideType` field to BuyingGuide
+- Added `featured` optional field to Category
+- Added `brand` route variant and `trending` page to RoutePath
+- Removed `deals` and `best-sellers` from RoutePath (replaced with `trending`)
+- Updated header title from "BrewHub Reviews" to "GearScope"
+
+### 2. `/src/lib/affiliate.ts` — COMPLETE REWRITE
+- Multi-merchant affiliate abstraction with 6 merchants (amazon, walmart, bestbuy, target, rei, bhphoto)
+- `getAffiliateUrl(params)` — generates merchant-specific affiliate URLs
+- `getMerchantName(merchant)` — returns display name for each merchant
+- `getAffiliateLinkProps(url)` — returns proper rel/target attributes for compliance
+- `siteData` object with GearScope branding (name, url, tagline, description, contactEmail, socialProfiles)
+- `generateOrganizationJsonLd()` — updated for GearScope
+- `generateProductJsonLd(product)` — updated to use merchant-aware affiliate URLs, removed price field from schema (no price in offers)
+- `generateBreadcrumbJsonLd()` — unchanged functionality
+
+### 3. `/src/data/products.ts` — COMPLETE REWRITE (25 products, NO PRICES)
+Created 25 travel/tech products across 8 categories:
+- **Travel Gear (5):** Samsonite Freeform Carry-On, Peak Design Travel Backpack 45L, Away Packing Cubes, Cabeau Evolution Neck Pillow, Bellroy Tech Kit
+- **Travel Gadgets (5):** Anker 737 Power Bank, Epicka Universal Adapter, Apple AirTag 4-Pack, GlocalMe G4 Pro Hotspot, Anker 523 PowerPort Cube
+- **Electronics (4):** Sony WF-1000XM5 Earbuds, Bose QC Ultra Headphones, Samsung T7 Shield 2TB SSD, Keychron Q1 Pro Keyboard
+- **Home & Office (3):** Uplift V2 Standing Desk, Herman Miller Aeron Chair, Ergotron LX Monitor Arm
+- **Fitness (3):** Garmin Venu 3 Fitness Tracker, Theragun PRO Plus Massage Gun, Bowflex SelectTech 552 Dumbbells
+- **Outdoor (2):** BioLite CampStove 2+, LifeStraw Personal Water Filter
+- **Audio (2):** JBL Charge 5 Speaker, Shure AONIC 50 Gen 2 Headphones
+- **Luggage (1):** Monos Carry-On Plus
+
+Each product includes: id, slug, title, image, gallery (2-3 items), excerpt, category, categorySlug, subcategory, brand, brandSlug, features, pros, cons, rating, ratingBreakdown, asin, merchant, tags, updatedAt, publishedAt, authorSlug, reviewStatus, bestFor (ARRAY), summary, fullReview (2-3 paragraphs), whoIsItFor, whoShouldSkip, specifications, relatedProducts. NO price fields.
+
+Helper functions exported:
+- `getProductBySlug(slug)` — find by slug
+- `getProductsByCategory(categorySlug)` — filter by category
+- `getProductsByBrand(brandSlug)` — filter by brand
+- `getBestSellers()` — sort by rating desc
+- `getTrending()` — recently updated + high rated (top 10)
+- `getRecentlyUpdated()` — sort by updatedAt desc
+- `getEditorPicks()` — top 8 by rating
+- `searchProducts(query)` — search title, tags, brand, category, excerpt
+
+### 4. `/src/data/categories.ts` — COMPLETE REWRITE
+8 travel/tech categories (no coffee):
+1. Travel Gear (featured, 5 products)
+2. Travel Gadgets (featured, 5 products)
+3. Electronics (featured, 4 products)
+4. Home & Office (featured, 3 products)
+5. Fitness (5 products)
+6. Outdoor & Camping (2 products)
+7. Audio Equipment (2 products)
+8. Luggage (1 product)
+
+Exports: `categories`, `getCategoryBySlug()`, `getFeaturedCategories()`
+
+### 5. `/src/data/brands.ts` — NEW FILE
+12 brands with full profiles:
+Anker, Samsonite, Peak Design, Sony, Bose, Apple, Garmin, Herman Miller, Therabody, JBL, Samsung, Bellroy
+
+Each brand includes: slug, name, logo, description, founded (optional), headquarters (optional), website (optional), categories, productCount
+
+Exports: `brands`, `getBrandBySlug()`, `getBrandsByCategory()`
+
+### 6. `/src/data/authors.ts` — UPDATED
+- Author 1: Alex Rivera (slug: alex-rivera) — travel tech journalist, expertise: Travel Gear, Electronics, Audio
+- Author 2: Maya Chen (slug: maya-chen) — ergonomist and wellness tech specialist, expertise: Fitness, Home Office, Outdoor
+- Updated all product authorSlug references to use new author slugs
+
+### 7. `/src/data/buying-guides.ts` — COMPLETE REWRITE
+6 buying guides with guideType field and readingTime:
+1. "Best Travel Gadgets of 2026" (best-products, travel-gadgets, 5 products, 12 min read)
+2. "Best Carry-On Luggage" (best-products, luggage, 3 products, 10 min read)
+3. "Best Noise Cancelling Headphones" (best-products, electronics, 2 products, 9 min read)
+4. "Sony vs Bose: Which Headphones Are Better?" (comparison, electronics, 2 products, 11 min read)
+5. "How to Choose a Travel Backpack" (category-guide, travel-gear, 2 products, 8 min read)
+6. "Is Anker Worth It?" (brand-review, travel-gadgets, 2 products, 7 min read)
+
+Each guide has full content: introduction, recommendedProducts, comparisonData, decisionGuide, faq, readingTime.
+
+### 8. `/src/data/blog-posts.ts` — COMPLETE REWRITE
+4 blog posts with readingTime:
+1. "The Ultimate Travel Tech Packing List for 2026" (Travel Gear, 8 min, alex-rivera)
+2. "How to Build the Perfect Home Office Setup" (Home & Office, 9 min, maya-chen)
+3. "Wireless Earbuds vs Headphones: What's Right for You?" (Electronics, 7 min, alex-rivera)
+4. "5 Recovery Tools Every Athlete Needs" (Fitness, 10 min, maya-chen)
+
+### 9. `/src/lib/router.ts` — UPDATED
+- Added `goToBrand(slug)` method to RouterState interface and implementation
+- Added `goToTrending()` method to RouterState interface and implementation
+- Updated `routeToHash()` to handle 'brand' route (→ `brand/{slug}`) and 'trending' page
+- Updated `hashToRoute()` to handle 'brand' prefix and 'trending' page
+- Removed 'deals' and 'best-sellers' from valid page types in hashToRoute
+
+Stage Summary:
+- Complete data foundation rewrite from coffee niche to premium product review publication
+- Site rebranded from "BrewHub Reviews" to "GearScope"
+- 25 travel/tech products across 8 categories with NO PRICE FIELDS
+- Multi-merchant affiliate abstraction supporting 6 merchants
+- Brand system with 12 brands and helper functions
+- Dynamic category system with 8 categories and featured flag
+- 6 buying guides with 4 guide types (best-products, comparison, brand-review, category-guide)
+- 4 blog posts focused on travel/tech/outdoor/fitness content
+- New authors: Alex Rivera (travel/electronics) and Maya Chen (fitness/office/outdoor)
+- Router updated with brand and trending routes
+- ESLint passes cleanly with no errors
+
+Known Issues for Next Agents:
+- UI components (HomePage, ProductCard, ProductDetailPage, DealsPage, BestSellersPage, ComparePage, QuickViewModal, etc.) still reference `product.price` and `product.originalPrice` which no longer exist on the Product type — these will cause TypeScript errors and need to be updated
+- UI components still reference "BrewHub" and "brewhub" — need to be updated to "GearScope"
+- Footer, About, Contact, Privacy, Terms, EditorialPolicy, BlogPage still have BrewHub/brewhub references
+- Storage keys still use 'brewhub-' prefix (recently-viewed, theme, wishlist, compare)
+- Layout.tsx metadata still says "BrewHub Reviews"
+- PriceAlertButton component references product.price — needs removal or rework
+- DealsPage is based on price/originalPrice — needs complete rework since prices are removed
+- BestSellersPage displays prices — needs price references removed
+- Product images use /images/{slug}.jpg format — images need generation
+
+---
+Task ID: 2a-core-components
+Agent: Core Components Developer
+Task: Rebuild affiliate core components for GearScope — remove prices, add merchant support, replace coffee branding
+
+Work Log:
+
+### 1. `/src/components/affiliate/AffiliateLink.tsx` — UPDATED
+- Updated `AffiliateLink` component: changed `asin` prop to `merchant` + `productId` props
+- Uses `getAffiliateUrl({ merchant, productId })` instead of `getAffiliateUrl(asin)`
+- Updated `CheckPriceButton` component:
+  - Changed `asin` prop to `merchant` + `productId` props
+  - Uses `getMerchantName(merchant)` for dynamic button text: "Check Price on Amazon", "Check Price on Walmart", etc.
+  - Uses `getAffiliateUrl({ merchant, productId })` for URL generation
+  - No hardcoded Amazon references
+- Added `ViewLatestDealButton` component with gradient CTA and "View Latest Deal on {Merchant}" text
+
+### 2. `/src/components/affiliate/ProductCard.tsx` — MAJOR UPDATE
+- REMOVED all price display (price, originalPrice, sale badges, discount %, savings)
+- REMOVED sale badge overlay ("Sale" badge)
+- Removed `product.originalPrice` conditional styling on wishlist button position
+- Added `bestFor` tags display: renders up to 3 small badge chips below title using `product.bestFor` (now `string[]`)
+- Changed fallback icon from `Coffee` to `Package` (from lucide-react)
+- Updated `CheckPriceButton` call to pass `merchant={product.merchant} productId={product.asin}`
+- Updated `ProductCardHorizontal`: removed price display, added bestFor badges, changed Coffee → Package
+- Kept wishlist, compare, quick view buttons intact
+- Kept verified review status badge
+
+### 3. `/src/components/affiliate/QuickViewModal.tsx` — UPDATED
+- REMOVED all price display (product.price, product.originalPrice sections)
+- Added `bestFor` tags display as Badge elements with Tag icon
+- Changed fallback icon from `Coffee` to `Package`
+- Updated `CheckPriceButton` call to pass `merchant={product.merchant} productId={product.asin}`
+- Updated DialogDescription to remove "price" reference
+
+### 4. `/src/components/affiliate/CompareBar.tsx` — UPDATED
+- Changed fallback icon from `Coffee` to `Package` in product thumbnail placeholder
+- No price references existed — no price removal needed
+
+### 5. `/src/components/affiliate/Disclosure.tsx` — UPDATED
+- Changed "BrewHub Reviews" / "Amazon Associate" references to "GearScope"
+- Updated compact disclosure text: "GearScope earns from qualifying purchases via affiliate links."
+- Updated full disclosure: mentions "Amazon, Walmart, Best Buy, and other retailers" for multi-merchant support
+- Updated `EditorialIndependence` component with GearScope branding and multi-merchant language
+
+### 6. `/src/components/affiliate/PriceAlertButton.tsx` — UPDATED
+- Removed `currentPrice` prop entirely (no prices shown on site)
+- Renamed button text from "Set Price Alert" to "Get Notified"
+- Dialog title changed from "Set a Price Alert" to "Get Notified When Price Drops"
+- Target price field is now optional (pre-filled with empty string, not current price)
+- Hint text: "Leave blank to get notified of any significant price drop"
+- Removed "Current price: {currentPrice}" display
+- Success message updated to conditional: shows target price if provided, otherwise generic
+- API call passes `targetPrice` as optional (undefined if blank)
+
+### 7. `/src/components/affiliate/ImageLightbox.tsx` — NO CHANGES
+- Confirmed no Coffee icon or price references exist in this file
+
+### 8. `/src/components/affiliate/SkeletonCard.tsx` — UPDATED
+- REMOVED price skeleton line (`<div className="h-6 w-20 skeleton-shimmer rounded" />`)
+- Added bestFor tags skeleton placeholder (two rounded-full chips)
+- Added excerpt skeleton lines (two lines for paragraph preview)
+
+### 9. `/src/components/affiliate/UserReviewsSection.tsx` — UPDATED
+- Changed "other coffee enthusiasts" to "other gear enthusiasts" in empty state text
+
+### 10. `/src/components/affiliate/RatingBar.tsx` — NO CHANGES
+- No price or coffee references; kept as is
+
+### 11. `/src/components/affiliate/Breadcrumbs.tsx` — NO CHANGES
+- No BrewHub/coffee references found; kept as is
+
+### 12. `/src/components/affiliate/MobileCompareFab.tsx` — NO CHANGES
+- No price or coffee references; kept as is
+
+Stage Summary:
+- All 10 affiliate components updated for GearScope rebrand
+- ZERO price displays anywhere in core components (no price, originalPrice, sale badges, discount %, savings)
+- Multi-merchant affiliate support via `merchant` prop on CheckPriceButton and AffiliateLink
+- Dynamic CTA text: "Check Price on Amazon", "Check Price on Walmart", etc.
+- bestFor displayed as tag chips/badges (using string[] array)
+- All Coffee icons replaced with Package icons
+- Disclosure updated for GearScope + multi-merchant
+- PriceAlertButton renamed to "Get Notified" without currentPrice prop
+- SkeletonCard updated without price skeleton
+- ESLint passes cleanly with no errors
+
+---
+Task ID: 2b-pages-1
+Agent: Pages Developer
+Task: Rebuild main pages (HomePage, ProductDetailPage, CategoryPage) for GearScope premium product review publication
+
+Work Log:
+
+### 1. `/src/components/views/HomePage.tsx` — COMPLETE REWRITE
+Built a premium product discovery platform homepage with 10 sections:
+
+- **Hero Section**: Featured buying guide with gradient overlay and animated floating elements. "Best Travel Gadgets of 2026" as featured guide. "Read Guide" and "Browse Reviews" CTAs with pulsing glow animation. Premium editorial feel with dark gradient background (#0f172a).
+- **Popular Categories**: Dynamic category cards from `getFeaturedCategories()`. Each shows image with gradient overlay, name, description, product count, "Explore" arrow. Category-specific gradient fallbacks.
+- **Editor's Picks**: Curated products from `getEditorPicks()`. 4-column grid with ProductCard components.
+- **Trending Products**: Products from `getTrending()`. Horizontal scrollable row on mobile (snap-start), 5-column grid on desktop.
+- **Recently Updated Reviews**: Products from `getRecentlyUpdated()`. Shows date, status badge (Verified/Updated/New), title, rating, excerpt. NO PRICES. Amber left-border accent.
+- **Best Product Roundups**: Buying guides section. Guide cards with image, guide type badge, reading time, title, excerpt.
+- **Featured Brands**: Horizontal scroll of brand logos/names from `brands` data. Click navigates to brand page.
+- **Why Trust GearScope?**: Trust indicators with 4 cards. Editorial Pledge statement with GearScope branding.
+- **Testimonials**: "What Our Readers Say" with 4 testimonial cards. GearScope-specific testimonials.
+- **Newsletter CTA**: GearScope-branded newsletter signup with dark gradient. Amber-themed submit button.
+- **REMOVED**: All price references, DealsSection, Coffee icons, BrewHub references. Uses Package icon throughout.
+
+### 2. `/src/components/views/ProductDetailPage.tsx` — MAJOR REWRITE
+
+- **REMOVED**: All price/originalPrice display, PriceAlertButton, getRelatedProducts import
+- **Added Image Gallery**: New `ImageGallery` component with multi-image support from `product.gallery` array. Main image with click-to-lightbox, thumbnail strip, image counter.
+- **Added Table of Contents**: New `TableOfContents` component with sticky desktop sidebar. Tracks active section via IntersectionObserver. 7 sections: Verdict, Features, Full Review, Pros/Cons, Rating, Specs, Who Is It For.
+- **Added Reading Time**: Calculated from `product.fullReview` word count at ~200 WPM.
+- **Added Social Share Buttons**: New `SocialShareButtons` component. Twitter, Facebook, Copy Link with toast feedback.
+- **Added Brand Link**: Brand name links to brand page via `goToBrand(product.brandSlug)`.
+- **Added bestFor Tags**: Amber-colored Badge chips with Award icon.
+- **Updated CTAs**: "View Latest Deal on {Merchant}" and "Check Current Price on {Merchant}" using merchant prop.
+- **Updated Sticky Mobile CTA**: Shows title and rating instead of price.
+- **Kept**: Breadcrumbs, full review, pros/cons, specs, who is it for/skip, user reviews, rating breakdown, related products, recently viewed.
+
+### 3. `/src/components/views/CategoryPage.tsx` — MAJOR REWRITE
+
+- **Category Hero**: Full-width hero with image, gradient overlay, product count badge, name, description.
+- **Buying Guides**: Horizontal scroll of guides for this category via `getBuyingGuidesByCategory()`.
+- **Filter Bar**: Brand (from `getBrandsByCategory()`), Rating, BestFor (extracted from products). Sort: Featured / Highest Rated / Newest (no price sort).
+- **Related Categories**: Shows other categories with arrow navigation.
+- **Brands in Category**: Brand buttons linking to brand page.
+- **Dynamic**: All data from category data layer.
+
+### 4. Supporting Component Updates
+
+- **AffiliateLink.tsx**: Rewrote `CheckPriceButton` and `AffiliateLink` to accept `merchant` + `productId`. Added `ViewLatestDealButton`.
+- **ProductCard.tsx**: Removed all price display and sale badges. Added bestFor tags. Changed Coffee to Package. Updated merchant prop.
+- **page.tsx**: Removed DealsPage/BestSellersPage imports. Updated routes. Updated NotFoundPage with Package icon.
+- **theme.ts**: Fixed TypeScript error (get() to useThemeStore.getState()). Updated localStorage key to 'gearscope-theme'.
+- **BestSellersPage.tsx**: Removed price display. Updated CheckPriceButton with merchant prop. Fixed bestFor array.
+- **ComparePage.tsx**: Removed price display. Updated CheckPriceButton with merchant prop. Fixed route references.
+- **DealsPage.tsx**: Complete rewrite as placeholder explaining GearScope doesn't display prices.
+- **BuyingGuidePage.tsx**: Updated CheckPriceButton with merchant prop.
+- **WishlistPage.tsx**: Fixed route reference. Updated coffee/gear language.
+
+Stage Summary:
+- Complete homepage rewrite with 10 sections: Hero, Categories, Editor's Picks, Trending, Recently Updated, Buying Guides, Featured Brands, Trust Block, Testimonials, Newsletter
+- Product detail page with image gallery, table of contents, reading time, social share buttons, brand links, bestFor tags
+- Category page with hero, buying guides, brand/rating/bestFor filters, related categories
+- ZERO price references in all 3 main pages
+- ZERO Coffee icon references — all replaced with Package icon
+- ZERO BrewHub/coffee references in main pages
+- Multi-merchant affiliate support throughout
+- All supporting components updated for compatibility
+- ESLint passes cleanly, TypeScript compiles with no src/ errors
+
+---
+Task ID: 2b-pages-2
+Agent: Pages Developer
+Task: Create BrandPage, rewrite SearchPage/Header/Footer, update page.tsx routing
+
+Work Log:
+
+### 1. `/src/components/views/BrandPage.tsx` — NEW FILE
+Created a full brand page with 5 sections:
+- **Brand Hero**: Dark gradient hero card with brand icon, name, description, founded date, headquarters, official website link. Stats badges: Products Reviewed, Avg. Rating, Categories count.
+- **Products by Brand**: Sortable product grid (Top Rated / Name / Recently Updated) using `getProductsByBrand(brandSlug)` and ProductCard components.
+- **Buying Guides Featuring Brand**: Auto-discovers buying guides that recommend products from this brand. Cards show guide type badge and reading time.
+- **Brand Categories**: Category buttons linking to category pages from `brand.categories` array.
+- **Related Brands**: Filters brands sharing categories with current brand. Grid of clickable brand cards with product count.
+- **Not Found State**: Graceful fallback when brand slug is invalid.
+- Uses `Breadcrumbs` with `route` prop (not `onClick`), `Disclosure`, `StarRating`.
+
+### 2. `/src/components/views/SearchPage.tsx` — MAJOR REWRITE
+Complete rewrite from product-only search to multi-content-type search:
+- **Cross-content search**: Searches products (title/tags/brand/category/excerpt), categories (name/description/slug), brands (name/description/slug), buying guides (title/excerpt/category/guideType), blog posts (title/excerpt/category/tags).
+- **Tab navigation**: All, Products, Categories, Brands, Guides, Blog — each with count badge.
+- **Product results**: Uses ProductCard (NO prices, merchant-aware CTAs).
+- **Category results**: Cards with gradient image, product count badge, name, description.
+- **Brand results**: Cards with Building2 icon, name, product count — links to brand page.
+- **Guide results**: Cards with guide type badge (uppercase), reading time, category, excerpt.
+- **Blog results**: Cards with reading time, date, category, tags, excerpt.
+- **No results state**: PackageOpen icon, popular searches, category browsing.
+- **Related searches**: Suggestion tags filtered by current query.
+- **Browse All Categories**: Footer section with all categories.
+- Removed all coffee references (espresso, grinder, pour-over, breville, etc. → travel, headphones, anker, backpack, etc.)
+- Placeholder text: "Search gear, reviews, and guides..."
+
+### 3. `/src/components/layout/Header.tsx` — MAJOR REWRITE
+- **Branding**: Changed "BrewHub" to "GearScope" everywhere with `Gear<span className="gradient-text">Scope</span>` format.
+- **Logo icon**: Changed from coffee cup SVG to magnifying glass SVG (`<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>`).
+- **Tagline**: Added "Expert Reviews. Smart Recommendations." below logo (visible on sm+).
+- **Navigation items**: Updated to Trending, Guides, Blog, About (removed "Today's Deals", "Best Sellers", "Reviews").
+- **Removed**: Cart button (ShoppingCart icon) — not an e-commerce site.
+- **Removed**: Account/Returns buttons — replaced with cleaner wishlist-only right section.
+- **Kept**: Search bar, theme toggle, wishlist button, mobile slide-in panel.
+- **Mobile menu**: Panel header shows "GearScope" instead of "Menu".
+- **Search placeholder**: "Search gear, reviews, and guides..." (was "Search coffee gear...").
+
+### 4. `/src/components/layout/Footer.tsx` — MAJOR REWRITE
+- **Branding**: Changed "BrewHub" to "GearScope" everywhere.
+- **Categories**: Updated from coffee categories (Espresso Machines, Coffee Grinders, etc.) to GearScope categories (Travel Gear, Travel Gadgets, Electronics, Home & Office, Fitness).
+- **"Get to Know Us" links**: "About GearScope" (was "About BrewHub").
+- **Trust badges**: Updated to match GearScope — "Expert-Tested Gear" (was "Researched Products"), "Unbiased Reviews" (was "Expert Recommendations"), "Multi-Retailer" (was "Independent Reviews" — now mentions Amazon, Walmart, Best Buy).
+- **Affiliate disclosure**: Updated from Amazon-only to multi-merchant — "GearScope earns commissions from qualifying purchases through affiliate links on this site. We participate in affiliate programs with Amazon, Walmart, Best Buy, and other retailers."
+- **Copyright**: "© 2026 GearScope. All rights reserved."
+
+### 5. `/src/app/page.tsx` — UPDATED
+- **Added**: `import { BrandPage } from '@/components/views/BrandPage'`
+- **Added**: `import { TrendingPage } from '@/components/views/TrendingPage'`
+- **Added**: `case 'brand': return <BrandPage brandSlug={route.slug} />` route
+- **Changed**: `case 'trending'` now returns `<TrendingPage />` (was `<HomePage />`)
+- **Removed**: DealsPage/BestSellersPage imports (comment already existed)
+- **Updated**: Motion key includes `brand-${route.slug}` for brand route transitions
+
+### 6. BreadcrumbItem Type Fix
+- Fixed BrandPage breadcrumbs: changed `{ label: 'Home', onClick: goHome }` to `{ label: 'Home', route: { page: 'home' } }` to match BreadcrumbItem interface which uses `route?: RoutePath` not `onClick`.
+
+Stage Summary:
+- Brand page with full brand profile, products, guides, related brands — all using data layer
+- Search page now searches across 5 content types (products, categories, brands, guides, blogs) with tab filtering
+- Header rebranded to GearScope with magnifying glass logo, new nav items, no cart/account
+- Footer rebranded with updated categories, multi-merchant disclosure, GearScope copyright
+- page.tsx routes brand and trending pages correctly
+- ZERO price references, ZERO BrewHub/coffee references in all modified files
+- ESLint passes cleanly, TypeScript compiles with no src/ errors

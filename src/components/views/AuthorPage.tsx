@@ -20,6 +20,7 @@ import {
   ExternalLink,
   Mail,
   Award,
+  Package,
 } from 'lucide-react';
 
 interface AuthorPageProps {
@@ -33,10 +34,10 @@ export function AuthorPage({ authorSlug }: AuthorPageProps) {
 
   if (!author) {
     return (
-      <div className="min-h-screen bg-[#eaeded] flex items-center justify-center">
+      <div className="min-h-screen bg-[#eaeded] dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Author Not Found</h1>
-          <p className="text-gray-600 mb-4">The author you&apos;re looking for doesn&apos;t exist.</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Author Not Found</h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-4">The author you&apos;re looking for doesn&apos;t exist.</p>
           <Button onClick={() => navigate({ page: 'home' } as any)} className="bg-[#febd69] hover:bg-[#f3a847] text-[#131921]">
             Go Home
           </Button>
@@ -52,17 +53,21 @@ export function AuthorPage({ authorSlug }: AuthorPageProps) {
       : 0;
 
   return (
-    <div className="min-h-screen bg-[#eaeded]">
+    <div className="min-h-screen bg-[#eaeded] dark:bg-gray-900">
       <div className="max-w-5xl mx-auto px-4 py-6">
         <Breadcrumbs items={[{ label: author.name }]} />
 
         {/* Author Hero */}
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden mb-6">
           <div className="bg-gradient-to-r from-[#131921] to-[#37475a] p-8 md:p-12">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
               {/* Author photo placeholder */}
-              <div className="w-28 h-28 shrink-0 rounded-full bg-white/10 border-4 border-[#febd69] flex items-center justify-center text-white text-4xl font-bold">
-                {author.name.split(' ').map((n) => n[0]).join('')}
+              <div className="w-28 h-28 shrink-0 rounded-full bg-white/10 border-4 border-[#febd69] flex items-center justify-center text-white text-4xl font-bold overflow-hidden">
+                {author.photo ? (
+                  <img src={author.photo} alt={author.name} className="w-full h-full object-cover" />
+                ) : (
+                  author.name.split(' ').map((n) => n[0]).join('')
+                )}
               </div>
               <div className="text-center md:text-left">
                 <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{author.name}</h1>
@@ -113,20 +118,20 @@ export function AuthorPage({ authorSlug }: AuthorPageProps) {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Full Biography */}
-            <div className="bg-white rounded-lg shadow-sm p-6 md:p-8">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8">
               <div className="flex items-center gap-3 mb-4">
                 <User className="w-6 h-6 text-[#c7511f]" />
-                <h2 className="text-2xl font-bold text-gray-900">About {author.name.split(' ')[0]}</h2>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">About {author.name.split(' ')[0]}</h2>
               </div>
-              <p className="text-gray-700 leading-relaxed">{author.bio}</p>
+              <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{author.bio}</p>
               <Disclosure />
             </div>
 
             {/* Published Reviews */}
-            <div className="bg-white rounded-lg shadow-sm p-6 md:p-8">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8">
               <div className="flex items-center gap-3 mb-6">
                 <BookOpen className="w-6 h-6 text-[#c7511f]" />
-                <h2 className="text-2xl font-bold text-gray-900">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                   Published Reviews ({authorProducts.length})
                 </h2>
               </div>
@@ -137,7 +142,7 @@ export function AuthorPage({ authorSlug }: AuthorPageProps) {
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500 text-center py-8">
+                <p className="text-gray-500 dark:text-gray-400 text-center py-8">
                   No published reviews yet.
                 </p>
               )}
@@ -147,9 +152,9 @@ export function AuthorPage({ authorSlug }: AuthorPageProps) {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Expertise */}
-            <Card className="border border-gray-200">
+            <Card className="border border-gray-200 dark:border-gray-700">
               <CardContent className="p-6">
-                <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <h3 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <Award className="w-5 h-5 text-[#007185]" />
                   Areas of Expertise
                 </h3>
@@ -167,29 +172,29 @@ export function AuthorPage({ authorSlug }: AuthorPageProps) {
             </Card>
 
             {/* Stats */}
-            <Card className="border border-gray-200">
+            <Card className="border border-gray-200 dark:border-gray-700">
               <CardContent className="p-6">
-                <h3 className="font-bold text-gray-900 mb-4">Review Stats</h3>
+                <h3 className="font-bold text-gray-900 dark:text-white mb-4">Review Stats</h3>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Total Reviews</span>
-                    <span className="font-bold text-gray-900">{author.reviewCount}</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Total Reviews</span>
+                    <span className="font-bold text-gray-900 dark:text-white">{author.reviewCount}</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Average Rating</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Average Rating</span>
                     <span className="font-bold text-amber-600">{avgRating.toFixed(1)} ★</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Categories</span>
-                    <span className="font-bold text-gray-900">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Categories</span>
+                    <span className="font-bold text-gray-900 dark:text-white">
                       {new Set(authorProducts.map((p) => p.category)).size}
                     </span>
                   </div>
                   <Separator />
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Verified Reviews</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Verified Reviews</span>
                     <span className="font-bold text-emerald-600">
                       {authorProducts.filter((p) => p.reviewStatus === 'verified').length}
                     </span>
@@ -199,9 +204,9 @@ export function AuthorPage({ authorSlug }: AuthorPageProps) {
             </Card>
 
             {/* Categories Reviewed */}
-            <Card className="border border-gray-200">
+            <Card className="border border-gray-200 dark:border-gray-700">
               <CardContent className="p-6">
-                <h3 className="font-bold text-gray-900 mb-4">Categories Reviewed</h3>
+                <h3 className="font-bold text-gray-900 dark:text-white mb-4">Categories Reviewed</h3>
                 <div className="space-y-2">
                   {Array.from(new Set(authorProducts.map((p) => p.category))).map((category) => {
                     const catProduct = authorProducts.find((p) => p.category === category);
@@ -209,9 +214,9 @@ export function AuthorPage({ authorSlug }: AuthorPageProps) {
                       <button
                         key={category}
                         onClick={() => catProduct && navigate({ page: 'category', slug: catProduct.categorySlug } as any)}
-                        className="w-full text-left flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors group"
+                        className="w-full text-left flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
                       >
-                        <span className="text-sm text-gray-700 group-hover:text-[#c7511f]">{category}</span>
+                        <span className="text-sm text-gray-700 dark:text-gray-300 group-hover:text-[#c7511f]">{category}</span>
                         <span className="text-xs text-gray-400">
                           {authorProducts.filter((p) => p.category === category).length} review{authorProducts.filter((p) => p.category === category).length !== 1 ? 's' : ''}
                         </span>

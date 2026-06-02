@@ -7,6 +7,7 @@ interface RouterState {
   goHome: () => void;
   goToProduct: (slug: string) => void;
   goToCategory: (slug: string) => void;
+  goToBrand: (slug: string) => void;
   goToSearch: (query: string) => void;
   goToBuyingGuide: (slug: string) => void;
   goToAuthor: (slug: string) => void;
@@ -14,6 +15,7 @@ interface RouterState {
   goToCompare: () => void;
   goToBlogPost: (slug: string) => void;
   goToGuides: () => void;
+  goToTrending: () => void;
   goToPage: (page: RoutePath['page']) => void;
 }
 
@@ -52,6 +54,15 @@ export const useRouterStore = create<RouterState>((set) => ({
     const route: RoutePath = { page: 'category', slug };
     if (typeof window !== 'undefined') {
       window.history.pushState({ route }, '', `#category/${slug}`);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return { route };
+  }),
+
+  goToBrand: (slug: string) => set((state) => {
+    const route: RoutePath = { page: 'brand', slug };
+    if (typeof window !== 'undefined') {
+      window.history.pushState({ route }, '', `#brand/${slug}`);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
     return { route };
@@ -128,6 +139,15 @@ export const useRouterStore = create<RouterState>((set) => ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
     return { route };
   }),
+
+  goToTrending: () => set((state) => {
+    const route: RoutePath = { page: 'trending' };
+    if (typeof window !== 'undefined') {
+      window.history.pushState({ route }, '', '#trending');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return { route };
+  }),
 }))
 
 function routeToHash(route: RoutePath): string {
@@ -135,6 +155,7 @@ function routeToHash(route: RoutePath): string {
     case 'home': return '';
     case 'product': return `product/${route.slug}`;
     case 'category': return `category/${route.slug}`;
+    case 'brand': return `brand/${route.slug}`;
     case 'search': return `search/${encodeURIComponent(route.query)}`;
     case 'buying-guide': return `guide/${route.slug}`;
     case 'author': return `author/${route.slug}`;
@@ -143,6 +164,8 @@ function routeToHash(route: RoutePath): string {
     case 'blog': return 'blog';
     case 'blog-post': return `blog/${route.slug}`;
     case 'guides': return 'guides';
+    case 'trending': return 'trending';
+    case 'roundups': return 'roundups';
     default: return route.page;
   }
 }
@@ -159,6 +182,8 @@ export function hashToRoute(hash: string): RoutePath {
       return { page: 'product', slug: rest.join('/') };
     case 'category':
       return { page: 'category', slug: rest.join('/') };
+    case 'brand':
+      return { page: 'brand', slug: rest.join('/') };
     case 'search':
       return { page: 'search', query: decodeURIComponent(rest.join('/')) };
     case 'guide':
@@ -171,7 +196,7 @@ export function hashToRoute(hash: string): RoutePath {
       }
       return { page: 'blog' };
     default:
-      if (['about', 'contact', 'privacy', 'terms', 'editorial-policy', 'how-we-test', 'deals', 'best-sellers', 'reviews', 'wishlist', 'compare', 'guides', 'not-found'].includes(type)) {
+      if (['about', 'contact', 'privacy', 'terms', 'editorial-policy', 'how-we-test', 'trending', 'roundups', 'wishlist', 'compare', 'guides', 'not-found'].includes(type)) {
         return { page: type as RoutePath['page'] } as RoutePath;
       }
       return { page: 'not-found' };

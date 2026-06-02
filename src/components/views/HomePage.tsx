@@ -2,20 +2,22 @@
 
 import React, { useState } from 'react';
 import { useRouterStore } from '@/lib/router';
-import { getBestSellers, getDeals, getRecentlyUpdated } from '@/data/products';
-import { categories } from '@/data/categories';
+import { getEditorPicks, getTrending, getRecentlyUpdated } from '@/data/products';
+import { categories, getFeaturedCategories } from '@/data/categories';
+import { brands } from '@/data/brands';
+import { buyingGuides } from '@/data/buying-guides';
+import { blogPosts } from '@/data/blog-posts';
+import { getAffiliateUrl, getMerchantName, siteData } from '@/lib/affiliate';
+import { getAffiliateLinkProps } from '@/lib/affiliate';
 import { ProductCard } from '@/components/affiliate/ProductCard';
 import { Disclosure } from '@/components/affiliate/Disclosure';
-import { CheckPriceButton } from '@/components/affiliate/AffiliateLink';
 import { StarRating } from '@/components/affiliate/RatingBar';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
-  Coffee,
-  ShoppingBag,
-  Star,
+  Package,
   ShieldCheck,
   Award,
   Microscope,
@@ -23,8 +25,6 @@ import {
   Clock,
   ChevronRight,
   Mail,
-  Percent,
-  Flame,
   ArrowRight,
   TrendingUp,
   BookOpen,
@@ -32,135 +32,171 @@ import {
   Loader2,
   Quote,
   CheckCircle,
+  Compass,
+  MapPin,
+  Headphones,
+  Dumbbell,
+  Laptop,
+  Mountain,
+  Speaker,
+  Luggage,
+  ExternalLink,
+  Users,
+  Star,
+  Sparkles,
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import type { GuideType } from '@/lib/types';
 
 // ─── Category icon map ──────────────────────────────────────────────────────
 const categoryIcons: Record<string, React.ReactNode> = {
-  'espresso-machines': <Coffee className="w-8 h-8" />,
-  'coffee-grinders': <Zap className="w-8 h-8" />,
-  'pour-over-drip': <BookOpen className="w-8 h-8" />,
-  'kettles': <Flame className="w-8 h-8" />,
-  'french-press': <Coffee className="w-8 h-8" />,
+  'travel-gear': <Luggage className="w-8 h-8" />,
+  'travel-gadgets': <Zap className="w-8 h-8" />,
+  'electronics': <Headphones className="w-8 h-8" />,
+  'home-office': <Laptop className="w-8 h-8" />,
+  'fitness': <Dumbbell className="w-8 h-8" />,
+  'outdoor': <Mountain className="w-8 h-8" />,
+  'audio': <Speaker className="w-8 h-8" />,
+  'luggage': <MapPin className="w-8 h-8" />,
 };
 
 const categoryGradients: Record<string, string> = {
-  'espresso-machines': 'from-amber-800 via-amber-700 to-yellow-800',
-  'coffee-grinders': 'from-stone-700 via-stone-600 to-stone-500',
-  'pour-over-drip': 'from-sky-800 via-sky-700 to-sky-600',
-  'kettles': 'from-rose-800 via-rose-700 to-rose-600',
-  'french-press': 'from-emerald-800 via-emerald-700 to-emerald-600',
+  'travel-gear': 'from-teal-800 via-teal-700 to-emerald-600',
+  'travel-gadgets': 'from-sky-800 via-sky-700 to-cyan-600',
+  'electronics': 'from-violet-800 via-violet-700 to-purple-600',
+  'home-office': 'from-stone-700 via-stone-600 to-stone-500',
+  'fitness': 'from-rose-800 via-rose-700 to-pink-600',
+  'outdoor': 'from-emerald-800 via-emerald-700 to-green-600',
+  'audio': 'from-amber-800 via-amber-700 to-orange-600',
+  'luggage': 'from-slate-700 via-slate-600 to-slate-500',
 };
 
-// ─── Hero Banner ────────────────────────────────────────────────────────────
-function HeroBanner() {
-  const goToProduct = useRouterStore((s) => s.goToProduct);
-  const bestSellers = getBestSellers();
-  const featured = bestSellers[0]; // top-rated product
+// ─── Guide type badge styling ──────────────────────────────────────────────
+function getGuideTypeBadge(type: GuideType) {
+  switch (type) {
+    case 'best-products':
+      return <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200 text-xs"><Award className="w-3 h-3 mr-1" />Best Products</Badge>;
+    case 'comparison':
+      return <Badge className="bg-sky-100 text-sky-800 hover:bg-sky-200 text-xs"><Sparkles className="w-3 h-3 mr-1" />Comparison</Badge>;
+    case 'brand-review':
+      return <Badge className="bg-violet-100 text-violet-800 hover:bg-violet-200 text-xs"><Package className="w-3 h-3 mr-1" />Brand Review</Badge>;
+    case 'category-guide':
+      return <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-200 text-xs"><Compass className="w-3 h-3 mr-1" />Category Guide</Badge>;
+    default:
+      return null;
+  }
+}
+
+// ─── Hero Section: Featured Buying Guide ──────────────────────────────────────
+function HeroSection() {
+  const goToBuyingGuide = useRouterStore((s) => s.goToBuyingGuide);
+  const featuredGuide = buyingGuides[0]; // "Best Travel Gadgets of 2026"
 
   return (
     <section
-      className="relative overflow-hidden bg-gradient-to-r from-[#131921] via-[#1a2f3e] to-[#232f3e]"
+      className="relative overflow-hidden bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#0f172a]"
       style={{
         backgroundSize: '200% 200%',
         animation: 'gradientShift 8s ease infinite',
       }}
     >
-      {/* Injected keyframes for animated gradient & floating beans */}
+      {/* Injected keyframes */}
       <style>{`
         @keyframes gradientShift {
           0%, 100% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
         }
-        @keyframes floatBean1 {
+        @keyframes float1 {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
           50% { transform: translateY(-18px) rotate(15deg); }
         }
-        @keyframes floatBean2 {
+        @keyframes float2 {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
           50% { transform: translateY(-14px) rotate(-10deg); }
         }
-        @keyframes floatBean3 {
-          0%, 100% { transform: translateY(0px) rotate(5deg); }
-          50% { transform: translateY(-22px) rotate(-20deg); }
-        }
         @keyframes pulseGlow {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(254, 189, 105, 0.5); }
-          50% { box-shadow: 0 0 0 12px rgba(254, 189, 105, 0); }
+          0%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.5); }
+          50% { box-shadow: 0 0 0 12px rgba(251, 191, 36, 0); }
         }
       `}</style>
 
-      {/* Decorative floating coffee beans */}
+      {/* Decorative floating elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div
-          className="absolute top-[8%] left-[6%] w-8 h-5 rounded-full bg-amber-700/15"
-          style={{ animation: 'floatBean1 6s ease-in-out infinite' }}
+          className="absolute top-[8%] left-[6%] w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/10"
+          style={{ animation: 'float1 6s ease-in-out infinite' }}
         />
         <div
-          className="absolute top-[18%] right-[12%] w-6 h-4 rounded-full bg-amber-600/10"
-          style={{ animation: 'floatBean2 7s ease-in-out infinite 1s' }}
+          className="absolute top-[18%] right-[12%] w-8 h-8 rounded-full bg-sky-500/10 border border-sky-500/10"
+          style={{ animation: 'float2 7s ease-in-out infinite 1s' }}
         />
         <div
-          className="absolute bottom-[20%] left-[22%] w-7 h-4 rounded-full bg-amber-800/12"
-          style={{ animation: 'floatBean3 8s ease-in-out infinite 0.5s' }}
+          className="absolute bottom-[20%] left-[22%] w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/10"
+          style={{ animation: 'float1 8s ease-in-out infinite 0.5s' }}
         />
         <div
-          className="absolute top-[40%] right-[30%] w-5 h-3 rounded-full bg-amber-700/8"
-          style={{ animation: 'floatBean1 9s ease-in-out infinite 2s' }}
+          className="absolute top-[40%] right-[30%] w-6 h-6 rounded-full bg-violet-500/10 border border-violet-500/10"
+          style={{ animation: 'float2 9s ease-in-out infinite 2s' }}
         />
-        <div
-          className="absolute bottom-[12%] right-[8%] w-9 h-5 rounded-full bg-amber-600/10"
-          style={{ animation: 'floatBean2 7.5s ease-in-out infinite 1.5s' }}
-        />
-        {/* Original decorative circles */}
         <div className="absolute top-10 left-10 w-32 h-32 rounded-full border-2 border-white/5" />
         <div className="absolute top-20 right-20 w-24 h-24 rounded-full border-2 border-white/5" />
         <div className="absolute bottom-10 left-1/4 w-20 h-20 rounded-full border-2 border-white/5" />
         <div className="absolute top-1/3 right-1/3 w-16 h-16 rounded-full border-2 border-white/5" />
-        <div className="absolute bottom-20 right-10 w-28 h-28 rounded-full border border-white/5" />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-18 lg:py-24">
         <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14">
           {/* Left content */}
           <div className="flex-1 text-center lg:text-left">
-            <Badge className="bg-[#febd69] text-[#131921] hover:bg-[#f3a847] text-sm font-semibold mb-5 px-3 py-1">
-              <Star className="w-3 h-3 mr-1 fill-[#131921]" />
-              #1 Rated Coffee Equipment Reviews
+            <Badge className="bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 text-sm font-semibold mb-5 px-3 py-1 border border-amber-500/20">
+              <Compass className="w-3 h-3 mr-1.5" />
+              Featured Guide
             </Badge>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white leading-tight mb-5">
-              Find Your Perfect
-              <span className="block text-[#febd69]">Coffee Setup</span>
+              Discover the
+              <span className="block text-amber-400">Right Gear</span>
             </h1>
             <p className="text-base sm:text-lg lg:text-xl text-gray-300 mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-              Expert reviews, honest ratings, and side-by-side comparisons to help you brew better coffee at home.
+              Expert reviews, honest ratings, and curated buying guides to help you find the perfect gear for every adventure.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
-              {/* Shop Now button with pulsing glow */}
-              <div className="relative">
-                <div
-                  className="absolute inset-0 rounded-lg"
-                  style={{ animation: 'pulseGlow 2s ease-in-out infinite' }}
-                />
-                <Button
-                  onClick={() => featured && goToProduct(featured.slug)}
-                  className="relative bg-[#febd69] hover:bg-[#f3a847] text-[#131921] font-bold text-lg px-8 py-4 rounded-lg shadow-lg hover:shadow-xl transition-all active:scale-[0.98] h-auto"
-                >
-                  <ShoppingBag className="w-5 h-5 mr-2" />
-                  Shop Now
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
+            {featuredGuide && (
+              <div className="mb-6 p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 max-w-lg mx-auto lg:mx-0">
+                <div className="flex items-center gap-2 mb-2">
+                  {getGuideTypeBadge(featuredGuide.guideType)}
+                  <span className="text-xs text-gray-400">{featuredGuide.readingTime} min read</span>
+                </div>
+                <h2 className="text-lg font-bold text-white mb-1">{featuredGuide.title}</h2>
+                <p className="text-sm text-gray-400 line-clamp-2">{featuredGuide.excerpt}</p>
               </div>
+            )}
+
+            <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
+              {featuredGuide && (
+                <div className="relative">
+                  <div
+                    className="absolute inset-0 rounded-lg"
+                    style={{ animation: 'pulseGlow 2s ease-in-out infinite' }}
+                  />
+                  <Button
+                    onClick={() => goToBuyingGuide(featuredGuide.slug)}
+                    className="relative bg-amber-500 hover:bg-amber-400 text-[#0f172a] font-bold text-lg px-8 py-4 rounded-lg shadow-lg hover:shadow-xl transition-all active:scale-[0.98] h-auto"
+                  >
+                    <BookOpen className="w-5 h-5 mr-2" />
+                    Read Guide
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </Button>
+                </div>
+              )}
               <Button
                 variant="outline"
                 className="border-gray-500 text-gray-300 hover:text-white hover:border-white bg-transparent"
                 onClick={() => {
-                  const el = document.getElementById('top-picks');
+                  const el = document.getElementById('editors-picks');
                   el?.scrollIntoView({ behavior: 'smooth' });
                 }}
               >
-                See Top Picks
+                Browse Reviews
               </Button>
             </div>
 
@@ -171,56 +207,63 @@ function HeroBanner() {
               </span>
               <span className="flex items-center gap-1.5">
                 <Microscope className="w-4 h-4 text-emerald-400" />
-                Lab-Tested
+                Hands-On Tested
               </span>
               <span className="flex items-center gap-1.5">
                 <Award className="w-4 h-4 text-emerald-400" />
-                100+ Products
+                25+ Products
               </span>
             </div>
           </div>
 
-          {/* Right visual — featured product card */}
+          {/* Right visual — featured guide card */}
           <div className="flex-shrink-0 w-full max-w-sm">
-            {featured && (
+            {featuredGuide && (
               <Card className="bg-white/10 backdrop-blur-sm border border-white/20 text-white overflow-hidden shadow-2xl">
                 <div className="p-5">
                   <div className="flex items-center gap-2 mb-3">
-                    <Badge className="bg-emerald-500 text-white text-xs">Top Rated</Badge>
-                    <Badge className="bg-[#febd69] text-[#131921] text-xs">
+                    {getGuideTypeBadge(featuredGuide.guideType)}
+                    <Badge className="bg-amber-500 text-[#0f172a] text-xs">
                       <TrendingUp className="w-3 h-3 mr-1" />
-                      Best Seller
+                      Featured
                     </Badge>
                   </div>
-                  {/* Product image */}
+                  {/* Guide image */}
                   <div className="w-full aspect-video rounded-lg overflow-hidden mb-4 bg-white/10">
-                    {featured.image ? (
+                    {featuredGuide.image ? (
                       <img
-                        src={featured.image}
-                        alt={featured.title}
-                        className="w-full h-full object-contain"
+                        src={featuredGuide.image}
+                        alt={featuredGuide.title}
+                        className="w-full h-full object-cover"
                         loading="eager"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          if (target.nextElementSibling) (target.nextElementSibling as HTMLElement).style.display = 'flex';
+                        }}
                       />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-amber-900/40 to-amber-700/40 flex items-center justify-center">
-                        <Coffee className="w-16 h-16 text-amber-300/60" />
-                      </div>
-                    )}
+                    ) : null}
+                    <div
+                      className="w-full h-full bg-gradient-to-br from-sky-900/60 to-teal-900/60 items-center justify-center"
+                      style={{ display: featuredGuide.image ? 'none' : 'flex' }}
+                    >
+                      <Compass className="w-16 h-16 text-sky-300/60" />
+                    </div>
                   </div>
-                  <h3 className="font-bold text-base leading-tight mb-2 line-clamp-2">{featured.title}</h3>
-                  <StarRating rating={featured.rating} size="sm" showValue />
-                  <div className="mt-2 flex items-baseline gap-2">
-                    <span className="text-2xl font-bold text-[#febd69]">{featured.price}</span>
-                    {featured.originalPrice && (
-                      <span className="text-sm text-gray-400 line-through">{featured.originalPrice}</span>
-                    )}
+                  <h3 className="font-bold text-base leading-tight mb-2 line-clamp-2">{featuredGuide.title}</h3>
+                  <p className="text-xs text-gray-300 mb-3 line-clamp-2">{featuredGuide.excerpt}</p>
+                  <div className="flex items-center justify-between text-xs text-gray-400">
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      {featuredGuide.readingTime} min read
+                    </span>
+                    <span>{featuredGuide.recommendedProducts.length} products</span>
                   </div>
-                  <p className="text-xs text-gray-300 mt-2 line-clamp-2">{featured.excerpt}</p>
                   <Button
-                    onClick={() => goToProduct(featured.slug)}
-                    className="w-full mt-4 bg-[#febd69] hover:bg-[#f3a847] text-[#131921] font-bold"
+                    onClick={() => goToBuyingGuide(featuredGuide.slug)}
+                    className="w-full mt-4 bg-amber-500 hover:bg-amber-400 text-[#0f172a] font-bold"
                   >
-                    Read Full Review
+                    Read Full Guide
                     <ChevronRight className="w-4 h-4 ml-1" />
                   </Button>
                 </div>
@@ -231,27 +274,39 @@ function HeroBanner() {
       </div>
 
       {/* Bottom accent bar */}
-      <div className="h-1 bg-gradient-to-r from-[#febd69] via-[#f90] to-[#febd69]" />
+      <div className="h-1 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500" />
     </section>
   );
 }
 
-// ─── Product Categories Section ─────────────────────────────────────────────
+// ─── Popular Categories Section ─────────────────────────────────────────────
 function CategoriesSection() {
   const goToCategory = useRouterStore((s) => s.goToCategory);
+  const featuredCats = getFeaturedCategories();
 
   return (
-    <section className="py-10 sm:py-14">
+    <section className="py-10 sm:py-14 bg-white dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-[#131921] dark:text-white">Shop by Category</h2>
-            <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">Find the right equipment for your brewing style</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Popular Categories</h2>
+            <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">Find the right gear for your lifestyle</p>
           </div>
+          <Button
+            variant="ghost"
+            className="text-amber-600 hover:text-amber-700 hidden sm:flex items-center gap-1"
+            onClick={() => {
+              const el = document.getElementById('all-categories');
+              el?.scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
+            All Categories
+            <ChevronRight className="w-4 h-4" />
+          </Button>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 stagger-children">
-          {categories.map((cat) => (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 stagger-children">
+          {featuredCats.map((cat) => (
             <Card
               key={cat.id}
               className="group cursor-pointer overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 card-hover-lift"
@@ -276,17 +331,21 @@ function CategoriesSection() {
                   } items-center justify-center text-white/70`}
                   style={{ display: 'none' }}
                 >
-                  {categoryIcons[cat.slug] || <Coffee className="w-8 h-8" />}
+                  {categoryIcons[cat.slug] || <Package className="w-8 h-8" />}
+                </div>
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                <div className="absolute bottom-3 left-3 right-3">
+                  <h3 className="font-bold text-sm text-white drop-shadow-lg">{cat.name}</h3>
                 </div>
               </div>
-              <CardContent className="p-4">
-                <h3 className="font-bold text-sm text-[#131921] dark:text-white group-hover:text-[#c7511f] transition-colors line-clamp-1">
-                  {cat.name}
-                </h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">{cat.description}</p>
-                <div className="mt-2 flex items-center text-xs text-[#007185] font-medium group-hover:underline">
-                  {cat.productCount} Products
-                  <ChevronRight className="w-3 h-3 ml-1" />
+              <CardContent className="p-3 sm:p-4">
+                <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 mb-2">{cat.description}</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-[#007185] dark:text-[#5cc7d4] font-medium">
+                    {cat.productCount} Products
+                  </span>
+                  <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-amber-500 group-hover:translate-x-1 transition-all" />
                 </div>
               </CardContent>
             </Card>
@@ -297,27 +356,27 @@ function CategoriesSection() {
   );
 }
 
-// ─── Top Picks Section ──────────────────────────────────────────────────────
-function TopPicksSection() {
-  const bestSellers = getBestSellers();
+// ─── Editor's Picks Section ──────────────────────────────────────────────
+function EditorsPicksSection() {
+  const editorPicks = getEditorPicks();
 
   return (
-    <section id="top-picks" className="py-10 sm:py-14 bg-white dark:bg-gray-800">
+    <section id="editors-picks" className="py-10 sm:py-14 bg-gray-50 dark:bg-gray-800/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-[#131921] dark:text-white">
-              <Star className="w-7 h-7 inline-block text-[#f90] mr-2 -mt-1" />
-              Top Picks for You
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+              <Award className="w-7 h-7 inline-block text-amber-500 mr-2 -mt-1" />
+              Editor&apos;s Picks
             </h2>
-            <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">Our highest-rated coffee equipment, tried and tested</p>
+            <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">Our top-rated gear, handpicked by the editorial team</p>
           </div>
         </div>
 
         <Disclosure />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4 stagger-children">
-          {bestSellers.slice(0, 6).map((product) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4 stagger-children">
+          {editorPicks.slice(0, 8).map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
@@ -326,137 +385,29 @@ function TopPicksSection() {
   );
 }
 
-// ─── Why Trust Us Block ─────────────────────────────────────────────────────
-function TrustBlock() {
-  const trustItems = [
-    {
-      icon: <Microscope className="w-8 h-8 text-emerald-600" />,
-      title: 'Lab-Tested Reviews',
-      description: 'Every product is hands-on tested in our coffee lab for at least 2 weeks before publishing.',
-    },
-    {
-      icon: <ShieldCheck className="w-8 h-8 text-emerald-600" />,
-      title: 'Editorial Independence',
-      description: 'Affiliate commissions never influence our ratings or rankings. Our opinions are our own.',
-    },
-    {
-      icon: <Award className="w-8 h-8 text-emerald-600" />,
-      title: 'Expert Reviewers',
-      description: 'Our team includes certified baristas, coffee roasters, and equipment specialists.',
-    },
-    {
-      icon: <HeartHandshake className="w-8 h-8 text-emerald-600" />,
-      title: 'Honest & Transparent',
-      description: 'We publish both pros and cons, and always disclose our affiliate relationships clearly.',
-    },
-  ];
+// ─── Trending Products Section ──────────────────────────────────────────────
+function TrendingSection() {
+  const trending = getTrending();
 
   return (
-    <section className="py-10 sm:py-14 bg-gradient-to-b from-[#eaeded] dark:from-gray-900 to-[#e3e6e6] dark:to-gray-800">
+    <section className="py-10 sm:py-14 bg-white dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#131921] dark:text-white">Why Trust Us?</h2>
-          <p className="text-gray-500 dark:text-gray-400 mt-2 max-w-2xl mx-auto text-sm">
-            We take our reviews seriously. Here&apos;s what sets BrewHub Reviews apart from other affiliate sites.
-          </p>
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+              <TrendingUp className="w-7 h-7 inline-block text-amber-500 mr-2 -mt-1" />
+              Trending Now
+            </h2>
+            <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">Recently updated and highly rated by our team</p>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children">
-          {trustItems.map((item, idx) => (
-            <Card
-              key={idx}
-              className="border border-emerald-100 dark:border-gray-700 bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow text-center card-hover-lift"
-            >
-              <CardContent className="p-6 flex flex-col items-center">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-50 to-emerald-100 flex items-center justify-center mb-4 gentle-float" style={{ animationDelay: `${idx * 0.3}s` }}>
-                  {item.icon}
-                </div>
-                <h3 className="font-bold text-[#131921] dark:text-white text-base mb-2">{item.title}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{item.description}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Editorial Independence Statement */}
-        <div className="mt-8 bg-white dark:bg-gray-800 border border-emerald-200 dark:border-gray-700 rounded-xl p-6 max-w-3xl mx-auto">
-          <div className="flex items-start gap-4">
-            <ShieldCheck className="w-10 h-10 text-emerald-600 shrink-0 mt-1" />
-            <div>
-              <h3 className="font-bold text-[#131921] dark:text-white text-lg mb-2">Our Editorial Pledge</h3>
-              <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                BrewHub Reviews operates with complete editorial independence. While we earn commissions through
-                Amazon&apos;s affiliate program, this never affects which products we recommend or how we rate them.
-                Our reviews are based on hands-on testing, expert evaluation, and genuine user feedback. We will
-                always publish both pros and cons, and we will never accept payment for positive coverage.
-              </p>
+        {/* Mobile: horizontal scroll, Desktop: grid */}
+        <div className="flex lg:grid lg:grid-cols-5 gap-4 overflow-x-auto pb-4 lg:pb-0 scrollbar-hide snap-x snap-mandatory">
+          {trending.slice(0, 5).map((product) => (
+            <div key={product.id} className="min-w-[280px] lg:min-w-0 snap-start">
+              <ProductCard product={product} />
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Testimonials Section ────────────────────────────────────────────────────
-function TestimonialsSection() {
-  const testimonials = [
-    {
-      text: "BrewHub's espresso machine guide helped me choose the perfect Breville Barista Express. Best purchase I've made!",
-      author: 'Michael R.',
-      rating: 5,
-    },
-    {
-      text: 'The grinder comparison was incredibly detailed. I went with the Fellow Ode and couldn\'t be happier.',
-      author: 'Sarah K.',
-      rating: 5,
-    },
-    {
-      text: 'Finally found a review site that actually tests products instead of just listing specs. The pour-over guide is excellent.',
-      author: 'David L.',
-      rating: 5,
-    },
-    {
-      text: "I've bought three products based on BrewHub recommendations and they've all been spot-on. Trust this site!",
-      author: 'Emily T.',
-      rating: 5,
-    },
-  ];
-
-  return (
-    <section className="py-10 sm:py-14 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <Quote className="w-7 h-7 text-[#febd69]" />
-            <h2 className="text-2xl sm:text-3xl font-bold text-[#131921]">What Our Readers Say</h2>
-          </div>
-          <p className="text-gray-500 mt-2 max-w-2xl mx-auto text-sm">
-            Join thousands of coffee enthusiasts who trust our reviews
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children">
-          {testimonials.map((testimonial, idx) => (
-            <Card
-              key={idx}
-              className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-5 border border-gray-100 card-hover-lift"
-            >
-              <CardContent className="p-0">
-                <Quote className="w-8 h-8 text-amber-400 mb-3" />
-                <p className="text-sm text-gray-700 leading-relaxed mb-4">
-                  &ldquo;{testimonial.text}&rdquo;
-                </p>
-                <StarRating rating={testimonial.rating} size="sm" showValue={false} />
-                <div className="mt-3 flex items-center gap-2">
-                  <span className="font-semibold text-sm text-[#131921]">{testimonial.author}</span>
-                </div>
-                <div className="mt-1 flex items-center gap-1.5">
-                  <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
-                  <span className="text-xs text-emerald-600 font-medium">Verified Buyer</span>
-                </div>
-              </CardContent>
-            </Card>
           ))}
         </div>
       </div>
@@ -464,19 +415,19 @@ function TestimonialsSection() {
   );
 }
 
-// ─── Recently Updated Section ───────────────────────────────────────────────
+// ─── Recently Updated Reviews Section ───────────────────────────────────────
 function RecentlyUpdatedSection() {
   const recentlyUpdated = getRecentlyUpdated();
   const goToProduct = useRouterStore((s) => s.goToProduct);
 
   return (
-    <section className="py-10 sm:py-14 bg-white dark:bg-gray-800">
+    <section className="py-10 sm:py-14 bg-gray-50 dark:bg-gray-800/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-[#131921] dark:text-white">
-              <Clock className="w-7 h-7 inline-block text-[#007185] mr-2 -mt-1" />
-              Recently Updated
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+              <Clock className="w-7 h-7 inline-block text-sky-600 mr-2 -mt-1" />
+              Recently Updated Reviews
             </h2>
             <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">Fresh reviews and re-evaluations from our team</p>
           </div>
@@ -486,7 +437,7 @@ function RecentlyUpdatedSection() {
           {recentlyUpdated.slice(0, 6).map((product) => (
             <Card
               key={product.id}
-              className="group cursor-pointer overflow-hidden hover:shadow-lg transition-all border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 border-l-4 border-l-[#febd69]"
+              className="group cursor-pointer overflow-hidden hover:shadow-lg transition-all border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 border-l-4 border-l-amber-500"
               onClick={() => goToProduct(product.slug)}
             >
               <CardContent className="p-4 flex gap-4">
@@ -506,22 +457,22 @@ function RecentlyUpdatedSection() {
                     />
                   ) : null}
                   <div
-                    className="w-full h-full bg-gradient-to-br from-amber-100 to-amber-200 items-center justify-center"
+                    className="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 dark:from-gray-600 dark:to-gray-700 items-center justify-center"
                     style={{ display: product.image ? 'none' : 'flex' }}
                   >
-                    <Coffee className="w-8 h-8 text-amber-600" />
+                    <Package className="w-8 h-8 text-slate-400 dark:text-slate-300" />
                   </div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
                     {product.reviewStatus === 'updated' && (
-                      <Badge className="bg-blue-100 text-blue-700 text-[10px] hover:bg-blue-100">Updated</Badge>
+                      <Badge className="bg-sky-100 text-sky-700 text-[10px] hover:bg-sky-100 dark:bg-sky-900/30 dark:text-sky-300">Updated</Badge>
                     )}
                     {product.reviewStatus === 'verified' && (
-                      <Badge className="bg-emerald-100 text-emerald-700 text-[10px] hover:bg-emerald-100">Verified</Badge>
+                      <Badge className="bg-emerald-100 text-emerald-700 text-[10px] hover:bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-300">Verified</Badge>
                     )}
                     {product.reviewStatus === 'new' && (
-                      <Badge className="bg-purple-100 text-purple-700 text-[10px] hover:bg-purple-100">New</Badge>
+                      <Badge className="bg-violet-100 text-violet-700 text-[10px] hover:bg-violet-100 dark:bg-violet-900/30 dark:text-violet-300">New</Badge>
                     )}
                     <span className="text-[11px] text-gray-400">
                       {new Date(product.updatedAt).toLocaleDateString('en-US', {
@@ -531,16 +482,298 @@ function RecentlyUpdatedSection() {
                       })}
                     </span>
                   </div>
-                  <h3 className="font-semibold text-sm text-[#131921] dark:text-white group-hover:text-[#c7511f] transition-colors line-clamp-2 leading-tight">
+                  <h3 className="font-semibold text-sm text-gray-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors line-clamp-2 leading-tight">
                     {product.title}
                   </h3>
                   <StarRating rating={product.rating} size="sm" showValue />
-                  <div className="mt-1 flex items-baseline gap-2">
-                    <span className="text-base font-bold text-gray-900 dark:text-white">{product.price}</span>
-                    {product.originalPrice && (
-                      <span className="text-xs text-gray-400 line-through">{product.originalPrice}</span>
-                    )}
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">{product.excerpt}</p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Best Product Roundups Section ────────────────────────────────────────
+function BuyingGuidesSection() {
+  const goToBuyingGuide = useRouterStore((s) => s.goToBuyingGuide);
+
+  return (
+    <section className="py-10 sm:py-14 bg-white dark:bg-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+              <Compass className="w-7 h-7 inline-block text-amber-500 mr-2 -mt-1" />
+              Best Product Roundups
+            </h2>
+            <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">In-depth guides to help you choose the right gear</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
+          {buyingGuides.map((guide) => (
+            <Card
+              key={guide.id}
+              className="group cursor-pointer overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 card-hover-lift"
+              onClick={() => goToBuyingGuide(guide.slug)}
+            >
+              {/* Guide image */}
+              <div className="aspect-video overflow-hidden relative">
+                <img
+                  src={guide.image}
+                  alt={guide.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    if (target.nextElementSibling) (target.nextElementSibling as HTMLElement).style.display = 'flex';
+                  }}
+                />
+                <div
+                  className={`w-full h-full items-center justify-center bg-gradient-to-br ${
+                    categoryGradients[guide.categorySlug] || 'from-gray-700 to-gray-600'
+                  }`}
+                  style={{ display: 'none' }}
+                >
+                  <Compass className="w-12 h-12 text-white/50" />
+                </div>
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                {/* Guide type badge */}
+                <div className="absolute top-3 left-3">
+                  {getGuideTypeBadge(guide.guideType)}
+                </div>
+                {/* Reading time */}
+                <div className="absolute bottom-3 right-3">
+                  <Badge className="bg-black/50 text-white text-xs backdrop-blur-sm">
+                    <Clock className="w-3 h-3 mr-1" />
+                    {guide.readingTime} min
+                  </Badge>
+                </div>
+              </div>
+
+              <CardContent className="p-4">
+                <h3 className="font-bold text-gray-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors line-clamp-2 mb-2">
+                  {guide.title}
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-3">
+                  {guide.excerpt}
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-[#007185] dark:text-[#5cc7d4] font-medium">
+                    {guide.recommendedProducts.length} products compared
+                  </span>
+                  <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-amber-500 group-hover:translate-x-1 transition-all" />
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Featured Brands Section ────────────────────────────────────────────────
+function FeaturedBrandsSection() {
+  const goToBrand = useRouterStore((s) => s.goToBrand);
+
+  return (
+    <section className="py-10 sm:py-14 bg-gray-50 dark:bg-gray-800/50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+              <Users className="w-7 h-7 inline-block text-amber-500 mr-2 -mt-1" />
+              Featured Brands
+            </h2>
+            <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">Trusted names we review and recommend</p>
+          </div>
+        </div>
+
+        {/* Horizontal scrollable brand strip */}
+        <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+          {brands.map((brand) => (
+            <Card
+              key={brand.slug}
+              className="group cursor-pointer shrink-0 w-40 hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 card-hover-lift"
+              onClick={() => goToBrand(brand.slug)}
+            >
+              <CardContent className="p-4 flex flex-col items-center text-center">
+                {/* Brand logo/placeholder */}
+                <div className="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center mb-3 overflow-hidden">
+                  {brand.logo ? (
+                    <img
+                      src={brand.logo}
+                      alt={brand.name}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        if (target.nextElementSibling) (target.nextElementSibling as HTMLElement).style.display = 'flex';
+                      }}
+                    />
+                  ) : null}
+                  <div
+                    className="w-full h-full items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 dark:from-gray-600 dark:to-gray-700"
+                    style={{ display: brand.logo ? 'none' : 'flex' }}
+                  >
+                    <span className="text-lg font-bold text-slate-400 dark:text-slate-300">
+                      {brand.name.charAt(0)}
+                    </span>
                   </div>
+                </div>
+                <h3 className="font-semibold text-sm text-gray-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                  {brand.name}
+                </h3>
+                <span className="text-[10px] text-gray-400 mt-1">{brand.productCount} product{brand.productCount !== 1 ? 's' : ''}</span>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Why Trust Us Block ─────────────────────────────────────────────────────
+function TrustBlock() {
+  const trustItems = [
+    {
+      icon: <Microscope className="w-8 h-8 text-emerald-600" />,
+      title: 'Hands-On Testing',
+      description: 'Every product is tested in real-world conditions for at least 2 weeks before we publish our review.',
+    },
+    {
+      icon: <ShieldCheck className="w-8 h-8 text-emerald-600" />,
+      title: 'Editorial Independence',
+      description: 'Affiliate commissions never influence our ratings or rankings. Our opinions are our own.',
+    },
+    {
+      icon: <Award className="w-8 h-8 text-emerald-600" />,
+      title: 'Expert Reviewers',
+      description: 'Our team includes tech journalists, travel experts, and gear specialists with decades of experience.',
+    },
+    {
+      icon: <HeartHandshake className="w-8 h-8 text-emerald-600" />,
+      title: 'Honest & Transparent',
+      description: 'We publish both pros and cons, and always disclose our affiliate relationships clearly.',
+    },
+  ];
+
+  return (
+    <section className="py-10 sm:py-14 bg-white dark:bg-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Why Trust GearScope?</h2>
+          <p className="text-gray-500 dark:text-gray-400 mt-2 max-w-2xl mx-auto text-sm">
+            We take our reviews seriously. Here&apos;s what sets GearScope apart from other review sites.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children">
+          {trustItems.map((item, idx) => (
+            <Card
+              key={idx}
+              className="border border-emerald-100 dark:border-gray-700 bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow text-center card-hover-lift"
+            >
+              <CardContent className="p-6 flex flex-col items-center">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/30 dark:to-emerald-800/30 flex items-center justify-center mb-4">
+                  {item.icon}
+                </div>
+                <h3 className="font-bold text-gray-900 dark:text-white text-base mb-2">{item.title}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{item.description}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Editorial Independence Statement */}
+        <div className="mt-8 bg-white dark:bg-gray-800 border border-emerald-200 dark:border-gray-700 rounded-xl p-6 max-w-3xl mx-auto">
+          <div className="flex items-start gap-4">
+            <ShieldCheck className="w-10 h-10 text-emerald-600 shrink-0 mt-1" />
+            <div>
+              <h3 className="font-bold text-gray-900 dark:text-white text-lg mb-2">Our Editorial Pledge</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                GearScope operates with complete editorial independence. While we earn commissions through
+                affiliate programs, this never affects which products we recommend or how we rate them.
+                Our reviews are based on hands-on testing, expert evaluation, and genuine user feedback. We will
+                always publish both pros and cons, and we will never accept payment for positive coverage.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Testimonials Section ────────────────────────────────────────────────────
+function TestimonialsSection() {
+  const testimonials = [
+    {
+      text: "GearScope's travel gadget guide saved me from buying the wrong power bank. The Anker 737 has been a game-changer for my international trips.",
+      author: 'Michael R.',
+      role: 'Frequent Traveler',
+      rating: 5,
+    },
+    {
+      text: 'Finally, a review site that actually tests products instead of just listing specs. The headphone comparison was incredibly detailed and honest.',
+      author: 'Sarah K.',
+      role: 'Audio Enthusiast',
+      rating: 5,
+    },
+    {
+      text: 'The home office setup guide helped me choose the right standing desk and chair. My back pain has improved significantly since following their recommendations.',
+      author: 'David L.',
+      role: 'Remote Worker',
+      rating: 5,
+    },
+    {
+      text: "I've bought three products based on GearScope recommendations and they've all been spot-on. Trust this site for honest, thorough reviews!",
+      author: 'Emily T.',
+      role: 'Tech Enthusiast',
+      rating: 5,
+    },
+  ];
+
+  return (
+    <section className="py-10 sm:py-14 bg-gray-50 dark:bg-gray-800/50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <Quote className="w-7 h-7 text-amber-500" />
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">What Our Readers Say</h2>
+          </div>
+          <p className="text-gray-500 dark:text-gray-400 mt-2 max-w-2xl mx-auto text-sm">
+            Join thousands of gear enthusiasts who trust our reviews
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children">
+          {testimonials.map((testimonial, idx) => (
+            <Card
+              key={idx}
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow p-5 border border-gray-100 dark:border-gray-700 card-hover-lift"
+            >
+              <CardContent className="p-0">
+                <Quote className="w-8 h-8 text-amber-400 mb-3" />
+                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                  &ldquo;{testimonial.text}&rdquo;
+                </p>
+                <StarRating rating={testimonial.rating} size="sm" showValue={false} />
+                <div className="mt-3 flex items-center gap-2">
+                  <span className="font-semibold text-sm text-gray-900 dark:text-white">{testimonial.author}</span>
+                </div>
+                <div className="mt-1 flex items-center gap-1.5">
+                  <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
+                  <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">{testimonial.role}</span>
                 </div>
               </CardContent>
             </Card>
@@ -612,16 +845,16 @@ function NewsletterCTA() {
   };
 
   return (
-    <section className="py-10 sm:py-14 bg-gradient-to-r from-[#232f3e] via-[#1a2f3e] to-[#131921] relative overflow-hidden">
+    <section className="py-10 sm:py-14 bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#0f172a] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
           <div className="text-center lg:text-left flex-1">
-            <Mail className="w-10 h-10 text-[#febd69] mx-auto lg:mx-0 mb-3" />
+            <Mail className="w-10 h-10 text-amber-400 mx-auto lg:mx-0 mb-3" />
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
               Never Miss a Review
             </h2>
             <p className="text-gray-400 text-sm max-w-md mx-auto lg:mx-0">
-              Get our latest reviews, deals, and buying guides delivered straight to your inbox. No spam, unsubscribe anytime.
+              Get the latest gear reviews, buying guides, and product recommendations from GearScope delivered to your inbox. No spam, unsubscribe anytime.
             </p>
           </div>
 
@@ -632,7 +865,7 @@ function NewsletterCTA() {
                   <ShieldCheck className="w-10 h-10 text-emerald-400 mx-auto mb-2" />
                   <h3 className="text-white font-bold text-lg">You&apos;re In!</h3>
                   <p className="text-emerald-200 text-sm mt-1">
-                    Check your inbox for a confirmation email.
+                    Check your inbox for a confirmation email from GearScope.
                   </p>
                   <Button
                     variant="outline"
@@ -653,7 +886,7 @@ function NewsletterCTA() {
                     onChange={(e) => { setEmail(e.target.value); setError(''); }}
                     required
                     disabled={loading}
-                    className="bg-white/10 border-gray-600 text-white placeholder:text-gray-500 focus:border-[#febd69] focus:ring-[#febd69] h-12 disabled:opacity-50"
+                    className="bg-white/10 border-gray-600 text-white placeholder:text-gray-500 focus:border-amber-400 focus:ring-amber-400 h-12 disabled:opacity-50"
                   />
                   {error && (
                     <p className="text-red-400 text-xs mt-1">{error}</p>
@@ -662,7 +895,7 @@ function NewsletterCTA() {
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="bg-gradient-to-r from-[#febd69] via-[#f3a847] to-[#febd69] cta-shimmer hover:shadow-md hover:shadow-[#febd69]/20 text-[#131921] font-bold h-12 px-6 shrink-0 disabled:opacity-50"
+                  className="bg-amber-500 hover:bg-amber-400 text-[#0f172a] font-bold h-12 px-6 shrink-0 disabled:opacity-50 transition-all hover:shadow-md hover:shadow-amber-500/20"
                 >
                   {loading ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
@@ -685,134 +918,20 @@ function NewsletterCTA() {
   );
 }
 
-// ─── Today's Deals Section ──────────────────────────────────────────────────
-function DealsSection() {
-  const deals = getDeals();
-  const goToProduct = useRouterStore((s) => s.goToProduct);
-
-  const calculateDiscount = (price: string, originalPrice: string): number => {
-    const p = parseFloat(price.replace(/[^0-9.]/g, ''));
-    const o = parseFloat(originalPrice.replace(/[^0-9.]/g, ''));
-    if (o === 0 || isNaN(p) || isNaN(o)) return 0;
-    return Math.round(((o - p) / o) * 100);
-  };
-
-  return (
-    <section className="py-10 sm:py-14">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-[#131921] dark:text-white">
-              <Percent className="w-7 h-7 inline-block text-red-500 mr-2 -mt-1" />
-              Today&apos;s Deals
-            </h2>
-            <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">Save big on top-rated coffee equipment</p>
-          </div>
-        </div>
-
-        <Disclosure />
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4 stagger-children">
-          {deals.map((product) => {
-            const discount = product.originalPrice
-              ? calculateDiscount(product.price, product.originalPrice)
-              : 0;
-
-            return (
-              <Card
-                key={product.id}
-                className="group overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
-              >
-                {/* Deal image */}
-                <div
-                  className="relative cursor-pointer bg-gray-50 dark:bg-gray-700 aspect-square overflow-hidden"
-                  onClick={() => goToProduct(product.slug)}
-                >
-                  {product.image ? (
-                    <img
-                      src={product.image}
-                      alt={product.title}
-                      className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center p-4 group-hover:scale-105 transition-transform duration-500">
-                      <div className="w-full h-full rounded-lg bg-gradient-to-br from-red-50 to-amber-50 flex items-center justify-center">
-                        <Coffee className="w-14 h-14 text-amber-400" />
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Discount badge */}
-                  {discount > 0 && (
-                    <Badge className="absolute top-2 left-2 bg-red-600 text-white hover:bg-red-700 text-sm font-bold px-2.5 py-1">
-                      -{discount}%
-                    </Badge>
-                  )}
-
-                  {/* Deal badge */}
-                  <Badge className="absolute top-2 right-2 bg-[#f90] text-white hover:bg-[#e68a00] text-xs font-bold">
-                    <Flame className="w-3 h-3 mr-1" />
-                    Deal
-                  </Badge>
-                </div>
-
-                <CardContent className="p-4">
-                  <button
-                    onClick={() => goToProduct(product.slug)}
-                    className="text-xs text-[#007185] hover:text-[#c7511f] hover:underline mb-1 text-left"
-                  >
-                    {product.category}
-                  </button>
-                  <h3
-                    className="font-semibold text-sm text-gray-900 dark:text-white leading-tight mb-2 cursor-pointer hover:text-[#c7511f] line-clamp-2"
-                    onClick={() => goToProduct(product.slug)}
-                  >
-                    {product.title}
-                  </h3>
-                  <StarRating rating={product.rating} size="sm" />
-
-                  <div className="mt-2 flex items-baseline gap-2">
-                    <span className="text-xl font-bold text-red-600">{product.price}</span>
-                    <span className="text-sm text-gray-400 line-through">{product.originalPrice}</span>
-                  </div>
-
-                  {/* Savings amount */}
-                  {product.originalPrice && (
-                    <p className="text-xs text-emerald-700 font-medium mt-1">
-                      {`You save $${(
-                        parseFloat(product.originalPrice.replace(/[^0-9.]/g, '')) -
-                        parseFloat(product.price.replace(/[^0-9.]/g, ''))
-                      ).toFixed(2)}`}
-                    </p>
-                  )}
-
-                  <div className="mt-3">
-                    <Disclosure compact />
-                    <CheckPriceButton asin={product.asin} size="sm" className="w-full mt-2" />
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 // ─── Main HomePage Component ────────────────────────────────────────────────
 export default function HomePage() {
   return (
-    <div className="bg-[#eaeded] dark:bg-gray-900 min-h-screen">
-      <HeroBanner />
+    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
+      <HeroSection />
       <CategoriesSection />
-      <TopPicksSection />
+      <EditorsPicksSection />
+      <TrendingSection />
+      <RecentlyUpdatedSection />
+      <BuyingGuidesSection />
+      <FeaturedBrandsSection />
       <TrustBlock />
       <TestimonialsSection />
-      <RecentlyUpdatedSection />
       <NewsletterCTA />
-      <DealsSection />
     </div>
   );
 }

@@ -47,7 +47,7 @@ export function ContactPage() {
           {/* Contact Form */}
           <div className="lg:col-span-2">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8">
-              <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
                 <Send className="w-5 h-5 text-[#c7511f]" />
                 Send Us a Message
               </h2>
@@ -56,13 +56,13 @@ export function ContactPage() {
                 <div className="text-center py-12">
                   <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Message Received!</h3>
-                  <p className="text-gray-600 mb-6">
+                  <p className="text-gray-600 dark:text-gray-400 mb-6">
                     Thank you for reaching out. We typically respond within 24-48 hours.
                   </p>
                   <Button
                     onClick={() => setSubmitted(false)}
                     variant="outline"
-                    className="border-[#131921] text-[#131921]"
+                    className="border-[#131921] text-[#131921] dark:border-gray-600 dark:text-gray-300"
                   >
                     Send Another Message
                   </Button>
@@ -133,15 +133,15 @@ export function ContactPage() {
               <CardContent className="p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <Mail className="w-5 h-5 text-[#007185]" />
-                  <h3 className="font-bold text-gray-900">Email Us</h3>
+                  <h3 className="font-bold text-gray-900 dark:text-white">Email Us</h3>
                 </div>
                 <a
-                  href="mailto:hello@brewhubreviews.com"
+                  href="mailto:hello@gearscope.com"
                   className="text-[#007185] hover:text-[#c7511f] hover:underline text-sm break-all"
                 >
-                  hello@brewhubreviews.com
+                  hello@gearscope.com
                 </a>
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
                   For review inquiries, corrections, or general questions.
                 </p>
               </CardContent>
@@ -151,9 +151,9 @@ export function ContactPage() {
               <CardContent className="p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <Clock className="w-5 h-5 text-[#007185]" />
-                  <h3 className="font-bold text-gray-900">Response Time</h3>
+                  <h3 className="font-bold text-gray-900 dark:text-white">Response Time</h3>
                 </div>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   We aim to respond to all inquiries within <strong>24-48 hours</strong> during
                   business days.
                 </p>
@@ -164,9 +164,9 @@ export function ContactPage() {
               <CardContent className="p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <HelpCircle className="w-5 h-5 text-[#007185]" />
-                  <h3 className="font-bold text-gray-900">Quick Answers</h3>
+                  <h3 className="font-bold text-gray-900 dark:text-white">Quick Answers</h3>
                 </div>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Many common questions are answered in our FAQ section below. Check there first for
                   the fastest response.
                 </p>
@@ -179,7 +179,7 @@ export function ContactPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 mb-6">
           <div className="flex items-center gap-3 mb-6">
             <HelpCircle className="w-6 h-6 text-[#c7511f]" />
-            <h2 className="text-2xl font-bold text-gray-900">Frequently Asked Questions</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Frequently Asked Questions</h2>
           </div>
 
           <Accordion type="single" collapsible className="space-y-3">
@@ -198,19 +198,19 @@ export function ContactPage() {
               },
               {
                 q: 'How often do you update your reviews?',
-                a: 'We review and update our content regularly. Major reviews are revisited at least every 6 months, and we update pricing and availability information more frequently. Each review shows its last update date.',
+                a: 'We review and update our content regularly. Major reviews are revisited at least every 6 months, and we update availability information more frequently. Each review shows its last update date.',
               },
               {
-                q: 'Why do you use Amazon affiliate links?',
-                a: 'Amazon affiliate commissions help us cover the costs of purchasing products, maintaining our website, and producing quality content. Using our links costs you nothing extra and helps keep our reviews free for everyone.',
+                q: 'Why do you use affiliate links?',
+                a: 'Affiliate commissions help us cover the costs of purchasing products, maintaining our website, and producing quality content. Using our links costs you nothing extra and helps keep our reviews free for everyone.',
               },
               {
                 q: 'I found an error in a review. How can I report it?',
-                a: 'We take accuracy very seriously. If you spot an error, please contact us through the form above or email hello@brewhubreviews.com with the details. We\'ll investigate and correct any mistakes promptly.',
+                a: 'We take accuracy very seriously. If you spot an error, please contact us through the form above or email hello@gearscope.com with the details. We\'ll investigate and correct any mistakes promptly.',
               },
               {
-                q: 'Do you review products outside of coffee equipment?',
-                a: 'Currently, we focus exclusively on coffee equipment and accessories. This specialization allows us to provide the depth and expertise our readers expect.',
+                q: 'What product categories do you cover?',
+                a: 'GearScope covers travel gear, tech gadgets, home office equipment, fitness devices, outdoor equipment, audio gear, and electronics. We focus on products where our expertise can provide the most value to readers.',
               },
               {
                 q: 'Can I use your content on my website or social media?',
@@ -220,12 +220,12 @@ export function ContactPage() {
               <AccordionItem
                 key={index}
                 value={`faq-${index}`}
-                className="border border-gray-200 rounded-lg px-4 data-[state=open]:bg-gray-50"
+                className="border border-gray-200 dark:border-gray-700 rounded-lg px-4 data-[state=open]:bg-gray-50 dark:data-[state=open]:bg-gray-700/50"
               >
-                <AccordionTrigger className="text-left text-sm font-semibold text-gray-900 hover:text-[#c7511f] hover:no-underline py-4">
+                <AccordionTrigger className="text-left text-sm font-semibold text-gray-900 dark:text-white hover:text-[#c7511f] hover:no-underline py-4">
                   {faq.q}
                 </AccordionTrigger>
-                <AccordionContent className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed pb-4">
+                <AccordionContent className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed pb-4">
                   {faq.a}
                 </AccordionContent>
               </AccordionItem>

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouterStore } from '@/lib/router';
-import { Shield, Award, RefreshCw, Search } from 'lucide-react';
+import { Shield, Award, RefreshCw, Search, Compass } from 'lucide-react';
 
 export function Footer() {
   const goHome = useRouterStore((s) => s.goHome);
@@ -12,18 +12,18 @@ export function Footer() {
 
   const footerLinks = {
     'Get to Know Us': [
-      { label: 'About BrewHub', action: () => goToPage('about') },
+      { label: 'About GearScope', action: () => goToPage('about') },
       { label: 'Wishlist', action: () => goToWishlist() },
       { label: 'Editorial Policy', action: () => goToPage('editorial-policy') },
       { label: 'How We Test', action: () => goToPage('how-we-test') },
       { label: 'Contact Us', action: () => goToPage('contact') },
     ],
     'Categories': [
-      { label: 'Espresso Machines', action: () => navigate({ page: 'category', slug: 'espresso-machines' }) },
-      { label: 'Coffee Grinders', action: () => navigate({ page: 'category', slug: 'coffee-grinders' }) },
-      { label: 'Pour-Over & Drip', action: () => navigate({ page: 'category', slug: 'pour-over-drip' }) },
-      { label: 'Kettles', action: () => navigate({ page: 'category', slug: 'kettles' }) },
-      { label: 'French Press', action: () => navigate({ page: 'category', slug: 'french-press' }) },
+      { label: 'Travel Gear', action: () => navigate({ page: 'category', slug: 'travel-gear' }) },
+      { label: 'Travel Gadgets', action: () => navigate({ page: 'category', slug: 'travel-gadgets' }) },
+      { label: 'Electronics', action: () => navigate({ page: 'category', slug: 'electronics' }) },
+      { label: 'Home & Office', action: () => navigate({ page: 'category', slug: 'home-office' }) },
+      { label: 'Fitness', action: () => navigate({ page: 'category', slug: 'fitness' }) },
     ],
     'Legal': [
       { label: 'Privacy Policy', action: () => goToPage('privacy') },
@@ -49,10 +49,10 @@ export function Footer() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             {[
-              { icon: Search, label: 'Researched Products', desc: '100+ products tested' },
-              { icon: Award, label: 'Expert Recommendations', desc: 'By certified specialists' },
+              { icon: Compass, label: 'Expert-Tested Gear', desc: 'Real-world product testing' },
+              { icon: Award, label: 'Unbiased Reviews', desc: 'Independent editorial process' },
               { icon: RefreshCw, label: 'Updated Regularly', desc: 'Reviews kept current' },
-              { icon: Shield, label: 'Independent Reviews', desc: 'Unbiased & honest' },
+              { icon: Shield, label: 'Multi-Retailer', desc: 'Amazon, Walmart, Best Buy & more' },
             ].map((badge, index) => (
               <div key={badge.label} className="flex flex-col items-center gap-1 gentle-float" style={{ animationDelay: `${index * 0.2}s` }}>
                 <badge.icon className="text-[#febd69]" size={24} />
@@ -92,11 +92,9 @@ export function Footer() {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="bg-[#131921] rounded-lg p-4 text-center">
             <p className="text-xs text-gray-400 leading-relaxed">
-              <strong className="text-gray-300">Affiliate Disclosure:</strong> As an Amazon Associate I earn from qualifying purchases. 
-              BrewHub Reviews is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program 
-              designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com. 
-              Our recommendations are based on research, comparison, and editorial evaluation. Affiliate commissions do not 
-              influence our rankings or recommendations.
+              <strong className="text-gray-300">Affiliate Disclosure:</strong> GearScope earns commissions from qualifying purchases through affiliate links on this site.
+              We participate in affiliate programs with Amazon, Walmart, Best Buy, and other retailers. Our recommendations are based on research,
+              comparison, and editorial evaluation. Affiliate commissions do not influence our rankings or recommendations.
             </p>
           </div>
         </div>
@@ -106,10 +104,10 @@ export function Footer() {
       <div className="bg-[#131921] py-4">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
           <button onClick={goHome} className="text-white font-bold text-lg">
-            Brew<span className="gradient-text">Hub</span>
+            Gear<span className="gradient-text">Scope</span>
           </button>
           <p className="text-gray-500 text-xs text-center">
-            © {new Date().getFullYear()} BrewHub Reviews. All rights reserved. 
+            © {new Date().getFullYear()} GearScope. All rights reserved.
             All product names, logos, and brands are property of their respective owners.
           </p>
         </div>

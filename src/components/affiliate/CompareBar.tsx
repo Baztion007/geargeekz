@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useCompareStore } from '@/lib/compare';
 import { useRouterStore } from '@/lib/router';
 import { getProductBySlug } from '@/data/products';
-import { X, GitCompare, Coffee } from 'lucide-react';
+import { X, GitCompare, Package } from 'lucide-react';
 
 export function CompareBar() {
   const items = useCompareStore((s) => s.items);
@@ -64,7 +64,7 @@ export function CompareBar() {
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-amber-50">
-                          <Coffee size={12} className="text-amber-400" />
+                          <Package size={12} className="text-amber-400" />
                         </div>
                       )}
                     </div>

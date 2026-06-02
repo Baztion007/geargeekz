@@ -17,7 +17,7 @@ import {
   TableCell,
   TableRow,
 } from '@/components/ui/table';
-import { X, Check, Coffee, ShoppingBag, BarChart3, Plus, ChevronLeft, ChevronRight, ArrowLeftRight } from 'lucide-react';
+import { X, Check, Package, ShoppingBag, BarChart3, Plus, ChevronLeft, ChevronRight, ArrowLeftRight } from 'lucide-react';
 
 export function ComparePage() {
   const items = useCompareStore((s) => s.items);
@@ -89,11 +89,11 @@ export function ComparePage() {
           </p>
           <div className="flex items-center justify-center gap-3">
             <Button
-              onClick={() => goToPage('best-sellers')}
+              onClick={() => goToPage('home')}
               className="bg-[#febd69] hover:bg-[#f3a847] text-[#131921] font-bold"
             >
               <ShoppingBag size={16} className="mr-2" />
-              Browse Best Sellers
+              Browse Products
             </Button>
           </div>
           {products.length === 1 && (
@@ -206,8 +206,8 @@ export function ComparePage() {
                         className="w-full h-full object-contain p-4"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-amber-50">
-                        <Coffee size={40} className="text-amber-400" />
+                      <div className="w-full h-full flex items-center justify-center bg-amber-50 dark:bg-gray-700">
+                        <Package size={40} className="text-amber-400 dark:text-amber-500" />
                       </div>
                     )}
                   </div>
@@ -220,21 +220,13 @@ export function ComparePage() {
                     {product!.title}
                   </h3>
 
-                  {/* Price */}
-                  <div className="flex items-baseline justify-center gap-2 mb-2">
-                    <span className="text-lg font-bold text-gray-900">{product!.price}</span>
-                    {product!.originalPrice && (
-                      <span className="text-sm text-gray-400 line-through">{product!.originalPrice}</span>
-                    )}
-                  </div>
-
-                  {/* Star Rating */}
+                  {/* Rating */}
                   <div className="flex justify-center mb-3">
                     <StarRating rating={product!.rating} size="sm" />
                   </div>
 
                   {/* CTA */}
-                  <CheckPriceButton asin={product!.asin} size="sm" className="w-full" />
+                  <CheckPriceButton merchant={product!.merchant} productId={product!.asin} size="sm" className="w-full" />
                 </CardContent>
               </Card>
             ))}
@@ -450,7 +442,7 @@ export function ComparePage() {
             {items.length < 4 && (
               <Button
                 variant="outline"
-                onClick={() => goToPage('best-sellers')}
+                onClick={() => goToPage('home')}
                 className="mr-3"
               >
                 <Plus size={16} className="mr-2" />

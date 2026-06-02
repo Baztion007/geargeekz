@@ -15,12 +15,13 @@ import {
   Calendar,
   User,
   ArrowRight,
-  Coffee,
+  Package,
   Tag,
   Star,
+  Clock,
 } from 'lucide-react';
 
-const CATEGORIES = ['All', 'Guides', 'Comparisons', 'Science', 'Tips', 'Reviews'];
+const CATEGORIES = ['All', 'Travel Gear', 'Home & Office', 'Electronics', 'Fitness'];
 
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr);
@@ -28,11 +29,10 @@ function formatDate(dateStr: string): string {
 }
 
 const categoryColors: Record<string, string> = {
-  Guides: 'bg-emerald-600',
-  Comparisons: 'bg-blue-600',
-  Science: 'bg-purple-600',
-  Tips: 'bg-amber-600',
-  Reviews: 'bg-rose-600',
+  'Travel Gear': 'bg-emerald-600',
+  'Home & Office': 'bg-sky-600',
+  'Electronics': 'bg-violet-600',
+  'Fitness': 'bg-rose-600',
 };
 
 export function BlogPage() {
@@ -82,10 +82,10 @@ export function BlogPage() {
           <div className="bg-gradient-to-r from-[#131921] to-[#37475a] p-8 md:p-12 text-white">
             <div className="flex items-center gap-3 mb-4">
               <BookOpen className="w-10 h-10 text-[#febd69]" />
-              <h1 className="text-3xl md:text-4xl font-bold">BrewHub Blog</h1>
+              <h1 className="text-3xl md:text-4xl font-bold">GearScope Blog</h1>
             </div>
             <p className="text-lg text-gray-300 max-w-3xl">
-              Expert guides, comparisons, and tips for coffee enthusiasts
+              Expert guides, comparisons, and insights for gear enthusiasts and savvy shoppers
             </p>
             <div className="flex items-center gap-4 mt-4 text-sm">
               <span className="flex items-center gap-1.5 text-[#febd69]">
@@ -114,7 +114,7 @@ export function BlogPage() {
           <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
             {/* Category Tabs - horizontally scrollable on mobile */}
             <div className="flex items-center gap-2 overflow-x-auto flex-1 scrollbar-none snap-x snap-mandatory pb-1 -mb-1">
-              <span className="text-sm font-semibold text-gray-700 mr-1 shrink-0">Category:</span>
+              <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 mr-1 shrink-0">Category:</span>
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat}
@@ -122,7 +122,7 @@ export function BlogPage() {
                   className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors whitespace-nowrap snap-start ${
                     selectedCategory === cat
                       ? 'bg-[#131921] text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
                   }`}
                 >
                   {cat}
@@ -160,7 +160,7 @@ export function BlogPage() {
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-12 text-center mb-6">
             <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">No Articles Found</h2>
-            <p className="text-gray-600 mb-6 max-w-md mx-auto">
+            <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
               We couldn&apos;t find any articles matching your search. Try adjusting your filters or search terms.
             </p>
             <Button
@@ -209,7 +209,7 @@ function FeaturedArticleHero({ post, author, onReadMore }: FeaturedArticleHeroPr
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-[#131921] to-[#37475a] flex items-center justify-center">
-            <Coffee className="w-24 h-24 text-[#febd69]/30" />
+            <Package className="w-24 h-24 text-[#febd69]/30" />
           </div>
         )}
         {/* Gradient overlay */}
@@ -219,7 +219,7 @@ function FeaturedArticleHero({ post, author, onReadMore }: FeaturedArticleHeroPr
       {/* Content overlay */}
       <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white">
         <div className="max-w-3xl">
-          {/* Category badge */}
+          {/* Badges */}
           <Badge
             className={`${categoryColors[post.category] || 'bg-gray-600'} text-white text-xs font-semibold mb-3`}
           >
@@ -237,7 +237,7 @@ function FeaturedArticleHero({ post, author, onReadMore }: FeaturedArticleHeroPr
             {post.title}
           </h2>
 
-          {/* Author and date */}
+          {/* Author, date, reading time */}
           <div className="flex items-center gap-4 text-sm text-gray-300 mb-3">
             {author && (
               <button
@@ -254,6 +254,10 @@ function FeaturedArticleHero({ post, author, onReadMore }: FeaturedArticleHeroPr
             <span className="flex items-center gap-1.5">
               <Calendar size={14} />
               {formatDate(post.publishedAt)}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Clock size={14} />
+              {post.readingTime} min read
             </span>
           </div>
 
@@ -290,7 +294,7 @@ function BlogCard({ post, author, onReadMore }: BlogCardProps) {
   const goToAuthor = useRouterStore((s) => s.goToAuthor);
 
   return (
-    <article className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden flex flex-col">
+    <article className="bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden flex flex-col">
       {/* Image */}
       <div
         className="relative cursor-pointer overflow-hidden aspect-[16/9] bg-gray-100"
@@ -306,7 +310,7 @@ function BlogCard({ post, author, onReadMore }: BlogCardProps) {
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-[#131921] to-[#37475a] flex items-center justify-center">
-            <Coffee className="w-16 h-16 text-[#febd69]/50" />
+            <Package className="w-16 h-16 text-[#febd69]/50" />
           </div>
         )}
 
@@ -316,23 +320,29 @@ function BlogCard({ post, author, onReadMore }: BlogCardProps) {
         >
           {post.category}
         </Badge>
+
+        {/* Reading Time Badge */}
+        <Badge className="absolute top-3 right-3 bg-black/60 text-white text-xs font-medium hover:bg-black/60 gap-1">
+          <Clock size={10} />
+          {post.readingTime} min
+        </Badge>
       </div>
 
       {/* Content */}
       <div className="p-4 sm:p-5 flex flex-col flex-1">
         {/* Title */}
         <h2
-          className="font-bold text-gray-900 text-base sm:text-lg leading-snug mb-2 cursor-pointer hover:text-[#c7511f] transition-colors line-clamp-2"
+          className="font-bold text-gray-900 dark:text-white text-base sm:text-lg leading-snug mb-2 cursor-pointer hover:text-[#c7511f] transition-colors line-clamp-2"
           onClick={onReadMore}
         >
           {post.title}
         </h2>
 
         {/* Excerpt */}
-        <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4 line-clamp-2 sm:line-clamp-3 flex-1">{post.excerpt}</p>
+        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-3 sm:mb-4 line-clamp-2 sm:line-clamp-3 flex-1">{post.excerpt}</p>
 
-        {/* Author & Date */}
-        <div className="flex items-center gap-3 mb-4 text-xs text-gray-500">
+        {/* Author, Date & Reading Time */}
+        <div className="flex items-center gap-3 mb-4 text-xs text-gray-500 dark:text-gray-400">
           {author && (
             <button
               onClick={(e) => {
@@ -349,12 +359,16 @@ function BlogCard({ post, author, onReadMore }: BlogCardProps) {
             <Calendar size={12} />
             {formatDate(post.publishedAt)}
           </span>
+          <span className="flex items-center gap-1.5">
+            <Clock size={12} />
+            {post.readingTime}m
+          </span>
         </div>
 
         {/* Tags */}
         <div className="flex items-center gap-1.5 flex-wrap mb-4">
           {post.tags.slice(0, 3).map((tag) => (
-            <Badge key={tag} variant="outline" className="text-[10px] px-2 py-0 text-gray-500 border-gray-200">
+            <Badge key={tag} variant="outline" className="text-[10px] px-2 py-0 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-600">
               {tag}
             </Badge>
           ))}

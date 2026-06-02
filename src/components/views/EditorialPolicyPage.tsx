@@ -15,11 +15,11 @@ import {
   Eye,
   Star,
   FlaskConical,
-  DollarSign,
-  Hammer,
   Users,
   Lightbulb,
   Scale,
+  Package,
+  Hammer,
 } from 'lucide-react';
 
 export function EditorialPolicyPage() {
@@ -37,7 +37,7 @@ export function EditorialPolicyPage() {
             </div>
             <p className="text-lg text-gray-300 max-w-3xl">
               Our commitment to honest, unbiased reviews. Learn how we select, test, and recommend
-              coffee equipment.
+              products across travel, tech, fitness, and outdoor categories.
             </p>
           </div>
         </div>
@@ -46,12 +46,12 @@ export function EditorialPolicyPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 mb-6">
           <div className="flex items-center gap-3 mb-4">
             <Target className="w-6 h-6 text-[#c7511f]" />
-            <h2 className="text-2xl font-bold text-gray-900">How We Select Products</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">How We Select Products</h2>
           </div>
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-            We carefully curate every product that appears on BrewHub Reviews. Our selection process
+            We carefully curate every product that appears on GearScope. Our selection process
             is driven by reader interest, market relevance, and our commitment to covering a diverse
-            range of products across all price points.
+            range of products across all categories.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -64,17 +64,17 @@ export function EditorialPolicyPage() {
               {
                 icon: Lightbulb,
                 title: 'Innovation',
-                desc: 'New and innovative products that push the boundaries of home coffee brewing always get our attention.',
+                desc: 'New and innovative products that push the boundaries of their categories always get our attention.',
               },
               {
                 icon: Scale,
                 title: 'Market Coverage',
-                desc: 'We aim to cover products across all price ranges — from budget-friendly options to premium equipment — so every reader finds relevant recommendations.',
+                desc: 'We aim to cover products across all ranges — from budget-friendly options to premium equipment — so every reader finds relevant recommendations.',
               },
               {
                 icon: Star,
                 title: 'Proven Track Record',
-                desc: 'Established products with strong reputations in the coffee community are regularly reviewed and compared against newer alternatives.',
+                desc: 'Established products with strong reputations in their communities are regularly reviewed and compared against newer alternatives.',
               },
             ].map((item) => (
               <div
@@ -82,14 +82,14 @@ export function EditorialPolicyPage() {
                 className="bg-gray-50 dark:bg-gray-700 rounded-lg p-5 border border-gray-100 dark:border-gray-600"
               >
                 <item.icon className="w-7 h-7 text-[#007185] mb-3" />
-                <h3 className="font-bold text-gray-900 mb-2">{item.title}</h3>
+                <h3 className="font-bold text-gray-900 dark:text-white mb-2">{item.title}</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
 
-          <div className="mt-6 p-4 bg-blue-50 border border-blue-100 rounded-lg">
-            <p className="text-sm text-blue-800">
+          <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-lg">
+            <p className="text-sm text-blue-800 dark:text-blue-300">
               <strong>Important:</strong> Manufacturers cannot pay to have their products reviewed
               on our site. Product selection is solely at the discretion of our editorial team.
             </p>
@@ -100,7 +100,7 @@ export function EditorialPolicyPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 mb-6">
           <div className="flex items-center gap-3 mb-4">
             <FlaskConical className="w-6 h-6 text-[#c7511f]" />
-            <h2 className="text-2xl font-bold text-gray-900">Review Methodology</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Review Methodology</h2>
           </div>
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
             Every product we review goes through a rigorous, standardized testing process designed
@@ -122,17 +122,17 @@ export function EditorialPolicyPage() {
               {
                 step: '3',
                 title: 'Extended Testing Period',
-                desc: 'We use each product daily for a minimum of two weeks — often longer for espresso machines and grinders. This ensures we evaluate performance over time, not just out of the box.',
+                desc: 'We use each product daily for a minimum of two weeks — often longer for complex products like standing desks or fitness equipment. This ensures we evaluate performance over time, not just out of the box.',
               },
               {
                 step: '4',
                 title: 'Comparative Testing',
-                desc: 'Where possible, we test products side-by-side with direct competitors using the same beans, water, and conditions. This gives us the most meaningful performance comparisons.',
+                desc: 'Where possible, we test products side-by-side with direct competitors under the same conditions. This gives us the most meaningful performance comparisons.',
               },
               {
                 step: '5',
                 title: 'Data Collection & Analysis',
-                desc: 'We measure extraction yield, brew temperature, grind consistency, and other quantitative metrics when applicable. Subjective assessments are always balanced with objective data.',
+                desc: 'We measure relevant metrics when applicable — battery life, charging speed, noise levels, durability, and more. Subjective assessments are always balanced with objective data.',
               },
               {
                 step: '6',
@@ -145,7 +145,7 @@ export function EditorialPolicyPage() {
                   {item.step}
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-1">{item.title}</h3>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{item.title}</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{item.desc}</p>
                 </div>
               </div>
@@ -157,11 +157,11 @@ export function EditorialPolicyPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 mb-6">
           <div className="flex items-center gap-3 mb-4">
             <BarChart3 className="w-6 h-6 text-[#c7511f]" />
-            <h2 className="text-2xl font-bold text-gray-900">Rating Criteria</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Rating Criteria</h2>
           </div>
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
             Every product is rated across six key categories on a scale of 1.0 to 5.0. Our overall
-            rating is a weighted average that reflects what matters most to coffee enthusiasts.
+            rating is a weighted average that reflects what matters most to gear enthusiasts.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -177,28 +177,28 @@ export function EditorialPolicyPage() {
                 icon: FlaskConical,
                 label: 'Performance',
                 weight: '25%',
-                desc: 'How well does the product perform its primary function? For espresso machines, this means shot quality, temperature stability, and extraction consistency.',
+                desc: 'How well does the product perform its primary function? Does it deliver on its core promise consistently?',
                 color: 'bg-emerald-100 text-emerald-700',
               },
               {
                 icon: Users,
                 label: 'Ease of Use',
                 weight: '20%',
-                desc: 'How intuitive is the product to operate? We consider the learning curve, interface design, and day-to-day usability for both beginners and experienced users.',
-                color: 'bg-blue-100 text-blue-700',
+                desc: 'How intuitive is the product to operate? We consider the learning curve, interface design, and day-to-day usability for all experience levels.',
+                color: 'bg-sky-100 text-sky-700',
               },
               {
-                icon: DollarSign,
+                icon: Package,
                 label: 'Value',
                 weight: '20%',
-                desc: 'Does the product deliver good value for its price? We compare performance and features against similarly priced alternatives to assess bang for your buck.',
+                desc: 'Does the product deliver good value relative to its competition? We compare performance and features against similarly positioned alternatives.',
                 color: 'bg-green-100 text-green-700',
               },
               {
                 icon: Hammer,
                 label: 'Build Quality',
                 weight: '20%',
-                desc: 'How well is the product constructed? We evaluate materials, fit and finish, durability, and long-term reliability based on our testing and industry knowledge.',
+                desc: 'How well is the product constructed? We evaluate materials, fit and finish, durability, and long-term reliability based on our testing.',
                 color: 'bg-purple-100 text-purple-700',
               },
               {
@@ -209,7 +209,7 @@ export function EditorialPolicyPage() {
                 color: 'bg-orange-100 text-orange-700',
               },
             ].map((item) => (
-              <Card key={item.label} className="border border-gray-200 overflow-hidden">
+              <Card key={item.label} className="border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <CardContent className="p-5">
                   <div className="flex items-start gap-3">
                     <div className={`w-10 h-10 shrink-0 rounded-lg ${item.color} flex items-center justify-center`}>
@@ -217,7 +217,7 @@ export function EditorialPolicyPage() {
                     </div>
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-bold text-gray-900">{item.label}</h3>
+                        <h3 className="font-bold text-gray-900 dark:text-white">{item.label}</h3>
                         <Badge variant="outline" className="text-xs">
                           {item.weight}
                         </Badge>
@@ -235,7 +235,7 @@ export function EditorialPolicyPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 mb-6">
           <div className="flex items-center gap-3 mb-4">
             <ListChecks className="w-6 h-6 text-[#c7511f]" />
-            <h2 className="text-2xl font-bold text-gray-900">How We Make Recommendations</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">How We Make Recommendations</h2>
           </div>
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
             Our product recommendations are never influenced by affiliate commissions or
@@ -246,7 +246,7 @@ export function EditorialPolicyPage() {
             {[
               'We only recommend products we have personally tested and would use ourselves.',
               'Recommendations are based on how well a product serves its intended audience, not its absolute score.',
-              'A $150 product that earns 4.3 stars can be a better recommendation than a $1,000 product that earns 4.7 stars — if the reader is on a budget.',
+              'A mid-range product that excels in its category can be a better recommendation than a premium product with minor advantages.',
               'We always explain who a product is best for and who should look elsewhere, so you can make the right decision for your situation.',
               'Our &quot;Best For&quot; labels reflect genuine use cases, not marketing copy.',
               'When multiple products score similarly, we consider long-term reliability, customer support, and community feedback.',
@@ -265,7 +265,7 @@ export function EditorialPolicyPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 mb-6">
           <div className="flex items-center gap-3 mb-4">
             <ShieldCheck className="w-6 h-6 text-[#c7511f]" />
-            <h2 className="text-2xl font-bold text-gray-900">Affiliate Disclosure Practices</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Affiliate Disclosure Practices</h2>
           </div>
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
             We believe complete transparency about our affiliate relationships is essential to
@@ -275,9 +275,9 @@ export function EditorialPolicyPage() {
           <div className="space-y-3 mb-6">
             {[
               'Every page containing affiliate links includes a clear disclosure statement.',
-              'Affiliate links are clearly labeled with "Check Price on Amazon" buttons.',
-              'We disclose the Amazon Associates Program relationship on our About page and in site-wide disclosures.',
-              'Product rankings are never adjusted to favor higher-commission items.',
+              'Affiliate links are clearly labeled with "Check Price" or "View Latest Price" buttons.',
+              'We disclose all affiliate program relationships on our About page and in site-wide disclosures.',
+              'Product rankings are never adjusted to favor higher-commission items or retailers.',
               'We comply with the FTC\'s guidelines on endorsements and testimonials (16 CFR Part 255).',
               'We do not use link shorteners or redirects that hide the destination of affiliate links.',
             ].map((item, index) => (
@@ -297,27 +297,27 @@ export function EditorialPolicyPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 mb-6">
           <div className="flex items-center gap-3 mb-4">
             <ShieldCheck className="w-6 h-6 text-emerald-600" />
-            <h2 className="text-2xl font-bold text-gray-900">Our Commitment to Editorial Independence</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Our Commitment to Editorial Independence</h2>
           </div>
 
-          <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-6 mb-6">
-            <p className="text-emerald-800 leading-relaxed font-medium">
+          <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg p-6 mb-6">
+            <p className="text-emerald-800 dark:text-emerald-300 leading-relaxed font-medium">
               &quot;Our editorial team operates with complete independence. No manufacturer, advertiser,
               or affiliate partner can influence our reviews, ratings, or recommendations. We would
               rather lose an affiliate partnership than compromise our integrity.&quot;
             </p>
-            <p className="text-emerald-700 text-sm mt-3">— The BrewHub Reviews Team</p>
+            <p className="text-emerald-700 dark:text-emerald-400 text-sm mt-3">— The GearScope Team</p>
           </div>
 
           <div className="space-y-4">
             {[
               {
                 title: 'Separation of Teams',
-                desc: 'Our editorial team operates independently from any business or partnerships team. Reviewers do not have access to affiliate revenue data and cannot see which products generate the most commission.',
+                desc: 'Our editorial team operates independently from any business or partnerships team. Reviewers do not have access to affiliate revenue data and cannot see which products or retailers generate the most commission.',
               },
               {
                 title: 'No Paid Placements',
-                desc: 'We never accept payment for positive reviews, preferential rankings, or product placement. "Sponsored" content does not exist on BrewHub Reviews.',
+                desc: 'We never accept payment for positive reviews, preferential rankings, or product placement. "Sponsored" content does not exist on GearScope.',
               },
               {
                 title: 'Honest Criticism',
@@ -330,7 +330,7 @@ export function EditorialPolicyPage() {
             ].map((item, index) => (
               <React.Fragment key={item.title}>
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-1">{item.title}</h3>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{item.title}</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{item.desc}</p>
                 </div>
                 {index < 3 && <Separator />}

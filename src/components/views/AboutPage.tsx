@@ -9,7 +9,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import {
-  Coffee,
+  Package,
   Shield,
   Search,
   Heart,
@@ -35,12 +35,12 @@ export function AboutPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden mb-6">
           <div className="bg-gradient-to-r from-[#131921] to-[#37475a] p-8 md:p-12 text-white">
             <div className="flex items-center gap-3 mb-4">
-              <Coffee className="w-10 h-10 text-[#febd69]" />
-              <h1 className="text-3xl md:text-4xl font-bold">About BrewHub Reviews</h1>
+              <Package className="w-10 h-10 text-[#febd69]" />
+              <h1 className="text-3xl md:text-4xl font-bold">About GearScope</h1>
             </div>
             <p className="text-lg text-gray-300 max-w-3xl">
-              Your trusted source for honest, in-depth coffee equipment reviews. We help coffee
-              enthusiasts make informed purchasing decisions through rigorous testing and expert analysis.
+              Your trusted source for honest, in-depth product reviews. We help gear enthusiasts
+              make informed purchasing decisions through rigorous testing and expert analysis.
             </p>
           </div>
         </div>
@@ -49,16 +49,16 @@ export function AboutPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 mb-6">
           <div className="flex items-center gap-3 mb-4">
             <Target className="w-6 h-6 text-[#c7511f]" />
-            <h2 className="text-2xl font-bold text-gray-900">Our Mission</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Our Mission</h2>
           </div>
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-            At BrewHub Reviews, we believe everyone deserves great coffee at home. Our mission is to cut
+            At GearScope, we believe everyone deserves the right gear for their lifestyle. Our mission is to cut
             through the marketing noise and provide honest, evidence-based reviews that help you find the
-            right equipment for your needs and budget.
+            right products for your needs — whether you&apos;re a frequent traveler, remote worker, fitness enthusiast, or outdoor adventurer.
           </p>
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-            We purchase and test every product we review. Our team of certified coffee professionals
-            spends weeks with each piece of equipment before publishing their findings. We don&apos;t
+            We purchase and test every product we review. Our team of experienced reviewers
+            spends weeks with each product before publishing their findings. We don&apos;t
             accept payment for positive reviews, and we never recommend products we wouldn&apos;t use
             ourselves.
           </p>
@@ -77,7 +77,7 @@ export function AboutPage() {
               {
                 icon: Heart,
                 title: 'Community-Focused',
-                desc: 'Built by coffee lovers, for coffee lovers. Your trust is our priority.',
+                desc: 'Built by gear enthusiasts, for gear enthusiasts. Your trust is our priority.',
               },
             ].map((item) => (
               <div
@@ -85,8 +85,8 @@ export function AboutPage() {
                 className="bg-gray-50 dark:bg-gray-700 rounded-lg p-5 border border-gray-100 dark:border-gray-600"
               >
                 <item.icon className="w-8 h-8 text-[#007185] mb-3" />
-                <h3 className="font-bold text-gray-900 mb-1">{item.title}</h3>
-                <p className="text-sm text-gray-600">{item.desc}</p>
+                <h3 className="font-bold text-gray-900 dark:text-white mb-1">{item.title}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -96,34 +96,28 @@ export function AboutPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 mb-6">
           <div className="flex items-center gap-3 mb-4">
             <Award className="w-6 h-6 text-amber-600" />
-            <h2 className="text-2xl font-bold text-gray-900">Affiliate Disclosure</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Affiliate Disclosure</h2>
           </div>
           <Disclosure />
           <div className="mt-4 space-y-3 text-gray-700 dark:text-gray-300 leading-relaxed">
             <p>
-              BrewHub Reviews is a participant in the Amazon Services LLC Associates Program, an
-              affiliate advertising program designed to provide a means for sites to earn advertising
-              fees by advertising and linking to Amazon.com.
+              GearScope participates in affiliate programs with multiple retailers including Amazon, Walmart,
+              Best Buy, REI, and B&amp;H Photo. When you click on one of our affiliate links and make a
+              purchase, we may receive a small commission at no additional cost to you.
             </p>
             <p>
-              When you click on one of our affiliate links and make a purchase, we may receive a small
-              commission at no additional cost to you. These commissions help us maintain our website,
-              purchase products for testing, and continue producing high-quality content.
-            </p>
-            <p>
-              We want to be completely transparent about this relationship. Our editorial team operates
-              independently from our business team, and affiliate partnerships never influence which
-              products we review or how we rate them.
+              These commissions help us maintain our website, purchase products for testing, and continue
+              producing high-quality content. We want to be completely transparent about this relationship.
+              Our editorial team operates independently from our business team, and affiliate partnerships
+              never influence which products we review or how we rate them.
             </p>
           </div>
           <EditorialIndependence />
-          <div className="mt-4 p-4 bg-blue-50 border border-blue-100 rounded-lg">
-            <p className="text-sm text-blue-800">
-              <strong>Amazon Disclaimer:</strong> Certain content that appears on BrewHub Reviews comes
-              from Amazon Services LLC. This content is provided &apos;as is&apos; and is subject to change or
-              removal at any time. Product prices and availability are accurate as of the date/time
-              indicated and are subject to change. Any price and availability information displayed on
-              Amazon.com at the time of purchase will apply to the purchase of this product.
+          <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-lg">
+            <p className="text-sm text-blue-800 dark:text-blue-300">
+              <strong>Disclaimer:</strong> Product availability and pricing are determined by retailers and
+              are subject to change. GearScope does not set prices — always check the retailer&apos;s website
+              for the most current information before making a purchase.
             </p>
           </div>
         </div>
@@ -132,45 +126,46 @@ export function AboutPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 mb-6">
           <div className="flex items-center gap-3 mb-6">
             <Users className="w-6 h-6 text-[#007185]" />
-            <h2 className="text-2xl font-bold text-gray-900">Our Team</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Our Team</h2>
           </div>
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-            Our reviews are written by experienced coffee professionals who are passionate about
-            helping you find the best equipment. Each reviewer brings unique expertise and years
-            of hands-on experience.
+            Our reviews are written by experienced product reviewers who are passionate about
+            helping you find the best gear. Each reviewer brings unique expertise and years
+            of hands-on experience across travel, tech, fitness, and outdoor categories.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {authors.map((author) => (
               <Card
                 key={author.slug}
-                className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer border border-gray-200"
+                className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer border border-gray-200 dark:border-gray-700"
               >
                 <CardContent className="p-6">
                   <div className="flex gap-4">
-                    {/* Author photo placeholder */}
+                    {/* Author photo */}
                     <div
-                      className="w-20 h-20 shrink-0 rounded-full bg-gradient-to-br from-[#131921] to-[#37475a] flex items-center justify-center text-white text-2xl font-bold"
+                      className="w-20 h-20 shrink-0 rounded-full bg-gradient-to-br from-[#131921] to-[#37475a] flex items-center justify-center text-white text-2xl font-bold overflow-hidden"
                       onClick={() => goToAuthor(author.slug)}
                     >
-                      {author.name
-                        .split(' ')
-                        .map((n) => n[0])
-                        .join('')}
+                      {author.photo ? (
+                        <img src={author.photo} alt={author.name} className="w-full h-full object-cover" />
+                      ) : (
+                        author.name.split(' ').map((n) => n[0]).join('')
+                      )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3
-                        className="text-lg font-bold text-gray-900 hover:text-[#c7511f] cursor-pointer"
+                        className="text-lg font-bold text-gray-900 dark:text-white hover:text-[#c7511f] cursor-pointer"
                         onClick={() => goToAuthor(author.slug)}
                       >
                         {author.name}
                       </h3>
                       <div className="flex items-center gap-2 mt-1 mb-2">
-                        <Badge variant="secondary" className="text-xs bg-[#febd69]/20 text-[#131921]">
+                        <Badge variant="secondary" className="text-xs bg-[#febd69]/20 text-[#131921] dark:text-[#febd69]">
                           <BookOpen size={10} className="mr-1" />
                           {author.reviewCount} Reviews
                         </Badge>
                       </div>
-                      <p className="text-sm text-gray-600 line-clamp-3 mb-3">
+                      <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3 mb-3">
                         {author.bio.substring(0, 150)}...
                       </p>
                       <div className="flex flex-wrap gap-1.5 mb-3">
@@ -218,7 +213,7 @@ export function AboutPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 mb-6">
           <div className="flex items-center gap-3 mb-4">
             <Shield className="w-6 h-6 text-emerald-600" />
-            <h2 className="text-2xl font-bold text-gray-900">Editorial Standards</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Editorial Standards</h2>
           </div>
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
             We hold ourselves to the highest editorial standards to ensure our readers can trust
@@ -241,7 +236,7 @@ export function AboutPage() {
               },
               {
                 title: 'Regular Updates',
-                desc: 'Our reviews are living documents. We re-test products after firmware updates, price changes, and when new competitors enter the market.',
+                desc: 'Our reviews are living documents. We re-test products after firmware updates and when new competitors enter the market.',
               },
               {
                 title: 'Balanced Coverage',
@@ -258,7 +253,7 @@ export function AboutPage() {
                     {index + 1}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">{item.title}</h3>
+                    <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{item.title}</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
@@ -272,7 +267,7 @@ export function AboutPage() {
         <div className="bg-gradient-to-r from-[#131921] to-[#37475a] rounded-lg p-8 text-center text-white">
           <h2 className="text-2xl font-bold mb-3">Have Questions?</h2>
           <p className="text-gray-300 mb-6">
-            We&apos;re always happy to help you find the perfect coffee equipment.
+            We&apos;re always happy to help you find the perfect gear for your needs.
           </p>
           <button
             onClick={() => navigate({ page: 'contact' } as any)}

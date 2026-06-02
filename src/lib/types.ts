@@ -1,28 +1,31 @@
-// Product types for the affiliate site
+// Core types for the premium product review publication — GearScope
+
 export interface Product {
   id: string;
   slug: string;
   title: string;
   image: string;
-  gallery?: string[];
+  gallery: string[];
   excerpt: string;
   category: string;
   categorySlug: string;
+  subcategory: string;
   brand: string;
+  brandSlug: string;
   features: Record<string, string>;
   pros: string[];
   cons: string[];
-  price: string;
-  originalPrice?: string;
+  // NO PRICE FIELDS — prices are shown only on merchant sites
   rating: number;
   ratingBreakdown: RatingBreakdown;
   asin: string;
+  merchant: Merchant;
   tags: string[];
   updatedAt: string;
   publishedAt: string;
   authorSlug: string;
   reviewStatus: 'verified' | 'updated' | 'new';
-  bestFor: string;
+  bestFor: string[];
   summary: string;
   fullReview: string;
   whoIsItFor: string;
@@ -30,6 +33,8 @@ export interface Product {
   specifications: Record<string, string>;
   relatedProducts: string[];
 }
+
+export type Merchant = 'amazon' | 'walmart' | 'bestbuy' | 'target' | 'rei' | 'bhphoto';
 
 export interface RatingBreakdown {
   overall: number;
@@ -47,6 +52,19 @@ export interface Category {
   description: string;
   image: string;
   productCount: number;
+  featured?: boolean;
+}
+
+export interface Brand {
+  slug: string;
+  name: string;
+  logo: string;
+  description: string;
+  founded?: string;
+  headquarters?: string;
+  website?: string;
+  categories: string[];
+  productCount: number;
 }
 
 export interface Author {
@@ -62,6 +80,8 @@ export interface Author {
   };
 }
 
+export type GuideType = 'best-products' | 'comparison' | 'brand-review' | 'category-guide';
+
 export interface BuyingGuide {
   id: string;
   slug: string;
@@ -70,6 +90,7 @@ export interface BuyingGuide {
   image: string;
   category: string;
   categorySlug: string;
+  guideType: GuideType;
   introduction: string;
   recommendedProducts: string[];
   comparisonData: ComparisonRow[];
@@ -77,6 +98,7 @@ export interface BuyingGuide {
   faq: FAQItem[];
   updatedAt: string;
   authorSlug: string;
+  readingTime: number;
 }
 
 export interface ComparisonRow {
@@ -107,6 +129,7 @@ export interface BlogPost {
   updatedAt: string;
   authorSlug: string;
   tags: string[];
+  readingTime: number;
 }
 
 // Router types
@@ -114,6 +137,7 @@ export type RoutePath =
   | { page: 'home' }
   | { page: 'product'; slug: string }
   | { page: 'category'; slug: string }
+  | { page: 'brand'; slug: string }
   | { page: 'search'; query: string }
   | { page: 'buying-guide'; slug: string }
   | { page: 'author'; slug: string }
@@ -123,9 +147,8 @@ export type RoutePath =
   | { page: 'terms' }
   | { page: 'editorial-policy' }
   | { page: 'how-we-test' }
-  | { page: 'deals' }
-  | { page: 'best-sellers' }
-  | { page: 'reviews' }
+  | { page: 'trending' }
+  | { page: 'roundups' }
   | { page: 'blog' }
   | { page: 'blog-post'; slug: string }
   | { page: 'wishlist' }

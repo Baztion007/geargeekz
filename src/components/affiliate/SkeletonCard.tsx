@@ -22,11 +22,20 @@ export function SkeletonCard() {
               <div className="h-4 w-3/4 skeleton-shimmer rounded" />
             </div>
 
+            {/* BestFor tags placeholder */}
+            <div className="flex gap-1">
+              <div className="h-4 w-14 skeleton-shimmer rounded-full" />
+              <div className="h-4 w-16 skeleton-shimmer rounded-full" />
+            </div>
+
             {/* Rating placeholder */}
             <div className="h-4 w-28 skeleton-shimmer rounded" />
 
-            {/* Price placeholder */}
-            <div className="h-6 w-20 skeleton-shimmer rounded" />
+            {/* Excerpt placeholder */}
+            <div className="space-y-1.5">
+              <div className="h-3 w-full skeleton-shimmer rounded" />
+              <div className="h-3 w-2/3 skeleton-shimmer rounded" />
+            </div>
 
             {/* Divider */}
             <div className="border-t border-gray-100" />

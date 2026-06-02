@@ -417,7 +417,7 @@ export function UserReviewsSection({ productSlug }: UserReviewsSectionProps) {
               Be the first to review this product
             </h3>
             <p className="text-gray-500 dark:text-gray-400 text-sm mb-4 max-w-md mx-auto">
-              Share your experience with other coffee enthusiasts. Your review helps others make informed decisions.
+              Share your experience with other gear enthusiasts. Your review helps others make informed decisions.
             </p>
             <Button
               onClick={() => setDialogOpen(true)}

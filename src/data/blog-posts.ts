@@ -3,131 +3,93 @@ import { BlogPost } from '@/lib/types';
 export const blogPosts: BlogPost[] = [
   {
     id: '1',
-    slug: 'ultimate-guide-perfect-espresso-shot',
-    title: 'The Ultimate Guide to Pulling the Perfect Espresso Shot',
-    excerpt: 'Master the art of espresso with our comprehensive guide. From grind size to tamping pressure, learn every variable that affects your shot quality and how to control them.',
-    image: '/images/blog-ultimate-guide-perfect-espresso-shot.jpg',
-    category: 'Guides',
-    content: `Pulling the perfect espresso shot is part science, part art, and entirely rewarding. Whether you're a complete beginner or someone looking to refine your technique, understanding the variables that go into a great shot is the first step toward consistently excellent espresso at home.
+    slug: 'ultimate-travel-tech-packing-list-2026',
+    title: 'The Ultimate Travel Tech Packing List for 2026',
+    excerpt: 'From portable chargers to noise-cancelling earbuds, here\'s everything you need to stay powered, connected, and entertained on any trip.',
+    image: '/images/blog-ultimate-travel-tech-packing-list.jpg',
+    category: 'Travel Gear',
+    content: `Packing the right tech can make or break a trip. Too little and you're scrambling for outlets and adapters in foreign airports; too much and you're lugging unnecessary weight through cobblestone streets. After years of trial and error — and some painful lessons learned the hard way — we've distilled the ultimate travel tech packing list down to the essentials.
 
-The foundation of any great espresso is freshly roasted, properly ground coffee. We recommend using beans roasted within the last 2-4 weeks and grinding immediately before brewing. A good burr grinder is essential — blade grinders produce inconsistent particles that lead to uneven extraction. For espresso, you want a grind that feels like fine sand, slightly coarser than powdered sugar. If your shots are running too fast (under 20 seconds), grind finer. If they're choking (over 35 seconds), grind coarser. The sweet spot is typically 25-30 seconds for a double shot.
+The foundation of any travel tech kit is power. Start with the Anker 523 PowerPort Cube — its 65W output charges a laptop, phone, and accessories simultaneously through three ports, and the foldable prongs pack flat. Add the Epicka Universal Travel Adapter for international trips, and you've replaced a tangle of chargers and adapters with just two devices that work everywhere.
 
-Dose and distribution are equally important. Most double portafilters work best with 17-20 grams of coffee. After dosing, use a distribution tool or the Weiss Distribution Technique (WDT) with a thin needle to break up clumps and evenly distribute the grounds. This prevents channeling — where water finds the path of least resistance through the coffee puck, leading to uneven extraction and sour, watery shots.
+Next is portable power. The Anker 737 Power Bank (24,000 mAh) is our go-to for trips longer than a day. It can fast-charge a MacBook Pro and still have enough juice for several phone charges. For shorter trips, a smaller 10,000 mAh bank suffices, but the 737 ensures you never run out regardless of the situation.
 
-Tamping pressure matters less than consistency. The goal is to create a level, uniform bed of coffee. Apply firm, even pressure — about 15-20 pounds of force — and make sure the tamp is level. An uneven tamp creates channels where water bypasses the coffee entirely. Many professionals use a tamp with a slight polish (a gentle spin at the end) to ensure a smooth surface. Don't obsess over exact pressure; consistency from shot to shot is what really matters.
+Audio is essential for travel sanity. Noise-cancelling earbuds like the Sony WF-1000XM5 are perfect for flights and commutes, while a portable speaker like the JBL Charge 5 is great for hotel rooms and beach days. You don't need both — choose based on your priorities.
 
-Temperature and pressure complete the picture. Espresso should be brewed at 195-205°F (90-96°C). Most quality machines have PID temperature controllers that maintain this range. Brewing pressure should be around 9 bar, which is standard for espresso extraction. Pre-infusion — a low-pressure wetting of the coffee grounds before full pressure — can dramatically improve extraction by allowing the coffee bed to saturate evenly, reducing channeling and producing sweeter, more balanced shots.`,
-    publishedAt: '2025-11-15',
-    updatedAt: '2026-02-10',
-    authorSlug: 'sarah-mitchell',
-    tags: ['espresso', 'brewing guide', 'barista tips', 'extraction', 'coffee science'],
+Finally, consider tracking and connectivity. Apple AirTags in your checked luggage provide peace of mind, and the GlocalMe G4 Pro hotspot ensures you have internet anywhere. The total kit weighs about 3 pounds and fits in a small tech organizer, but it covers every scenario from a weekend road trip to a month abroad.`,
+    publishedAt: '2026-02-15',
+    updatedAt: '2026-02-28',
+    authorSlug: 'alex-rivera',
+    tags: ['travel', 'packing list', 'tech', 'gadgets', 'essentials'],
+    readingTime: 8,
   },
   {
     id: '2',
-    slug: 'manual-vs-electric-grinders',
-    title: 'Manual vs Electric Grinders: Which Is Right for You?',
-    excerpt: 'Should you invest in an electric burr grinder or save money with a manual hand grinder? We break down the pros, cons, and best use cases for each type.',
-    image: '/images/blog-manual-vs-electric-grinders.jpg',
-    category: 'Comparisons',
-    content: `The grinder debate is one of the most contested topics in the coffee community, and for good reason — your grinder has a bigger impact on coffee quality than almost any other piece of equipment. The choice between manual and electric grinders ultimately comes down to your brewing habits, budget, and priorities.
+    slug: 'how-to-build-perfect-home-office',
+    title: 'How to Build the Perfect Home Office Setup',
+    excerpt: 'A step-by-step guide to creating an ergonomic, productive workspace that you\'ll actually want to spend time in — from desk to chair to accessories.',
+    image: '/images/blog-how-to-build-perfect-home-office.jpg',
+    category: 'Home & Office',
+    content: `Your home office is more than a desk and a chair — it's the environment where you'll spend a third of your waking hours. Getting it right has an outsized impact on your productivity, comfort, and long-term health. Here's how to build a workspace that works as hard as you do.
 
-Manual hand grinders have come a long way from the cheap, inconsistent models of the past. Modern hand grinders from companies like 1Zpresso, Comandante, and Kinu feature precision-cut stainless steel burrs that rival electric grinders costing twice as much. The biggest advantage is value: a $150 hand grinder often produces grounds as consistent as a $300 electric grinder. They're also completely silent (great for early mornings), portable (perfect for travel and camping), and require no electricity. The downside is effort — grinding 20 grams of coffee for a pour-over takes about 30-60 seconds, and espresso-fine grinding can take over a minute of cranking. If you brew multiple cups a day or make espresso regularly, this can become tedious.
+Start with the desk. A standing desk like the Uplift V2 is the foundation of a modern home office. The ability to alternate between sitting and standing throughout the day reduces back pain, improves circulation, and boosts energy levels. Look for a dual-motor model with memory presets — you'll use them more than you think. Make sure the desk is deep enough (at least 30 inches) to keep your monitor at a comfortable distance.
 
-Electric grinders offer convenience and speed that manual grinders simply can't match. Pop in your beans, press a button, and you have fresh grounds in seconds. This is especially important for espresso, where the fine grind requires significant torque that's exhausting to produce by hand. Electric grinders also tend to have larger bean hoppers, making them more practical for households where multiple people brew coffee throughout the day. The trade-offs are cost (good electric burr grinders start around $150 and go up significantly), noise (they can be loud enough to wake others), and counter space (they take up considerably more room than a hand grinder).
+The chair is where you should invest the most. The Herman Miller Aeron remains the gold standard, and for good reason — its breathable mesh, PostureFit SL lumbar support, and 12-year warranty make it a decade-plus investment in your spinal health. If the Aeron is out of reach, look for chairs with adjustable lumbar support, seat depth adjustment, and breathable materials. Avoid chairs with thick foam cushions that compress and provide no support after a few months.
 
-For pour-over, AeroPress, and French press enthusiasts who brew 1-2 cups a day, a quality hand grinder is often the smarter choice. You get excellent grind consistency, portability, and significant savings. For espresso drinkers, families, or anyone who values speed and convenience, an electric grinder is worth the investment. Many coffee enthusiasts eventually own both — a hand grinder for travel and weekend brewing, and an electric grinder for daily espresso or high-volume brewing. The good news is that either way, upgrading from pre-ground coffee or a blade grinder to a quality burr grinder will dramatically improve your coffee.`,
-    publishedAt: '2025-12-20',
-    updatedAt: '2026-01-25',
-    authorSlug: 'james-carter',
-    tags: ['grinders', 'comparison', 'manual brewing', 'coffee equipment', 'buying advice'],
+Monitor positioning is critical and often overlooked. Your monitor should be at arm's length, with the top of the screen at or slightly below eye level. A monitor arm like the Ergotron LX gives you precise control over height, distance, and angle while freeing up desk space. If you use a laptop, a laptop stand plus external keyboard and mouse is non-negotiable for ergonomics.
+
+Don't forget the details that make a workspace livable: a good desk lamp with adjustable color temperature, cable management to keep your desk clean, and a few personal items that make the space feel like yours. The goal is a workspace that you look forward to entering every morning.`,
+    publishedAt: '2026-01-20',
+    updatedAt: '2026-02-22',
+    authorSlug: 'maya-chen',
+    tags: ['home office', 'ergonomics', 'standing desk', 'workspace', 'productivity'],
+    readingTime: 9,
   },
   {
     id: '3',
-    slug: 'how-water-temperature-affects-coffee',
-    title: 'How Water Temperature Affects Your Coffee',
-    excerpt: 'Water temperature is one of the most overlooked variables in coffee brewing. Discover why a few degrees can make the difference between a balanced cup and a bitter mess.',
-    image: '/images/blog-how-water-temperature-affects-coffee.jpg',
-    category: 'Science',
-    content: `If you've been using boiling water for all your coffee brewing, you might be missing out on the full potential of your beans. Water temperature is one of the most critical yet frequently overlooked variables in coffee extraction, and understanding its effects can transform your daily cup from good to exceptional.
+    slug: 'wireless-earbuds-vs-headphones',
+    title: 'Wireless Earbuds vs Headphones: What\'s Right for You?',
+    excerpt: 'Confused between earbuds and headphones? We break down the real differences in sound quality, noise cancellation, comfort, and use cases.',
+    image: '/images/blog-earbuds-vs-headphones.jpg',
+    category: 'Electronics',
+    content: `The earbuds versus headphones debate isn't just about form factor — it's about fundamentally different approaches to personal audio. Each has distinct advantages that make it better suited for specific situations, and understanding these differences will help you choose the right one (or both) for your lifestyle.
 
-Coffee extraction is a chemical process where water dissolves soluble compounds from the ground coffee. Different compounds extract at different rates and temperatures. Fruit acids and floral aromatics extract first, followed by sugars and caramel-like compounds, with bitter tannins and astringent compounds extracting last. Temperature accelerates this process — hotter water extracts faster and more completely, while cooler water extracts more slowly and selectively. This is why water that's too hot produces bitter, harsh coffee (over-extraction of bitter compounds), while water that's too cool produces sour, weak coffee (under-extraction, missing the sweet middle range).
+Let's start with sound quality, because this is where the biggest misconception lives. Over-ear headphones generally produce better sound than earbuds at the same price point because they have larger drivers that can move more air and create a wider soundstage. The Bose QC Ultra and Shure AONIC 50 deliver a richness and depth that earbuds physically can't match. However, high-end earbuds like the Sony WF-1000XM5 have closed the gap significantly, and with LDAC support, they can actually surpass some mid-range headphones in detail and clarity.
 
-The Specialty Coffee Association recommends a brewing temperature of 195-205°F (90-96°C) for most coffee. This range provides enough heat to extract the desirable sweet and complex compounds without pulling excessive bitterness. However, different roast levels and brewing methods benefit from temperature adjustments. Light roasts, which are denser and have more acidic compounds, often benefit from temperatures at the higher end of the range (200-205°F) to ensure full extraction of their complex flavors. Dark roasts, which are more soluble and have more bitter compounds developed during roasting, are better brewed at lower temperatures (195-200°F) to avoid extracting excessive bitterness.
+Noise cancellation is where form factor matters most. Over-ear headphones have a natural advantage because the ear cups create a physical seal that blocks sound passively, which the active noise cancellation then enhances. The result is noticeably stronger noise blocking. Earbuds rely entirely on ANC since there's no cup seal — but the Sony XM5 proves that earbuds can achieve impressive ANC despite this limitation.
 
-The brewing method also matters. Immersion methods like French press are more forgiving of temperature variations because the coffee steeps for several minutes, allowing extraction to continue even at slightly lower temperatures. Pour-over methods are more temperature-sensitive because water flows through the coffee bed relatively quickly, and a few degrees difference can significantly affect the extraction rate and final flavor. Espresso, with its very short extraction time (25-30 seconds), is perhaps the most temperature-critical method — even a 2-3°F difference can noticeably change the shot quality.
+Comfort is subjective but generally breaks down like this: earbuds are more comfortable for short sessions and active use (exercise, commuting, errands), while over-ear headphones are more comfortable for long sessions if they fit well. The Bose QC Ultra's light clamping force makes it comfortable for 8+ hours, while even the best earbuds can cause ear fatigue after 4-5 hours for some people.
 
-Investing in a variable-temperature kettle gives you precise control over your brewing water and is one of the most impactful upgrades you can make. The Fellow Stagg EKG and Cuisinart CPK-17 are both excellent options we've reviewed. Simply bringing water to a full boil and letting it sit for 30 seconds (which brings it from 212°F to roughly 205°F) is a good approximation if you don't have a temperature-controlled kettle.`,
-    publishedAt: '2025-10-08',
-    updatedAt: '2025-12-30',
-    authorSlug: 'james-carter',
-    tags: ['coffee science', 'water temperature', 'extraction', 'brewing tips', 'chemistry'],
+Our recommendation: most people benefit from owning both. Use earbuds for commuting, exercise, and quick listening sessions. Use over-ear headphones for flights, office work, and dedicated music listening. If you can only choose one, let your primary use case decide: portability = earbuds, comfort and ANC = headphones.`,
+    publishedAt: '2026-01-05',
+    updatedAt: '2026-02-18',
+    authorSlug: 'alex-rivera',
+    tags: ['earbuds', 'headphones', 'comparison', 'audio', 'noise cancelling'],
+    readingTime: 7,
   },
   {
     id: '4',
-    slug: '5-common-french-press-mistakes',
-    title: '5 Common French Press Mistakes and How to Fix Them',
-    excerpt: 'Your French press coffee could be way better than you think. Here are the five most common mistakes people make and simple fixes that will transform your brew.',
-    image: '/images/blog-5-common-french-press-mistakes.jpg',
-    category: 'Tips',
-    content: `The French press is one of the simplest and most forgiving coffee brewing methods, yet many people are making mistakes that result in less-than-stellar cups. The good news is that these mistakes are easy to fix, and the improvements are immediate and dramatic.
+    slug: '5-recovery-tools-every-athlete-needs',
+    title: '5 Recovery Tools Every Athlete Needs',
+    excerpt: 'From percussive therapy to cold exposure, these five recovery tools will help you train harder, recover faster, and perform at your best.',
+    image: '/images/blog-5-recovery-tools-every-athlete.jpg',
+    category: 'Fitness',
+    content: `Recovery is the hidden half of athletic performance. You can train as hard as you want, but if you're not recovering effectively, you're leaving gains on the table and risking injury. These five recovery tools have the science and real-world results to back them up — and they're accessible to athletes at every level.
 
-Mistake #1: Using water that's too hot. Pouring vigorously boiling water directly onto your coffee grounds is one of the most common errors. Boiling water (212°F/100°C) scorches the coffee, extracting bitter, astringent compounds that mask the coffee's natural sweetness and complexity. The fix: let your kettle sit off the heat for 30-60 seconds after boiling, bringing the temperature down to the ideal 200°F range. If you have a variable-temperature kettle, set it to 200°F. You'll immediately notice a smoother, sweeter cup with more nuanced flavors.
+Tool #1: Percussive Therapy Device. The Theragun PRO Plus is the gold standard, and for good reason. Percussive therapy increases blood flow to targeted muscles, breaks up adhesions, and reduces delayed onset muscle soreness (DOMS). The PRO Plus's heated tip adds another dimension — combining heat and percussion is more effective than either alone. Use it for 30-60 seconds per muscle group after training and before bed. Cheaper alternatives work, but the 60 lbs of stall force in the PRO Plus makes a real difference for dense muscle tissue.
 
-Mistake #2: Grinding too fine. French press requires a coarse grind — think raw sugar or sea salt consistency. Using a fine grind (like you would for drip or espresso) leads to over-extraction, excess sediment in your cup, and a muddy, bitter flavor. Fine grounds also slip through the mesh filter more easily, creating that unpleasant sludgy texture at the bottom of your mug. The fix: use the coarsest setting on your burr grinder, or ask your roaster for a coarse French press grind. If you only have a blade grinder, pulse in short bursts and sift out the fines with a mesh strainer.
+Tool #2: Fitness Tracker with Recovery Metrics. The Garmin Venu 3's Body Battery and Sleep Score metrics provide objective data on your recovery state. Instead of guessing whether you're recovered enough for a hard session, you can check your readiness score. This prevents overtraining and optimizes your training schedule. The Venu 3's nap detection is particularly useful — it automatically logs naps and factors them into your recovery metrics.
 
-Mistake #3: Not brewing long enough. Four minutes is the standard French press brew time, but many people press the plunger after just 2-3 minutes. This results in under-extracted coffee that tastes sour and weak. The fix: set a timer for 4 minutes after pouring your water. Some coffee professionals even recommend up to 5-6 minutes for very coarse grinds. Don't rush it — patience pays off in flavor.
+Tool #3: Adjustable Dumbbells. Recovery isn't just about rest — active recovery through light resistance training promotes blood flow and tissue repair. The Bowflex SelectTech 552 makes it easy to grab light weights for recovery circuits without a full gym setup. Quick dial adjustments mean you can move between exercises without long rest periods, keeping your heart rate elevated.
 
-Mistake #4: Leaving the plunger up after brewing. Once you've pressed the plunger, the coffee continues to extract from the grounds at the bottom. If you don't pour all the coffee out immediately, the last cups will be significantly more bitter and over-extracted than the first. The fix: pour all the coffee out of the French press immediately after plunging, into a thermos or separate carafe if you're not serving it all at once. This "decanting" step ensures every cup tastes the same.
+Tool #4: Quality Sleep Environment. Sleep is the most powerful recovery tool available, and it's free. But optimizing your sleep environment — blackout curtains, a cool room (65-68°F), and consistent sleep/wake times — can dramatically improve sleep quality. Your fitness tracker can help identify sleep patterns and circadian rhythm issues.
 
-Mistake #5: Skipping the bloom. Fresh coffee contains carbon dioxide that can create large bubbles and prevent even water contact with the grounds. Pouring all your water at once can lead to uneven extraction. The fix: pour just enough water to saturate the grounds (about twice the weight of the coffee), wait 30 seconds for the bloom (you'll see bubbles rising), then pour the remaining water in a gentle, circular motion. This simple step ensures even extraction and a more balanced cup.`,
-    publishedAt: '2026-01-05',
-    updatedAt: '2026-02-20',
-    authorSlug: 'sarah-mitchell',
-    tags: ['french press', 'brewing tips', 'common mistakes', 'coffee basics', 'technique'],
-  },
-  {
-    id: '5',
-    slug: 'best-coffee-subscriptions-2026',
-    title: 'The Best Coffee Subscriptions in 2026',
-    excerpt: 'Never run out of great coffee again. We reviewed the top coffee subscription services to find the best options for every taste, budget, and brewing style.',
-    image: '/images/blog-best-coffee-subscriptions-2026.jpg',
-    category: 'Reviews',
-    content: `Coffee subscriptions have exploded in popularity, and for good reason — they ensure you always have freshly roasted beans on hand without the hassle of remembering to reorder. But with dozens of options available, how do you choose the right one? We've tested the most popular coffee subscription services to help you find the perfect match.
-
-Trade Coffee remains our top pick for most coffee drinkers. Their matching algorithm asks about your flavor preferences, brewing methods, and roast preferences, then curates selections from over 50 specialty roasters across the country. Each bag comes with tasting notes and brewing recommendations. Prices start at around $14-18 per 12oz bag with free shipping. What sets Trade apart is the variety — you'll discover roasters you'd never find on your own, and the algorithm genuinely improves its recommendations over time based on your ratings.
-
-For the espresso enthusiast, Driftaway Coffee offers an excellent experience. Their Explorer Kit starts with four small samples in different roast profiles, and you rate each one to calibrate your preferences. From there, every shipment is tailored to your taste. They also offer a unique Freshness Guarantee — each bag is roasted within 48 hours of shipping and arrives within a week of roasting. Their subscription starts at $16 per 12oz bag, and they offer whole bean, pre-ground, and Nespresso-compatible options.
-
-Blue Bottle Classic is the best option for those who want a no-fuss, consistently excellent experience. Their signature Hayes Valley Blend and Bella Donovan are crowd-pleasers that work beautifully in any brewing method. The subscription is simple: choose your blend, grind preference, and delivery frequency. Bags arrive within 48 hours of roasting. At $17-20 per 12oz bag, it's on the pricier side, but the consistency and convenience are hard to beat. They also offer a single-origin subscription for those who want to explore different regions.
-
-On a budget? MistoBox offers great value with subscriptions starting at $12 per 12oz bag. You can choose your own beans from their extensive catalog or let their roasters pick for you. The selection isn't as curated as Trade's, and the algorithm isn't as sophisticated, but the quality-to-price ratio is excellent. They also offer a flexible schedule — you can pause, skip, or adjust your delivery frequency at any time without penalties.
-
-For the ultimate specialty coffee experience, Onyx Coffee Lab's subscription delivers some of the highest-scoring coffees available. Each month features a carefully selected single-origin coffee with detailed origin information, processing method, and tasting notes. At $22-28 per 10oz bag, it's definitely a splurge, but for coffee lovers who want to experience the absolute best, it's worth every penny. Their packaging is beautiful, and each shipment feels like receiving a gift.`,
-    publishedAt: '2026-02-01',
-    updatedAt: '2026-02-28',
-    authorSlug: 'sarah-mitchell',
-    tags: ['subscriptions', 'reviews', 'coffee beans', 'specialty coffee', 'best of'],
-  },
-  {
-    id: '6',
-    slug: 'pour-over-vs-drip-coffee-complete-comparison',
-    title: 'Pour-Over vs Drip Coffee: A Complete Comparison',
-    excerpt: 'Wondering whether pour-over or automatic drip is right for you? We compare flavor, convenience, cost, and technique to help you choose the perfect brewing method.',
-    image: '/images/blog-pour-over-vs-drip-coffee-complete-comparison.jpg',
-    category: 'Comparisons',
-    content: `The pour-over versus drip coffee debate comes down to a fundamental trade-off: control versus convenience. Both methods produce filtered coffee, but the paths they take to get there — and the results they achieve — are quite different. Understanding these differences will help you choose the method that best fits your lifestyle and taste preferences.
-
-Pour-over coffee is a manual brewing method where you pour hot water over coffee grounds in a filter, controlling every variable: water temperature, pour speed, brew time, and extraction pattern. Popular pour-over devices include the Chemex, Hario V60, and Kalita Wave. The primary advantage of pour-over is control. By adjusting your pouring technique, you can highlight different flavor characteristics — a slow, centered pour emphasizes body and sweetness, while a faster, wider pour brings out brightness and clarity. Pour-over excels at producing clean, nuanced cups with distinct flavor notes. The Chemex, with its thick filters, produces an especially clean cup that almost sparkles with clarity. The trade-off is time and skill: a good pour-over requires attention, a gooseneck kettle, and practice. A single cup takes 3-5 minutes of active pouring and attention.
-
-Automatic drip coffee makers handle the brewing process for you. You add water and coffee, press a button, and the machine heats water, disperses it over the grounds, and brews your coffee. Modern drip machines like the Moccamaster or Breville Precision Brewer have made significant advances in water temperature stability and dispersion patterns, narrowing the quality gap with pour-over. The biggest advantage is convenience: you can set it up the night before and wake up to a full pot. Most drip machines brew 8-12 cups at once, making them ideal for households with multiple coffee drinkers. The disadvantage is less control — you're limited by the machine's water temperature, flow rate, and dispersion pattern.
-
-In terms of flavor, pour-over generally produces a cleaner, more nuanced cup with better flavor separation. You can taste individual notes — citrus, chocolate, floral — more distinctly. Drip coffee tends to be more uniform and rounded, with flavors blending together more. This isn't necessarily bad — many people prefer the balanced, easy-drinking quality of good drip coffee, especially with darker roasts or flavored coffees. However, for light roasts and single-origin coffees where you want to appreciate the distinct terroir, pour-over is superior.
-
-Cost is another consideration. A quality pour-over setup (V60 dripper, filters, gooseneck kettle, scale) costs $80-250 depending on your choices. A quality drip machine costs $150-350. Over time, pour-over filters cost about $0.05-0.15 per cup, while drip filters cost about $0.03-0.10. The real cost difference is in time — pour-over requires your active involvement for every cup, while drip is essentially free of time cost after setup. Our recommendation: if you brew 1-2 cups at a time and enjoy the ritual, go pour-over. If you brew for a household or value convenience, a quality drip machine is the way to go.`,
-    publishedAt: '2025-09-22',
-    updatedAt: '2026-01-18',
-    authorSlug: 'james-carter',
-    tags: ['pour-over', 'drip coffee', 'comparison', 'brewing methods', 'coffee basics'],
+Tool #5: Hydration System. Dehydration impairs recovery by reducing blood volume and nutrient delivery to muscles. A simple water bottle that you actually enjoy drinking from makes a surprising difference. Track your intake with your fitness tracker or a dedicated app, aiming for at least half your body weight in ounces daily, plus additional water during and after exercise.`,
+    publishedAt: '2025-12-10',
+    updatedAt: '2026-01-28',
+    authorSlug: 'maya-chen',
+    tags: ['recovery', 'fitness', 'massage gun', 'wellness', 'athletic performance'],
+    readingTime: 10,
   },
 ];
 

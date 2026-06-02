@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
+import { Package } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRouterStore, hashToRoute } from '@/lib/router';
 import { Header } from '@/components/layout/Header';
@@ -21,13 +22,14 @@ import { PrivacyPage } from '@/components/views/PrivacyPage';
 import { TermsPage } from '@/components/views/TermsPage';
 import { EditorialPolicyPage } from '@/components/views/EditorialPolicyPage';
 import { HowWeTestPage } from '@/components/views/HowWeTestPage';
-import { DealsPage } from '@/components/views/DealsPage';
-import { BestSellersPage } from '@/components/views/BestSellersPage';
 import { WishlistPage } from '@/components/views/WishlistPage';
 import { ComparePage } from '@/components/views/ComparePage';
 import { BlogPage } from '@/components/views/BlogPage';
 import { BlogPostPage } from '@/components/views/BlogPostPage';
 import { GuidesPage } from '@/components/views/GuidesPage';
+import { RoundupsPage } from '@/components/views/RoundupsPage';
+import { BrandPage } from '@/components/views/BrandPage';
+import { TrendingPage } from '@/components/views/TrendingPage';
 import { CompareBar } from '@/components/affiliate/CompareBar';
 import { useThemeStore } from '@/lib/theme';
 import { MobileCompareFab } from '@/components/affiliate/MobileCompareFab';
@@ -70,6 +72,8 @@ export default function Home() {
         return <ProductDetailPage productSlug={route.slug} />;
       case 'category':
         return <CategoryPage categorySlug={route.slug} />;
+      case 'brand':
+        return <BrandPage brandSlug={route.slug} />;
       case 'search':
         return <SearchPage query={route.query} />;
       case 'buying-guide':
@@ -88,16 +92,14 @@ export default function Home() {
         return <EditorialPolicyPage />;
       case 'how-we-test':
         return <HowWeTestPage />;
-      case 'deals':
-        return <DealsPage />;
-      case 'best-sellers':
-        return <BestSellersPage />;
+      case 'trending':
+        return <TrendingPage />;
       case 'wishlist':
         return <WishlistPage />;
       case 'compare':
         return <ComparePage />;
-      case 'reviews':
-        return <BestSellersPage />;
+      case 'roundups':
+        return <RoundupsPage />;
       case 'blog':
         return <BlogPage />;
       case 'blog-post':
@@ -127,7 +129,7 @@ export default function Home() {
       <main className="flex-1">
         <AnimatePresence mode="wait">
           <motion.div
-            key={route.page === 'product' ? `product-${route.slug}` : route.page === 'category' ? `cat-${route.slug}` : route.page === 'search' ? `search-${route.query}` : route.page === 'blog-post' ? `blog-${route.slug}` : route.page}
+            key={route.page === 'product' ? `product-${route.slug}` : route.page === 'category' ? `cat-${route.slug}` : route.page === 'brand' ? `brand-${route.slug}` : route.page === 'search' ? `search-${route.query}` : route.page === 'blog-post' ? `blog-${route.slug}` : route.page}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
@@ -152,14 +154,16 @@ function NotFoundPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-16 text-center">
       <div className="bg-white rounded-xl p-12 shadow-sm">
-        <div className="text-6xl mb-4">☕</div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">Page Not Found</h1>
-        <p className="text-gray-600 mb-8 max-w-md mx-auto">
-          Looks like this page took a coffee break. Let us help you find your way back.
+        <div className="w-20 h-20 mx-auto mb-4 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
+          <Package size={32} className="text-gray-400" />
+        </div>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Page Not Found</h1>
+        <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
+          We couldn&apos;t find the page you&apos;re looking for. Let us help you find your way back.
         </p>
         <button
           onClick={goHome}
-          className="inline-flex items-center gap-2 bg-[#febd69] hover:bg-[#f3a847] text-[#131921] font-bold px-8 py-3 rounded-lg transition-all hover:shadow-lg"
+          className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-[#0f172a] font-bold px-8 py-3 rounded-lg transition-all hover:shadow-lg"
         >
           Go to Homepage
         </button>

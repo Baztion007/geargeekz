@@ -1,21 +1,51 @@
-const AFFILIATE_TAG = 'coffeereviews0b-20';
+import type { Merchant } from '@/lib/types';
 
-/**
- * Generate an Amazon affiliate URL from an ASIN
- */
-export function getAffiliateUrl(asin: string): string {
-  return `https://www.amazon.com/dp/${asin}?tag=${AFFILIATE_TAG}`;
+const AFFILIATE_TAGS: Record<Merchant, string> = {
+  amazon: 'productreview0b-20',
+  walmart: 'productreview0b',
+  bestbuy: 'productreview0b',
+  target: 'productreview0b',
+  rei: 'productreview0b',
+  bhphoto: 'productreview0b',
+};
+
+export type { Merchant };
+
+export function getAffiliateUrl(params: { merchant: Merchant; productId: string; trackingId?: string }): string {
+  const { merchant, productId, trackingId } = params;
+  const tag = trackingId || AFFILIATE_TAGS[merchant];
+
+  switch (merchant) {
+    case 'amazon':
+      return `https://www.amazon.com/dp/${productId}?tag=${tag}`;
+    case 'walmart':
+      return `https://walmart.com/ip/${productId}?affid=${tag}`;
+    case 'bestbuy':
+      return `https://bestbuy.com/site/${productId}?ref=${tag}`;
+    case 'target':
+      return `https://target.com/s?searchTerm=${productId}&ref=${tag}`;
+    case 'rei':
+      return `https://rei.com/product/${productId}?ref=${tag}`;
+    case 'bhphoto':
+      return `https://bhpho.to/${productId}`;
+    default:
+      return `https://www.amazon.com/dp/${productId}?tag=${tag}`;
+  }
 }
 
-/**
- * Generate affiliate link props for Amazon links
- * Includes proper rel and target attributes for compliance
- */
-export function getAffiliateLinkProps(url: string): {
-  href: string;
-  target: '_blank';
-  rel: string;
-} {
+export function getMerchantName(merchant: Merchant): string {
+  const names: Record<Merchant, string> = {
+    amazon: 'Amazon',
+    walmart: 'Walmart',
+    bestbuy: 'Best Buy',
+    target: 'Target',
+    rei: 'REI',
+    bhphoto: 'B&H Photo',
+  };
+  return names[merchant];
+}
+
+export function getAffiliateLinkProps(url: string) {
   return {
     href: url,
     target: '_blank' as const,
@@ -23,62 +53,48 @@ export function getAffiliateLinkProps(url: string): {
   };
 }
 
-/**
- * Organization data for JSON-LD
- */
-export const organizationData = {
-  name: 'BrewHub Reviews',
-  url: 'https://brewhubreviews.com',
-  logo: 'https://brewhubreviews.com/logo.png',
-  contactEmail: 'hello@brewhubreviews.com',
+export const siteData = {
+  name: 'GearScope',
+  url: 'https://gearscope.com',
+  logo: '/logo.svg',
+  tagline: 'Expert Reviews. Smart Recommendations.',
+  description: 'Premium product reviews and buying guides to help you discover the right gear for your life.',
+  contactEmail: 'hello@gearscope.com',
   socialProfiles: [
-    'https://twitter.com/brewhubreviews',
-    'https://facebook.com/brewhubreviews',
-    'https://instagram.com/brewhubreviews',
+    'https://twitter.com/gearscope',
+    'https://facebook.com/gearscope',
+    'https://instagram.com/gearscope',
   ],
-  description: 'Expert coffee equipment reviews and buying guides to help you find the perfect brew setup.',
 };
 
-/**
- * Generate JSON-LD for Organization
- */
 export function generateOrganizationJsonLd() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: organizationData.name,
-    url: organizationData.url,
-    logo: organizationData.logo,
-    email: organizationData.contactEmail,
-    sameAs: organizationData.socialProfiles,
-    description: organizationData.description,
+    name: siteData.name,
+    url: siteData.url,
+    logo: `${siteData.url}${siteData.logo}`,
+    email: siteData.contactEmail,
+    sameAs: siteData.socialProfiles,
+    description: siteData.description,
   };
 }
 
-/**
- * Generate JSON-LD for Product
- */
 export function generateProductJsonLd(product: import('@/lib/types').Product) {
+  const affiliateUrl = getAffiliateUrl({ merchant: product.merchant, productId: product.asin });
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.title,
     image: product.image,
     description: product.excerpt,
-    brand: {
-      '@type': 'Brand',
-      name: product.brand,
-    },
+    brand: { '@type': 'Brand', name: product.brand },
     offers: {
       '@type': 'Offer',
-      url: getAffiliateUrl(product.asin),
+      url: affiliateUrl,
       priceCurrency: 'USD',
-      price: product.price.replace(/[^0-9.]/g, ''),
       availability: 'https://schema.org/InStock',
-      seller: {
-        '@type': 'Organization',
-        name: 'Amazon',
-      },
+      seller: { '@type': 'Organization', name: getMerchantName(product.merchant) },
     },
     aggregateRating: {
       '@type': 'AggregateRating',
@@ -89,21 +105,12 @@ export function generateProductJsonLd(product: import('@/lib/types').Product) {
     },
     review: {
       '@type': 'Review',
-      reviewRating: {
-        '@type': 'Rating',
-        ratingValue: product.rating,
-      },
-      author: {
-        '@type': 'Person',
-        name: 'BrewHub Reviews',
-      },
+      reviewRating: { '@type': 'Rating', ratingValue: product.rating },
+      author: { '@type': 'Person', name: siteData.name },
     },
   };
 }
 
-/**
- * Generate JSON-LD for BreadcrumbList
- */
 export function generateBreadcrumbJsonLd(items: { name: string; url: string }[]) {
   return {
     '@context': 'https://schema.org',

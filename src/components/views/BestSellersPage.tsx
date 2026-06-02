@@ -161,13 +161,9 @@ export function BestSellersPage() {
                       {product.title}
                     </h3>
                     <StarRating rating={product.rating} size="sm" showValue />
-                    <div className="mt-2 flex items-baseline justify-center gap-2">
-                      <span className="text-lg font-bold text-gray-900">{product.price}</span>
-                      {product.originalPrice && (
-                        <span className="text-sm text-gray-400 line-through">{product.originalPrice}</span>
-                      )}
+                    <div className="mt-2">
+                      <CheckPriceButton merchant={product.merchant} productId={product.asin} size="sm" className="w-full" />
                     </div>
-                    <CheckPriceButton asin={product.asin} size="sm" className="w-full mt-3" />
                   </CardContent>
                 </Card>
               );
@@ -263,9 +259,9 @@ export function BestSellersPage() {
                           ✓ Verified
                         </Badge>
                       )}
-                      {product.bestFor && (
+                      {product.bestFor && product.bestFor.length > 0 && (
                         <Badge className="bg-[#febd69]/20 text-[#131921] hover:bg-[#febd69]/20 text-[10px] px-1.5">
-                          {product.bestFor}
+                          {product.bestFor[0]}
                         </Badge>
                       )}
                     </div>
@@ -275,15 +271,9 @@ export function BestSellersPage() {
                     <StarRating rating={product.rating} size="sm" />
                   </div>
 
-                  {/* Price & CTA */}
+                  {/* CTA */}
                   <div className="shrink-0 text-right hidden sm:block">
-                    <div className="flex items-baseline justify-end gap-2 mb-2">
-                      <span className="text-lg font-bold text-gray-900">{product.price}</span>
-                      {product.originalPrice && (
-                        <span className="text-sm text-gray-400 line-through">{product.originalPrice}</span>
-                      )}
-                    </div>
-                    <CheckPriceButton asin={product.asin} size="sm" />
+                    <CheckPriceButton merchant={product.merchant} productId={product.asin} size="sm" />
                   </div>
                 </div>
               );

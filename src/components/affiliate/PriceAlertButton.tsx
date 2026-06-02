@@ -16,17 +16,12 @@ import { toast } from '@/hooks/use-toast';
 
 interface PriceAlertButtonProps {
   productSlug: string;
-  currentPrice: string;
 }
 
-export function PriceAlertButton({ productSlug, currentPrice }: PriceAlertButtonProps) {
+export function PriceAlertButton({ productSlug }: PriceAlertButtonProps) {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState('');
-  const [targetPrice, setTargetPrice] = useState(() => {
-    // Pre-fill with current numeric price value
-    const numericPrice = currentPrice.replace(/[^0-9.]/g, '');
-    return numericPrice;
-  });
+  const [targetPrice, setTargetPrice] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -43,7 +38,7 @@ export function PriceAlertButton({ productSlug, currentPrice }: PriceAlertButton
         body: JSON.stringify({
           email: email.trim(),
           productSlug,
-          targetPrice: `$${targetPrice}`,
+          targetPrice: targetPrice ? `$${targetPrice}` : undefined,
         }),
       });
 
@@ -68,7 +63,7 @@ export function PriceAlertButton({ productSlug, currentPrice }: PriceAlertButton
 
       setSuccess(true);
       toast({
-        title: 'Price alert set!',
+        title: 'Alert set!',
         description: "We'll notify you when the price drops!",
       });
     } catch {
@@ -88,8 +83,7 @@ export function PriceAlertButton({ productSlug, currentPrice }: PriceAlertButton
       // Reset form when opening
       setSuccess(false);
       setEmail('');
-      const numericPrice = currentPrice.replace(/[^0-9.]/g, '');
-      setTargetPrice(numericPrice);
+      setTargetPrice('');
     }
   };
 
@@ -98,7 +92,7 @@ export function PriceAlertButton({ productSlug, currentPrice }: PriceAlertButton
       <DialogTrigger asChild>
         <Button variant="outline" size="sm" className="gap-1.5 text-gray-600 border-gray-300 hover:border-[#007185] hover:text-[#007185]">
           <Bell className="w-4 h-4" />
-          Set Price Alert
+          Get Notified
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
@@ -108,9 +102,10 @@ export function PriceAlertButton({ productSlug, currentPrice }: PriceAlertButton
               <Bell className="w-6 h-6 text-emerald-600" />
             </div>
             <DialogHeader>
-              <DialogTitle className="text-center">Alert Set!</DialogTitle>
+              <DialogTitle className="text-center">You&apos;re Notified!</DialogTitle>
               <DialogDescription className="text-center">
-                We&apos;ll notify you at <span className="font-medium text-foreground">{email}</span> when the price drops below <span className="font-medium text-foreground">${targetPrice}</span>.
+                We&apos;ll notify you at <span className="font-medium text-foreground">{email}</span> when the price drops
+                {targetPrice ? <span> below <span className="font-medium text-foreground">${targetPrice}</span></span> : ''}.
               </DialogDescription>
             </DialogHeader>
             <Button
@@ -123,9 +118,9 @@ export function PriceAlertButton({ productSlug, currentPrice }: PriceAlertButton
         ) : (
           <>
             <DialogHeader>
-              <DialogTitle>Set a Price Alert</DialogTitle>
+              <DialogTitle>Get Notified When Price Drops</DialogTitle>
               <DialogDescription>
-                We&apos;ll email you when this product drops to your target price or lower.
+                We&apos;ll email you when this product&apos;s price drops{targetPrice ? ` to your target or below` : ' significantly'}.
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4 mt-2">
@@ -145,7 +140,7 @@ export function PriceAlertButton({ productSlug, currentPrice }: PriceAlertButton
               </div>
               <div className="space-y-2">
                 <label htmlFor="alert-price" className="text-sm font-medium text-gray-700">
-                  Target price (USD)
+                  Target price (USD, optional)
                 </label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">$</span>
@@ -154,20 +149,19 @@ export function PriceAlertButton({ productSlug, currentPrice }: PriceAlertButton
                     type="number"
                     step="0.01"
                     min="0.01"
-                    placeholder="0.00"
+                    placeholder="Any price drop"
                     value={targetPrice}
                     onChange={(e) => setTargetPrice(e.target.value)}
-                    required
                     className="h-10 pl-7"
                   />
                 </div>
                 <p className="text-xs text-gray-400">
-                  Current price: {currentPrice}
+                  Leave blank to get notified of any significant price drop.
                 </p>
               </div>
               <Button
                 type="submit"
-                disabled={loading || !email.trim() || !targetPrice}
+                disabled={loading || !email.trim()}
                 className="w-full bg-[#febd69] hover:bg-[#f3a847] text-[#131921] font-semibold h-10"
               >
                 {loading ? (
@@ -178,7 +172,7 @@ export function PriceAlertButton({ productSlug, currentPrice }: PriceAlertButton
                 ) : (
                   <>
                     <Bell className="w-4 h-4 mr-2" />
-                    Set Alert
+                    Get Notified
                   </>
                 )}
               </Button>

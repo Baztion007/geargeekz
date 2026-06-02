@@ -8,7 +8,7 @@ import { Disclosure } from './Disclosure';
 import { CheckPriceButton } from './AffiliateLink';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { Tag, Coffee, Heart, BarChart3, Eye } from 'lucide-react';
+import { Tag, Package, Heart, BarChart3, Eye } from 'lucide-react';
 import { useWishlistStore } from '@/lib/wishlist';
 import { useCompareStore } from '@/lib/compare';
 import { QuickViewModal } from './QuickViewModal';
@@ -48,17 +48,9 @@ export function ProductCard({ product, showAffiliate = true }: ProductCardProps)
         ) : (
           <div className="w-full h-full flex items-center justify-center p-4 group-hover:scale-105 transition-transform duration-500">
             <div className="w-full h-full rounded-lg bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center text-amber-400">
-              <Coffee className="w-16 h-16" />
+              <Package className="w-16 h-16" />
             </div>
           </div>
-        )}
-
-        {/* Best For Badge */}
-        {product.bestFor && (
-          <Badge className="absolute top-2 left-2 bg-[#febd69] text-[#131921] hover:bg-[#f3a847] text-xs font-semibold shadow-sm">
-            <Tag size={10} className="mr-1" />
-            {product.bestFor}
-          </Badge>
         )}
 
         {/* Heart/Wishlist button */}
@@ -67,28 +59,20 @@ export function ProductCard({ product, showAffiliate = true }: ProductCardProps)
             e.stopPropagation();
             toggleWishlist(product.slug);
           }}
-          className={`absolute top-2 ${product.originalPrice ? 'right-10' : 'right-2'} w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-200 z-10 ${
-            isWishlisted ? 'text-red-500' : 'text-gray-400 hover:text-red-400'
-          }`}
+          className="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-200 z-10"
           aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+          style={{ color: isWishlisted ? '#ef4444' : undefined }}
         >
           <Heart
             size={16}
-            className={isWishlisted ? 'fill-red-500' : ''}
+            className={isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-400 hover:text-red-400'}
           />
         </button>
 
-        {/* Sale badge */}
-        {product.originalPrice && (
-          <Badge variant="destructive" className="absolute top-2 right-2 text-xs font-bold shadow-sm pulse-badge">
-            Sale
-          </Badge>
-        )}
-
         {/* Review status badge */}
         {product.reviewStatus === 'verified' && (
-          <div className="absolute bottom-2 right-2 bg-emerald-100 text-emerald-700 text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-sm">
-            ✓ Verified
+          <div className="absolute bottom-2 right-2 bg-emerald-100 text-emerald-700 font-semibold px-2 py-0.5 rounded-full shadow-sm" style={{ fontSize: '10px' }}>
+            Verified
           </div>
         )}
       </div>
@@ -105,22 +89,26 @@ export function ProductCard({ product, showAffiliate = true }: ProductCardProps)
 
         {/* Title */}
         <h3
-          className="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm leading-tight mb-2 cursor-pointer hover:text-[#c7511f] line-clamp-2"
+          className="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm leading-tight mb-1.5 cursor-pointer hover:text-[#c7511f] line-clamp-2"
           onClick={() => goToProduct(product.slug)}
         >
           {product.title}
         </h3>
 
+        {/* Best For Tags */}
+        {product.bestFor && product.bestFor.length > 0 && (
+          <div className="flex flex-wrap gap-1 mb-1.5">
+            {product.bestFor.slice(0, 3).map((tag) => (
+              <Badge key={tag} className="bg-[#febd69]/20 text-[#131921] dark:text-amber-200 hover:bg-[#febd69]/30 px-1.5 py-0" style={{ fontSize: '10px' }}>
+                <Tag size={8} className="mr-0.5" />
+                {tag}
+              </Badge>
+            ))}
+          </div>
+        )}
+
         {/* Rating */}
         <StarRating rating={product.rating} size="sm" />
-
-        {/* Price */}
-        <div className="mt-2 flex items-baseline gap-2">
-          <span className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">{product.price}</span>
-          {product.originalPrice && (
-            <span className="text-xs sm:text-sm text-gray-400 line-through">{product.originalPrice}</span>
-          )}
-        </div>
 
         {/* Excerpt */}
         <p className="text-[11px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 line-clamp-2">{product.excerpt}</p>
@@ -165,7 +153,7 @@ export function ProductCard({ product, showAffiliate = true }: ProductCardProps)
         {showAffiliate && (
           <div className="mt-3">
             <Disclosure compact />
-            <CheckPriceButton asin={product.asin} size="sm" className="w-full mt-2 cta-shimmer bg-gradient-to-r from-[#febd69] via-[#f3a847] to-[#febd69] hover:shadow-md hover:shadow-[#febd69]/20" />
+            <CheckPriceButton merchant={product.merchant} productId={product.asin} size="sm" className="w-full mt-2 cta-shimmer bg-gradient-to-r from-[#febd69] via-[#f3a847] to-[#febd69] hover:shadow-md hover:shadow-[#febd69]/20" />
           </div>
         )}
       </CardContent>
@@ -204,7 +192,7 @@ export function ProductCardHorizontal({ product }: ProductCardHorizontalProps) {
           />
         ) : (
           <div className="w-full h-full rounded-lg bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center text-amber-400">
-            <Coffee className="w-10 h-10" />
+            <Package className="w-10 h-10" />
           </div>
         )}
       </div>
@@ -215,17 +203,16 @@ export function ProductCardHorizontal({ product }: ProductCardHorizontalProps) {
           {product.title}
         </h3>
         <StarRating rating={product.rating} size="sm" />
-        <div className="mt-1 flex items-baseline gap-2">
-          <span className="text-lg font-bold text-gray-900 dark:text-white">{product.price}</span>
-          {product.originalPrice && (
-            <span className="text-sm text-gray-400 line-through">{product.originalPrice}</span>
-          )}
-        </div>
         <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">{product.excerpt}</p>
-        {product.bestFor && (
-          <Badge className="mt-2 bg-[#febd69] text-[#131921] hover:bg-[#f3a847] text-xs">
-            Best for: {product.bestFor}
-          </Badge>
+        {product.bestFor && product.bestFor.length > 0 && (
+          <div className="flex flex-wrap gap-1 mt-2">
+            {product.bestFor.slice(0, 3).map((tag) => (
+              <Badge key={tag} className="bg-[#febd69] text-[#131921] hover:bg-[#f3a847] text-xs">
+                <Tag size={8} className="mr-0.5" />
+                {tag}
+              </Badge>
+            ))}
+          </div>
         )}
       </div>
     </div>

@@ -63,7 +63,7 @@ export const useThemeStore = create<ThemeState>()(
       },
     }),
     {
-      name: 'brewhub-theme',
+      name: 'gearscope-theme',
       partialize: (state) => ({ theme: state.theme }),
       onRehydrateStorage: () => {
         return (state) => {
@@ -76,7 +76,7 @@ export const useThemeStore = create<ThemeState>()(
           if (typeof window !== 'undefined') {
             const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
             const handleChange = () => {
-              const currentState = get();
+              const currentState = useThemeStore.getState();
               if (currentState.theme === 'system') {
                 const resolved = getSystemPreference();
                 currentState._applyTheme(resolved);
