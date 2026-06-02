@@ -1,0 +1,131 @@
+'use client';
+
+import React, { useEffect } from 'react';
+import { useRouterStore, hashToRoute } from '@/lib/router';
+import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
+import { BackToTop } from '@/components/affiliate/Breadcrumbs';
+import { generateOrganizationJsonLd } from '@/lib/affiliate';
+
+// View imports
+import HomePage from '@/components/views/HomePage';
+import ProductDetailPage from '@/components/views/ProductDetailPage';
+import { CategoryPage } from '@/components/views/CategoryPage';
+import { SearchPage } from '@/components/views/SearchPage';
+import { BuyingGuidePage } from '@/components/views/BuyingGuidePage';
+import { AuthorPage } from '@/components/views/AuthorPage';
+import { AboutPage } from '@/components/views/AboutPage';
+import { ContactPage } from '@/components/views/ContactPage';
+import { PrivacyPage } from '@/components/views/PrivacyPage';
+import { TermsPage } from '@/components/views/TermsPage';
+import { EditorialPolicyPage } from '@/components/views/EditorialPolicyPage';
+import { HowWeTestPage } from '@/components/views/HowWeTestPage';
+import { DealsPage } from '@/components/views/DealsPage';
+import { BestSellersPage } from '@/components/views/BestSellersPage';
+
+export default function Home() {
+  const route = useRouterStore((s) => s.route);
+  const navigate = useRouterStore((s) => s.navigate);
+
+  // Handle browser back/forward and initial hash
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      const newRoute = hashToRoute(hash);
+      navigate(newRoute);
+    };
+
+    // Initial route from hash
+    if (window.location.hash) {
+      handleHashChange();
+    }
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, [navigate]);
+
+  // Render the appropriate view based on route
+  const renderView = () => {
+    switch (route.page) {
+      case 'home':
+        return <HomePage />;
+      case 'product':
+        return <ProductDetailPage productSlug={route.slug} />;
+      case 'category':
+        return <CategoryPage categorySlug={route.slug} />;
+      case 'search':
+        return <SearchPage query={route.query} />;
+      case 'buying-guide':
+        return <BuyingGuidePage guideSlug={route.slug} />;
+      case 'author':
+        return <AuthorPage authorSlug={route.slug} />;
+      case 'about':
+        return <AboutPage />;
+      case 'contact':
+        return <ContactPage />;
+      case 'privacy':
+        return <PrivacyPage />;
+      case 'terms':
+        return <TermsPage />;
+      case 'editorial-policy':
+        return <EditorialPolicyPage />;
+      case 'how-we-test':
+        return <HowWeTestPage />;
+      case 'deals':
+        return <DealsPage />;
+      case 'best-sellers':
+        return <BestSellersPage />;
+      case 'reviews':
+        return <BestSellersPage />;
+      case 'blog':
+        return <HomePage />;
+      case 'not-found':
+        return <NotFoundPage />;
+      default:
+        return <HomePage />;
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col bg-[#eaeded]">
+      {/* JSON-LD Organization Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(generateOrganizationJsonLd()),
+        }}
+      />
+
+      <Header />
+
+      <main className="flex-1">
+        {renderView()}
+      </main>
+
+      <Footer />
+      <BackToTop />
+    </div>
+  );
+}
+
+function NotFoundPage() {
+  const goHome = useRouterStore((s) => s.goHome);
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 py-16 text-center">
+      <div className="bg-white rounded-xl p-12 shadow-sm">
+        <div className="text-6xl mb-4">☕</div>
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">Page Not Found</h1>
+        <p className="text-gray-600 mb-8 max-w-md mx-auto">
+          Looks like this page took a coffee break. Let us help you find your way back.
+        </p>
+        <button
+          onClick={goHome}
+          className="inline-flex items-center gap-2 bg-[#febd69] hover:bg-[#f3a847] text-[#131921] font-bold px-8 py-3 rounded-lg transition-all hover:shadow-lg"
+        >
+          Go to Homepage
+        </button>
+      </div>
+    </div>
+  );
+}
