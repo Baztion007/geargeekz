@@ -25,6 +25,8 @@ import { DealsPage } from '@/components/views/DealsPage';
 import { BestSellersPage } from '@/components/views/BestSellersPage';
 import { WishlistPage } from '@/components/views/WishlistPage';
 import { ComparePage } from '@/components/views/ComparePage';
+import { BlogPage } from '@/components/views/BlogPage';
+import { BlogPostPage } from '@/components/views/BlogPostPage';
 import { CompareBar } from '@/components/affiliate/CompareBar';
 
 export default function Home() {
@@ -86,7 +88,9 @@ export default function Home() {
       case 'reviews':
         return <BestSellersPage />;
       case 'blog':
-        return <HomePage />;
+        return <BlogPage />;
+      case 'blog-post':
+        return <BlogPostPage postSlug={route.slug} />;
       case 'not-found':
         return <NotFoundPage />;
       default:
@@ -109,7 +113,7 @@ export default function Home() {
       <main className="flex-1">
         <AnimatePresence mode="wait">
           <motion.div
-            key={route.page === 'product' ? `product-${route.slug}` : route.page === 'category' ? `cat-${route.slug}` : route.page === 'search' ? `search-${route.query}` : route.page}
+            key={route.page === 'product' ? `product-${route.slug}` : route.page === 'category' ? `cat-${route.slug}` : route.page === 'search' ? `search-${route.query}` : route.page === 'blog-post' ? `blog-${route.slug}` : route.page}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}

@@ -8,9 +8,10 @@ import { Disclosure } from './Disclosure';
 import { CheckPriceButton } from './AffiliateLink';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { Tag, Coffee, Heart, BarChart3 } from 'lucide-react';
+import { Tag, Coffee, Heart, BarChart3, Eye } from 'lucide-react';
 import { useWishlistStore } from '@/lib/wishlist';
 import { useCompareStore } from '@/lib/compare';
+import { QuickViewModal } from './QuickViewModal';
 
 interface ProductCardProps {
   product: Product;
@@ -27,12 +28,13 @@ export function ProductCard({ product, showAffiliate = true }: ProductCardProps)
   const isInCompare = useCompareStore((s) => s.isInCompare);
   const isCompared = isInCompare(product.slug);
   const [imgError, setImgError] = useState(false);
+  const [quickViewOpen, setQuickViewOpen] = useState(false);
 
   return (
-    <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 bg-white border border-gray-200 rounded-lg">
+    <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 bg-white border border-gray-200 rounded-lg card-hover-lift hover:border-[#febd69]/30 hover:ring-1 hover:ring-[#febd69]/20">
       {/* Image */}
       <div
-        className="relative cursor-pointer overflow-hidden bg-gray-50 aspect-square"
+        className="relative cursor-pointer overflow-hidden bg-gray-50 aspect-square image-zoom"
         onClick={() => goToProduct(product.slug)}
       >
         {product.image && !imgError ? (
@@ -65,7 +67,7 @@ export function ProductCard({ product, showAffiliate = true }: ProductCardProps)
             e.stopPropagation();
             toggleWishlist(product.slug);
           }}
-          className={`absolute top-2 ${product.originalPrice ? 'right-10' : 'right-2'} w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm hover:shadow-md transition-all z-10 ${
+          className={`absolute top-2 ${product.originalPrice ? 'right-10' : 'right-2'} w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-200 z-10 ${
             isWishlisted ? 'text-red-500' : 'text-gray-400 hover:text-red-400'
           }`}
           aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
@@ -78,7 +80,7 @@ export function ProductCard({ product, showAffiliate = true }: ProductCardProps)
 
         {/* Sale badge */}
         {product.originalPrice && (
-          <Badge variant="destructive" className="absolute top-2 right-2 text-xs font-bold shadow-sm">
+          <Badge variant="destructive" className="absolute top-2 right-2 text-xs font-bold shadow-sm pulse-badge">
             Sale
           </Badge>
         )}
@@ -96,7 +98,7 @@ export function ProductCard({ product, showAffiliate = true }: ProductCardProps)
         {/* Category */}
         <button
           onClick={() => goToCategory(product.categorySlug)}
-          className="text-xs text-[#007185] hover:text-[#c7511f] hover:underline mb-1"
+          className="text-xs bg-[#007185]/10 text-[#007185] hover:text-[#c7511f] hover:bg-[#c7511f]/10 px-2 py-0.5 rounded-full font-medium transition-colors mb-1"
         >
           {product.category}
         </button>
@@ -123,6 +125,9 @@ export function ProductCard({ product, showAffiliate = true }: ProductCardProps)
         {/* Excerpt */}
         <p className="text-xs text-gray-600 mt-2 line-clamp-2">{product.excerpt}</p>
 
+        {/* Subtle divider */}
+        <div className="border-t border-gray-100 my-2" />
+
         {/* Compare Button */}
         <button
           onClick={(e) => {
@@ -140,14 +145,34 @@ export function ProductCard({ product, showAffiliate = true }: ProductCardProps)
           Compare
         </button>
 
+        {/* Quick View Button */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setQuickViewOpen(true);
+          }}
+          className="flex items-center gap-1.5 mt-1 text-xs font-medium text-gray-400 hover:text-[#007185] transition-colors"
+          aria-label="Quick view"
+        >
+          <Eye size={14} />
+          Quick View
+        </button>
+
         {/* Affiliate CTA */}
         {showAffiliate && (
           <div className="mt-3">
             <Disclosure compact />
-            <CheckPriceButton asin={product.asin} size="sm" className="w-full mt-2" />
+            <CheckPriceButton asin={product.asin} size="sm" className="w-full mt-2 cta-shimmer bg-gradient-to-r from-[#febd69] via-[#f3a847] to-[#febd69] hover:shadow-md hover:shadow-[#febd69]/20" />
           </div>
         )}
       </CardContent>
+
+      {/* Quick View Modal */}
+      <QuickViewModal
+        productSlug={product.slug}
+        isOpen={quickViewOpen}
+        onClose={() => setQuickViewOpen(false)}
+      />
     </Card>
   );
 }
@@ -161,7 +186,7 @@ export function ProductCardHorizontal({ product }: ProductCardHorizontalProps) {
   const [imgError, setImgError] = useState(false);
 
   return (
-    <div className="flex gap-4 p-4 bg-white border border-gray-200 rounded-lg hover:shadow-lg transition-all cursor-pointer"
+    <div className="flex gap-4 p-4 bg-white border border-gray-200 rounded-lg hover:shadow-lg transition-all cursor-pointer card-hover-lift hover:border-[#febd69]/30"
       onClick={() => goToProduct(product.slug)}
     >
       {/* Image */}

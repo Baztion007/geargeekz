@@ -33,7 +33,9 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-[#232f3e] text-gray-300">
+    <footer className="bg-[#232f3e] text-gray-300 relative">
+      {/* Top gradient border */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#febd69] to-transparent" />
       {/* Back to top */}
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -51,8 +53,8 @@ export function Footer() {
               { icon: Award, label: 'Expert Recommendations', desc: 'By certified specialists' },
               { icon: RefreshCw, label: 'Updated Regularly', desc: 'Reviews kept current' },
               { icon: Shield, label: 'Independent Reviews', desc: 'Unbiased & honest' },
-            ].map((badge) => (
-              <div key={badge.label} className="flex flex-col items-center gap-1">
+            ].map((badge, index) => (
+              <div key={badge.label} className="flex flex-col items-center gap-1 gentle-float" style={{ animationDelay: `${index * 0.2}s` }}>
                 <badge.icon className="text-[#febd69]" size={24} />
                 <span className="text-white text-sm font-semibold">{badge.label}</span>
                 <span className="text-gray-400 text-xs">{badge.desc}</span>
@@ -73,7 +75,7 @@ export function Footer() {
                   <li key={link.label}>
                     <button
                       onClick={link.action}
-                      className="text-gray-400 hover:text-white text-sm transition-colors"
+                      className="text-gray-400 hover:text-white text-sm transition-colors amazon-link"
                     >
                       {link.label}
                     </button>
@@ -104,7 +106,7 @@ export function Footer() {
       <div className="bg-[#131921] py-4">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
           <button onClick={goHome} className="text-white font-bold text-lg">
-            Brew<span className="text-[#febd69]">Hub</span>
+            Brew<span className="gradient-text">Hub</span>
           </button>
           <p className="text-gray-500 text-xs text-center">
             © {new Date().getFullYear()} BrewHub Reviews. All rights reserved. 

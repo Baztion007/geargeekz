@@ -39,14 +39,14 @@ export function Header() {
     { label: "Today's Deals", page: 'deals' as const },
     { label: 'Best Sellers', page: 'best-sellers' as const },
     { label: 'Reviews', page: 'reviews' as const },
-    { label: 'Buying Guides', page: 'blog' as const },
+    { label: 'Blog', page: 'blog' as const },
     { label: 'About', page: 'about' as const },
   ];
 
   return (
-    <header className={`z-50 transition-shadow duration-200 ${isSticky ? 'shadow-lg' : ''}`}>
+    <header className={`z-50 transition-shadow duration-200 ${isSticky ? 'shadow-lg backdrop-blur-sm' : ''}`}>
       {/* Primary Header */}
-      <div className="bg-[#131921] text-white">
+      <div className="bg-[#131921]/98 backdrop-blur-sm text-white">
         <div className="max-w-7xl mx-auto px-4 py-2">
           <div className="flex items-center gap-4">
             {/* Mobile menu button */}
@@ -72,7 +72,7 @@ export function Header() {
                 </svg>
               </div>
               <span className="text-xl font-bold tracking-tight">
-                Brew<span className="text-[#febd69]">Hub</span>
+                Brew<span className="gradient-text">Hub</span>
               </span>
             </button>
 
@@ -84,7 +84,7 @@ export function Header() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search coffee gear, reviews, and guides..."
-                  className="rounded-r-none border-0 bg-white text-gray-900 placeholder:text-gray-500 focus-visible:ring-0 focus-visible:ring-offset-0 h-10"
+                  className="rounded-r-none border-0 bg-white text-gray-900 placeholder:text-gray-500 focus-visible:ring-2 focus-visible:ring-[#febd69]/50 focus-visible:ring-offset-0 h-10 transition-shadow"
                   aria-label="Search"
                 />
                 <Button
@@ -153,7 +153,7 @@ export function Header() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search coffee gear..."
-                className="rounded-r-none border-0 bg-white text-gray-900 placeholder:text-gray-500 focus-visible:ring-0 focus-visible:ring-offset-0 h-9"
+                className="rounded-r-none border-0 bg-white text-gray-900 placeholder:text-gray-500 focus-visible:ring-2 focus-visible:ring-[#febd69]/50 focus-visible:ring-offset-0 h-9 transition-shadow"
                 aria-label="Search mobile"
               />
               <Button
@@ -178,7 +178,7 @@ export function Header() {
                 onClick={() => {
                   navigate({ page: item.page } as any);
                 }}
-                className="px-3 py-1 hover:outline hover:outline-1 hover:outline-white rounded text-gray-200 hover:text-white transition-colors"
+                className="px-3 py-1 hover:outline hover:outline-1 hover:outline-white rounded text-gray-200 hover:text-white transition-colors amazon-link"
               >
                 {item.label}
               </button>
@@ -187,7 +187,7 @@ export function Header() {
 
           {/* Mobile nav menu */}
           {mobileMenuOpen && (
-            <nav className="md:hidden py-2 space-y-1" aria-label="Mobile navigation">
+            <nav className="md:hidden py-2 space-y-1 stagger-children" aria-label="Mobile navigation">
               {navItems.map((item) => (
                 <button
                   key={item.page}

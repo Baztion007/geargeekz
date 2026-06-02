@@ -29,7 +29,9 @@ import {
   TrendingUp,
   BookOpen,
   Zap,
+  Loader2,
 } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
 
 // ─── Category icon map ──────────────────────────────────────────────────────
 const categoryIcons: Record<string, React.ReactNode> = {
@@ -246,11 +248,11 @@ function CategoriesSection() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 stagger-children">
           {categories.map((cat) => (
             <Card
               key={cat.id}
-              className="group cursor-pointer overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-200 bg-white"
+              className="group cursor-pointer overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-200 bg-white card-hover-lift"
               onClick={() => goToCategory(cat.slug)}
             >
               {/* Category image */}
@@ -312,7 +314,7 @@ function TopPicksSection() {
 
         <Disclosure />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4 stagger-children">
           {bestSellers.slice(0, 6).map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
@@ -357,14 +359,14 @@ function TrustBlock() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children">
           {trustItems.map((item, idx) => (
             <Card
               key={idx}
-              className="border border-emerald-100 bg-white hover:shadow-lg transition-shadow text-center"
+              className="border border-emerald-100 bg-white hover:shadow-lg transition-shadow text-center card-hover-lift"
             >
               <CardContent className="p-6 flex flex-col items-center">
-                <div className="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center mb-4">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-50 to-emerald-100 flex items-center justify-center mb-4 gentle-float" style={{ animationDelay: `${idx * 0.3}s` }}>
                   {item.icon}
                 </div>
                 <h3 className="font-bold text-[#131921] text-base mb-2">{item.title}</h3>
@@ -416,7 +418,7 @@ function RecentlyUpdatedSection() {
           {recentlyUpdated.slice(0, 6).map((product) => (
             <Card
               key={product.id}
-              className="group cursor-pointer overflow-hidden hover:shadow-lg transition-all border border-gray-200 bg-white"
+              className="group cursor-pointer overflow-hidden hover:shadow-lg transition-all border border-gray-200 bg-white border-l-4 border-l-[#febd69]"
               onClick={() => goToProduct(product.slug)}
             >
               <CardContent className="p-4 flex gap-4">
@@ -485,17 +487,64 @@ function RecentlyUpdatedSection() {
 function NewsletterCTA() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.trim()) {
+    if (!email.trim()) return;
+
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (response.status === 409) {
+          setError('This email is already subscribed.');
+          toast({
+            title: 'Already subscribed',
+            description: 'This email is already on our newsletter list.',
+            variant: 'destructive',
+          });
+        } else {
+          setError(data.error || 'Something went wrong.');
+          toast({
+            title: 'Error',
+            description: data.error || 'Failed to subscribe. Please try again.',
+            variant: 'destructive',
+          });
+        }
+        return;
+      }
+
       setSubmitted(true);
       setEmail('');
+      toast({
+        title: 'Subscribed!',
+        description: data.message || 'You\'ve been subscribed to our newsletter.',
+      });
+    } catch {
+      setError('Network error. Please try again.');
+      toast({
+        title: 'Error',
+        description: 'Something went wrong. Please try again later.',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <section className="py-10 sm:py-14 bg-gradient-to-r from-[#232f3e] to-[#131921]">
+    <section className="py-10 sm:py-14 bg-gradient-to-r from-[#232f3e] via-[#1a2f3e] to-[#131921] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
           <div className="text-center lg:text-left flex-1">
@@ -528,20 +577,33 @@ function NewsletterCTA() {
               </Card>
             ) : (
               <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
-                <Input
-                  type="email"
-                  placeholder="your@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="flex-1 bg-white/10 border-gray-600 text-white placeholder:text-gray-500 focus:border-[#febd69] focus:ring-[#febd69] h-12"
-                />
+                <div className="flex-1">
+                  <Input
+                    type="email"
+                    placeholder="your@email.com"
+                    value={email}
+                    onChange={(e) => { setEmail(e.target.value); setError(''); }}
+                    required
+                    disabled={loading}
+                    className="bg-white/10 border-gray-600 text-white placeholder:text-gray-500 focus:border-[#febd69] focus:ring-[#febd69] h-12 disabled:opacity-50"
+                  />
+                  {error && (
+                    <p className="text-red-400 text-xs mt-1">{error}</p>
+                  )}
+                </div>
                 <Button
                   type="submit"
-                  className="bg-[#febd69] hover:bg-[#f3a847] text-[#131921] font-bold h-12 px-6 shrink-0"
+                  disabled={loading}
+                  className="bg-gradient-to-r from-[#febd69] via-[#f3a847] to-[#febd69] cta-shimmer hover:shadow-md hover:shadow-[#febd69]/20 text-[#131921] font-bold h-12 px-6 shrink-0 disabled:opacity-50"
                 >
-                  Subscribe
-                  <ArrowRight className="w-4 h-4 ml-2" />
+                  {loading ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <>
+                      Subscribe
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </>
+                  )}
                 </Button>
               </form>
             )}
@@ -582,7 +644,7 @@ function DealsSection() {
 
         <Disclosure />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4 stagger-children">
           {deals.map((product) => {
             const discount = product.originalPrice
               ? calculateDiscount(product.price, product.originalPrice)

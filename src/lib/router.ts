@@ -12,6 +12,7 @@ interface RouterState {
   goToAuthor: (slug: string) => void;
   goToWishlist: () => void;
   goToCompare: () => void;
+  goToBlogPost: (slug: string) => void;
   goToPage: (page: RoutePath['page']) => void;
 }
 
@@ -108,6 +109,15 @@ export const useRouterStore = create<RouterState>((set) => ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
     return { route };
   }),
+
+  goToBlogPost: (slug: string) => set((state) => {
+    const route: RoutePath = { page: 'blog-post', slug };
+    if (typeof window !== 'undefined') {
+      window.history.pushState({ route }, '', `#blog/${slug}`);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return { route };
+  }),
 }))
 
 function routeToHash(route: RoutePath): string {
@@ -120,6 +130,8 @@ function routeToHash(route: RoutePath): string {
     case 'author': return `author/${route.slug}`;
     case 'wishlist': return 'wishlist';
     case 'compare': return 'compare';
+    case 'blog': return 'blog';
+    case 'blog-post': return `blog/${route.slug}`;
     default: return route.page;
   }
 }
@@ -142,8 +154,13 @@ export function hashToRoute(hash: string): RoutePath {
       return { page: 'buying-guide', slug: rest.join('/') };
     case 'author':
       return { page: 'author', slug: rest.join('/') };
+    case 'blog':
+      if (rest.length > 0) {
+        return { page: 'blog-post', slug: rest.join('/') };
+      }
+      return { page: 'blog' };
     default:
-      if (['about', 'contact', 'privacy', 'terms', 'editorial-policy', 'how-we-test', 'deals', 'best-sellers', 'reviews', 'blog', 'wishlist', 'compare', 'not-found'].includes(type)) {
+      if (['about', 'contact', 'privacy', 'terms', 'editorial-policy', 'how-we-test', 'deals', 'best-sellers', 'reviews', 'wishlist', 'compare', 'not-found'].includes(type)) {
         return { page: type as RoutePath['page'] } as RoutePath;
       }
       return { page: 'not-found' };

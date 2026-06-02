@@ -127,6 +127,7 @@ export type RoutePath =
   | { page: 'best-sellers' }
   | { page: 'reviews' }
   | { page: 'blog' }
+  | { page: 'blog-post'; slug: string }
   | { page: 'wishlist' }
   | { page: 'compare' }
   | { page: 'not-found' };

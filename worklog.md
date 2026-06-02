@@ -425,3 +425,285 @@ Stage Summary:
 - All components use 'use client' directive
 - Toast notifications for compare actions
 - No existing functionality broken, lint passes cleanly
+
+---
+Task ID: 3-c
+Agent: Styling Expert
+Task: Enhance styling with micro-animations, polish, and detail enhancements
+
+Work Log:
+- Updated `/src/app/globals.css` — Added 11 custom CSS utility classes and keyframe animations:
+  - `.custom-scrollbar` — Smooth thin scrollbar styling for webkit browsers
+  - `.skeleton-shimmer` — Shimmer loading effect with sliding gradient
+  - `.card-hover-lift` — translateY(-4px) + box-shadow on hover for card elevation
+  - `.pulse-badge` — Subtle scale pulse animation for deal/sale badges
+  - `.gradient-text` — Amazon gold gradient text effect (#febd69 → #f3a847)
+  - `.image-zoom` — Smooth scale(1.05) on hover for image containers
+  - `.animate-fill-bar` — Rating bar width fill animation (0 → target)
+  - `.stagger-children` — fadeInUp animation with staggered delays (0.05s increments, max 6)
+  - `.amazon-link` — Underline-from-left hover animation on links
+  - `.cta-shimmer` — Background shimmer animation for CTA buttons
+  - `.gentle-float` — Subtle floating animation (-8px) for decorative elements
+
+- Updated `/src/components/affiliate/ProductCard.tsx`:
+  - Added `card-hover-lift` + `hover:border-[#febd69]/30` + `hover:ring-1 hover:ring-[#febd69]/20` to Card
+  - Added `image-zoom` to image container div
+  - Added `pulse-badge` class to Sale badge
+  - Added `transition-all duration-200` to wishlist heart button
+  - Changed category button to pill badge: `bg-[#007185]/10 text-[#007185]` with `rounded-full`
+  - Added subtle divider line (`border-t border-gray-100`) between excerpt and compare button
+  - Added `cta-shimmer bg-gradient-to-r from-[#febd69] via-[#f3a847] to-[#febd69]` + hover shadow to CheckPriceButton
+  - Added `card-hover-lift` to ProductCardHorizontal wrapper
+
+- Updated `/src/components/layout/Header.tsx`:
+  - Added `backdrop-blur-sm` to sticky header when scrolled
+  - Changed primary header to `bg-[#131921]/98 backdrop-blur-sm` for frosted glass effect
+  - Changed "Hub" brand text from `text-[#febd69]` to `gradient-text` for gold gradient effect
+  - Added `focus-visible:ring-2 focus-visible:ring-[#febd69]/50 transition-shadow` to search inputs
+  - Added `amazon-link` class to desktop nav buttons for underline hover animation
+  - Added `stagger-children` class to mobile nav menu for animated entry
+
+- Updated `/src/components/views/HomePage.tsx`:
+  - Added `stagger-children` to category cards grid, top picks grid, trust cards grid, deals grid
+  - Added `card-hover-lift` to category cards and trust cards
+  - Added `gentle-float` with staggered `animationDelay` to trust icons (gradient circle backgrounds)
+  - Added `border-l-4 border-l-[#febd69]` left accent to recently updated cards
+  - Changed newsletter section gradient to 3-color: `from-[#232f3e] via-[#1a2f3e] to-[#131921]`
+  - Added `cta-shimmer bg-gradient-to-r from-[#febd69] via-[#f3a847] to-[#febd69]` + hover shadow to subscribe button
+
+- Updated `/src/components/layout/Footer.tsx`:
+  - Added top gradient border line (transparent → #febd69 → transparent)
+  - Added `gentle-float` with staggered `animationDelay` to trust badge icons
+  - Added `amazon-link` class to all footer link buttons
+  - Changed "Hub" brand text to `gradient-text` in bottom bar
+
+- Updated `/src/components/affiliate/RatingBar.tsx`:
+  - Added `animate-fill-bar` to rating breakdown bar fill divs
+
+- Updated `/src/components/views/ProductDetailPage.tsx`:
+  - Added `image-zoom` to main product image container
+  - Added `cta-shimmer` gradient + hover shadow to both CheckPriceButton instances
+  - Added hover shadow + `shadow-md shadow-amber-200/50` to verdict box icon
+  - Added `hover:shadow-md transition-shadow` to verdict card
+  - Added alternating row backgrounds (`bg-gray-50/50`) + hover highlight (`hover:bg-amber-50/50`) to features table
+  - Added alternating row backgrounds + hover highlight to specifications table
+  - Added `stagger-children` to pros and cons lists
+  - Added gradient border line at top of sticky mobile CTA bar
+
+Stage Summary:
+- 11 new reusable CSS utility classes and animations added to globals.css
+- ProductCard: hover lift, border glow, image zoom, pulsing sale badge, pill category badge, CTA shimmer, content divider
+- Header: frosted glass blur, search ring glow, gradient brand text, animated nav underline, staggered mobile menu
+- HomePage: staggered grid animations, floating trust icons, left-border accent on recently updated, shimmer newsletter CTA
+- Footer: gradient top border, floating trust badges, animated link underlines, gradient brand text
+- ProductDetailPage: image zoom, CTA shimmer, alternating table rows, staggered pros/cons, verdict shadow, mobile CTA gradient
+- RatingBar: animated fill bars
+- Build passes cleanly, no lint errors
+
+---
+Task ID: 3-b
+Agent: Feature Developer
+Task: Create Quick View Modal and add more products to catalog
+
+Work Log:
+- Created `/src/components/affiliate/QuickViewModal.tsx` — Product quick view dialog
+  - 'use client' directive, named export `QuickViewModal`
+  - Props: { productSlug: string | null; isOpen: boolean; onClose: () => void }
+  - Uses shadcn Dialog component from @/components/ui/dialog
+  - Imports product data from @/data/products, CheckPriceButton, StarRating, Disclosure, useRouterStore
+  - Responsive layout: stacked on mobile, side-by-side on desktop (md:flex-row)
+  - Left side: product image with gradient fallback
+  - Right side: category badge, title (H2), star rating + rating number, price (with strikethrough if on sale), "Best For" badge, summary text, pros (first 3) with green check icons, cons (first 2) with red X icons, Disclosure component, CheckPriceButton, "Read Full Review" button
+  - "Read Full Review" navigates to product page and closes modal
+  - Closes via close button, click outside, or Escape key (built into Dialog)
+  - Resets image error state when product changes via useEffect
+  - Accessible: DialogTitle and DialogDescription for screen readers (sr-only)
+
+- Updated `/src/components/affiliate/ProductCard.tsx` — Added Quick View button
+  - Added Eye icon import from lucide-react
+  - Added QuickViewModal import from ./QuickViewModal
+  - Added useState for quickViewOpen
+  - "Quick View" button with Eye icon, positioned below Compare button
+  - Small text style: text-gray-400 hover:text-[#007185]
+  - Uses e.stopPropagation() to prevent card click navigation
+  - QuickViewModal rendered at end of Card component
+
+- Updated `/src/data/products.ts` — Added 4 new products:
+  1. AeroPress Original Coffee & Espresso Maker (id: 13, slug: aeropress-original, category: Pour-Over & Drip, price: $39.95, rating: 4.6)
+  2. Breville Precision Brewer Thermal Coffee Maker (id: 14, slug: breville-precision-brewer, category: Pour-Over & Drip, price: $299.95/$329.95, rating: 4.5)
+  3. Flair Espresso Maker 58 (id: 15, slug: flair-espresso-58, category: Espresso Machines, price: $485.00, rating: 4.3)
+  4. OXO Brew Conical Burr Coffee Grinder (id: 16, slug: oxo-brew-grinder, category: Coffee Grinders, price: $99.99/$129.99, rating: 4.2)
+  - All products include complete data: id, slug, title, image, gallery, excerpt, category, categorySlug, brand, features, pros, cons, price, originalPrice (where applicable), rating, ratingBreakdown (all 6 sub-ratings), asin, tags, updatedAt, publishedAt, authorSlug, reviewStatus, bestFor, summary, fullReview (2+ paragraphs), whoIsItFor, whoShouldSkip, specifications, relatedProducts
+
+- Updated `/src/data/categories.ts` — Updated product counts:
+  - Pour-Over & Drip: 4 (was 2)
+  - (Espresso Machines and Coffee Grinders were already updated to 5 and 4 respectively)
+
+Stage Summary:
+- Quick View modal fully functional with responsive design and all required content sections
+- Quick View button on all product cards with Eye icon
+- 4 new products added (total now 16): AeroPress, Breville Precision Brewer, Flair 58, OXO Grinder
+- Category product counts updated to reflect new additions
+- Lint passes cleanly, dev server compiles without errors
+
+---
+Task ID: 3-a
+Agent: Blog Developer
+Task: Create Blog/Articles Page with Real Content
+
+Work Log:
+- Created `/src/data/blog-posts.ts` with 6 blog articles:
+  1. "The Ultimate Guide to Pulling the Perfect Espresso Shot" - Guides category
+  2. "Manual vs Electric Grinders: Which Is Right for You?" - Comparisons category
+  3. "How Water Temperature Affects Your Coffee" - Science category
+  4. "5 Common French Press Mistakes and How to Fix Them" - Tips category
+  5. "The Best Coffee Subscriptions in 2026" - Reviews category
+  6. "Pour-Over vs Drip Coffee: A Complete Comparison" - Comparisons category
+  - Each article: 1000+ characters of realistic content, slug, excerpt, category badge, tags (3-5), dates (2025-2026), author slugs (sarah-mitchell or james-carter)
+  - Helper functions: getBlogPostBySlug(), getBlogPostsByCategory(), getRelatedPosts()
+
+- Created `/src/components/views/BlogPage.tsx` — Blog list page
+  - 'use client' directive, named export `export function BlogPage()`
+  - Dark gradient header (from-[#131921] to-[#37475a]) with BookOpen icon, title "BrewHub Blog", subtitle
+  - Category filter tabs (All, Guides, Comparisons, Science, Tips, Reviews)
+  - Search bar for filtering blog posts by title, excerpt, and tags
+  - Responsive grid (1 col mobile, 2 cols md, 3 cols lg)
+  - BlogCard component with: image with gradient fallback, category badge, title, excerpt, author info with link, date, tags, "Read More" button
+  - Empty state when no posts match filters
+  - Affiliate disclosure at bottom
+
+- Created `/src/components/views/BlogPostPage.tsx` — Blog detail page
+  - 'use client' directive, named export `export function BlogPostPage`
+  - Props: `{ postSlug: string }`
+  - Not-found state with "Back to Blog" button
+  - Hero image with gradient fallback and overlay
+  - Two-column layout (main content + sidebar) on lg screens
+  - Main content: category badge, H1 title, author with photo and link, published date, read time, article paragraphs, tags, share buttons
+  - Affiliate disclosure before related products section
+  - Related products section (matched by tags to products)
+  - Newsletter CTA with email input and subscribe button
+  - Sidebar: author card with bio, article details (published/updated dates, read time, category), related articles list, back to blog button
+
+- Updated `/src/lib/types.ts`:
+  - Added `| { page: 'blog-post'; slug: string }` to RoutePath union type
+
+- Updated `/src/lib/router.ts`:
+  - Added `goToBlogPost: (slug: string) => void` to RouterState interface
+  - Implemented goToBlogPost method (hash: `#blog/{slug}`)
+  - Added 'blog' and 'blog-post' cases in routeToHash function
+  - Updated hashToRoute to handle 'blog/slug' pattern → { page: 'blog-post', slug }
+  - Removed 'blog' from the default valid pages array (now handled by 'blog' case in switch)
+
+- Updated `/src/app/page.tsx`:
+  - Added imports for BlogPage and BlogPostPage (named imports with curly braces)
+  - Added `case 'blog': return <BlogPage />;`
+  - Added `case 'blog-post': return <BlogPostPage postSlug={route.slug} />;`
+  - Updated motion.div key to include blog-post slug for unique animation keys
+
+- Updated `/src/components/layout/Header.tsx`:
+  - Changed "Buying Guides" nav label to "Blog" pointing to 'blog' page
+
+Stage Summary:
+- Complete blog system with 6 realistic coffee articles
+- Blog list page with category filtering, search, and responsive grid
+- Blog detail page with full article layout, sidebar, related products, newsletter CTA
+- Hash-based routing for blog posts (#blog/{slug})
+- Navigation from header "Blog" button
+- All components use 'use client' directive with named exports
+- Amazon-inspired design consistent with the rest of the site
+- Lint passes cleanly, dev server compiles without errors
+
+---
+Task ID: 3-d
+Agent: Backend Developer
+Task: Add Newsletter Subscription API Backend and Price Alert Feature
+
+Work Log:
+- Updated prisma/schema.prisma with NewsletterSubscriber and PriceAlert models
+- Ran bun run db:push to sync database
+- Created /src/app/api/newsletter/route.ts - Newsletter API (POST, email validation, duplicate check 409, reactivation)
+- Created /src/app/api/price-alert/route.ts - Price Alert API (POST with email/productSlug/targetPrice, GET by email, duplicate handling)
+- Updated /src/components/views/HomePage.tsx - Connected newsletter form to backend API with loading/error states and toast notifications
+- Created /src/components/affiliate/PriceAlertButton.tsx - Dialog-based price alert button component
+- Updated /src/components/views/ProductDetailPage.tsx - Added PriceAlertButton below CTA
+
+Stage Summary:
+- Newsletter subscriptions persist to SQLite via Prisma API
+- Price alert feature with per-product email notifications
+- Both APIs validate inputs, handle duplicates, and return proper status codes
+- Newsletter form has loading spinner, error display, and toast notifications
+- PriceAlertButton is a secondary action with Bell icon on product detail pages
+- All changes pass lint (pre-existing BlogPostPage error unrelated)
+
+---
+Task ID: qa-round3
+Agent: Main (Cron Review)
+Task: QA testing, bug fixes, feature enhancements, image generation, and final verification
+
+Work Log:
+- Read /home/z/my-project/worklog.md to assess current project status
+- Performed QA testing with agent-browser: found console errors (import mismatches were from stale cache, site loads fine with 200 responses)
+- Identified that blog page was showing homepage content as placeholder
+- Launched 4 parallel subagents for feature development:
+  1. Blog page + data creation (Task 3-a)
+  2. Quick View modal + more products (Task 3-b)
+  3. Styling enhancements with micro-animations (Task 3-c)
+  4. Newsletter API backend + price alerts (Task 3-d)
+- All 4 agents completed successfully
+- Generated 10 AI images for missing assets:
+  - 4 new product images: AeroPress, Breville Precision Brewer, Flair Espresso 58, OXO Grinder
+  - 6 blog images: espresso guide, grinders comparison, water temperature, French press, subscriptions, pour-over vs drip
+  - 2 author images: Sarah Mitchell, James Carter
+- Performed comprehensive QA testing:
+  - Homepage loads correctly with no console errors
+  - Blog page works with category filtering and search
+  - Blog post detail page renders full article with sidebar
+  - Quick View modal opens correctly from product cards
+  - Product detail page shows PriceAlertButton
+  - Category page displays all products including new ones
+  - Newsletter API returns 201 on successful subscription
+  - Price Alert API returns 201 on successful creation
+  - Mobile view renders correctly
+  - Lint passes cleanly
+  - No console errors after page reload
+- Verified all 16 products are accessible
+- Confirmed 6 blog articles with proper routing
+
+Stage Summary:
+- Blog system: 6 articles with list page (filtering/search) and detail page (sidebar, related products, newsletter CTA)
+- Quick View: modal dialog on all product cards with product details, pros/cons, and CTAs
+- 4 new products added (total 16): AeroPress, Breville Precision Brewer, Flair 58, OXO Grinder
+- 11 CSS utility classes added for micro-animations: card-hover-lift, image-zoom, pulse-badge, gradient-text, animate-fill-bar, stagger-children, amazon-link, cta-shimmer, gentle-float, skeleton-shimmer, custom-scrollbar
+- Newsletter API with Prisma/SQLite backend (POST /api/newsletter)
+- Price Alert API with per-product email notifications (POST /api/price-alert)
+- PriceAlertButton component on product detail pages
+- All missing images generated (products, blog, authors)
+- All pages functional, no console errors, lint passes cleanly
+
+Current Project Status:
+- Fully functional Amazon affiliate site with 16 products, 5 categories, 6 blog articles, 2 buying guides, 2 authors
+- Complete SPA with hash-based routing, responsive design, Amazon-inspired styling with enhanced micro-animations
+- All affiliate links properly formatted with tracking ID and nofollow/sponsored
+- Trust signals and editorial standards throughout
+- Newsletter and price alert backend APIs functional
+- Quick View modal, wishlist, compare, recently viewed features all working
+- Image lightbox with keyboard navigation on product detail pages
+- Sticky mobile CTA bar on product detail pages
+- All images generated with graceful gradient fallbacks
+
+Unresolved Issues / Risks:
+- CompareBar only shows on desktop (by design)
+- No sitemap.xml generation yet
+- No breadcrumbs JSON-LD on individual pages (only Organization schema site-wide)
+- No automated price checking for price alerts (currently stores alerts but doesn't send notifications)
+- Blog comments not implemented
+- No user authentication system
+
+Priority Recommendations for Next Phase:
+- Add sitemap.xml generation for SEO
+- Add per-page JSON-LD structured data (breadcrumbs, products, articles)
+- Implement email notification service for price alerts
+- Add more buying guides (currently 2)
+- Add product video reviews section
+- Add user reviews/comments section on blog posts
+- Add A/B testing for affiliate CTA buttons

@@ -22,6 +22,7 @@ import {
   TableHead,
 } from '@/components/ui/table';
 import { Check, X, Clock, User, BookOpen, Award, History } from 'lucide-react';
+import { PriceAlertButton } from '@/components/affiliate/PriceAlertButton';
 import { ImageLightbox } from '@/components/affiliate/ImageLightbox';
 import { useRecentlyViewedStore } from '@/lib/recently-viewed';
 
@@ -155,7 +156,7 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         {/* Featured Image */}
         <div
-          className="relative aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-100 border border-gray-200 cursor-pointer"
+          className="relative aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-100 border border-gray-200 cursor-pointer image-zoom"
           onClick={() => { setLightboxIndex(0); setLightboxOpen(true); }}
           role="button"
           tabIndex={0}
@@ -258,17 +259,22 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
           <Disclosure />
 
           {/* 5. Check Price on Amazon Button */}
-          <CheckPriceButton asin={product.asin} size="lg" className="w-full sm:w-auto" />
+          <CheckPriceButton asin={product.asin} size="lg" className="w-full sm:w-auto cta-shimmer bg-gradient-to-r from-[#febd69] via-[#f3a847] to-[#febd69] hover:shadow-md hover:shadow-[#febd69]/20" />
+
+          {/* Price Alert Button */}
+          <div className="mt-3">
+            <PriceAlertButton productSlug={product.slug} currentPrice={product.price} />
+          </div>
         </div>
       </div>
 
       <Separator className="my-8" />
 
       {/* 4. Summary / Verdict Box */}
-      <Card className="bg-amber-50 border-amber-200 mb-8 shadow-sm">
+      <Card className="bg-amber-50 border-amber-200 mb-8 shadow-sm hover:shadow-md transition-shadow">
         <CardContent className="p-6">
           <div className="flex items-start gap-3">
-            <div className="bg-amber-400 rounded-full p-2 shrink-0 mt-0.5">
+            <div className="bg-amber-400 rounded-full p-2 shrink-0 mt-0.5 shadow-md shadow-amber-200/50">
               <Award size={20} className="text-white" />
             </div>
             <div>
@@ -293,8 +299,8 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
               </TableRow>
             </TableHeader>
             <TableBody>
-              {Object.entries(product.features).map(([key, value]) => (
-                <TableRow key={key}>
+              {Object.entries(product.features).map(([key, value], index) => (
+                <TableRow key={key} className={`${index % 2 === 0 ? 'bg-gray-50/50' : ''} hover:bg-amber-50/50 transition-colors`}>
                   <TableCell className="font-medium text-gray-700">{key}</TableCell>
                   <TableCell className="text-gray-600">{value}</TableCell>
                 </TableRow>
@@ -328,7 +334,7 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
           <Card className="border-emerald-200 bg-emerald-50/50">
             <CardContent className="p-5">
               <h3 className="font-bold text-emerald-800 mb-3 text-lg">Pros</h3>
-              <ul className="space-y-2.5">
+              <ul className="space-y-2.5 stagger-children">
                 {product.pros.map((pro, index) => (
                   <li key={index} className="flex items-start gap-2">
                     <div className="bg-emerald-500 rounded-full p-0.5 shrink-0 mt-0.5">
@@ -345,7 +351,7 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
           <Card className="border-red-200 bg-red-50/50">
             <CardContent className="p-5">
               <h3 className="font-bold text-red-800 mb-3 text-lg">Cons</h3>
-              <ul className="space-y-2.5">
+              <ul className="space-y-2.5 stagger-children">
                 {product.cons.map((con, index) => (
                   <li key={index} className="flex items-start gap-2">
                     <div className="bg-red-500 rounded-full p-0.5 shrink-0 mt-0.5">
@@ -402,8 +408,8 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
               </TableRow>
             </TableHeader>
             <TableBody>
-              {Object.entries(product.specifications).map(([key, value]) => (
-                <TableRow key={key}>
+              {Object.entries(product.specifications).map(([key, value], index) => (
+                <TableRow key={key} className={`${index % 2 === 0 ? 'bg-gray-50/50' : ''} hover:bg-amber-50/50 transition-colors`}>
                   <TableCell className="font-medium text-gray-700">{key}</TableCell>
                   <TableCell className="text-gray-600">{value}</TableCell>
                 </TableRow>
@@ -524,7 +530,7 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
             <p className="text-gray-300 mb-5">
               Check the latest price and availability on Amazon
             </p>
-            <CheckPriceButton asin={product.asin} size="lg" className="w-full sm:w-auto" />
+            <CheckPriceButton asin={product.asin} size="lg" className="w-full sm:w-auto cta-shimmer bg-gradient-to-r from-[#febd69] via-[#f3a847] to-[#febd69] hover:shadow-lg hover:shadow-[#febd69]/30" />
             <p className="text-xs text-gray-400 mt-3">
               Price and availability are subject to change. As an Amazon Associate, we earn from
               qualifying purchases.
@@ -564,6 +570,7 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
 
       {/* Sticky Mobile CTA */}
       <div className="fixed bottom-0 left-0 right-0 md:hidden bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] z-40 safe-area-bottom">
+        <div className="h-px bg-gradient-to-r from-transparent via-[#febd69] to-transparent" />
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
           <div>
             <div className="flex items-baseline gap-2">

@@ -7,7 +7,7 @@ export const categories: Category[] = [
     name: 'Espresso Machines',
     description: 'From semi-automatic to manual, find the perfect espresso machine for your home setup.',
     image: '/images/category-espresso.jpg',
-    productCount: 4,
+    productCount: 5,
   },
   {
     id: '2',
@@ -15,7 +15,7 @@ export const categories: Category[] = [
     name: 'Coffee Grinders',
     description: 'Consistent grinding is the foundation of great coffee. Compare the best burr grinders for every budget.',
     image: '/images/category-grinders.jpg',
-    productCount: 3,
+    productCount: 4,
   },
   {
     id: '3',
@@ -23,7 +23,7 @@ export const categories: Category[] = [
     name: 'Pour-Over & Drip',
     description: 'Master the art of pour-over brewing with our curated selection of drippers and carafes.',
     image: '/images/category-pourover.jpg',
-    productCount: 2,
+    productCount: 4,
   },
   {
     id: '4',

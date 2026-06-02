@@ -64,7 +64,7 @@ export function RatingBreakdownBar({ label, value }: RatingBreakdownBarProps) {
       <span className="text-sm text-gray-600 w-28 shrink-0">{label}</span>
       <div className="flex-1 bg-gray-200 rounded-full h-3 overflow-hidden">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-500 transition-all duration-500"
+          className="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-500 transition-all duration-500 animate-fill-bar"
           style={{ width: `${percentage}%` }}
         />
       </div>

@@ -30,3 +30,21 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  active    Boolean  @default(true)
+}
+
+model PriceAlert {
+  id          String   @id @default(cuid())
+  email       String
+  productSlug String
+  targetPrice String
+  createdAt   DateTime @default(now())
+  active      Boolean  @default(true)
+
+  @@unique([email, productSlug])
+}
