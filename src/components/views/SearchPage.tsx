@@ -9,7 +9,6 @@ import { blogPosts } from '@/data/blog-posts';
 import { useRouterStore } from '@/lib/router';
 import { Breadcrumbs } from '@/components/affiliate/Breadcrumbs';
 import { ProductCard } from '@/components/affiliate/ProductCard';
-import { Disclosure } from '@/components/affiliate/Disclosure';
 import { StarRating } from '@/components/affiliate/RatingBar';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -972,13 +971,6 @@ export function SearchPage({ query }: SearchPageProps) {
                 </div>
               </section>
             )}
-          </div>
-        )}
-
-        {/* Affiliate Disclosure */}
-        {searchResults.products.length > 0 && (
-          <div className="mt-6">
-            <Disclosure />
           </div>
         )}
 

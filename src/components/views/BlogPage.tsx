@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo } from 'react';
 import { Breadcrumbs } from '@/components/affiliate/Breadcrumbs';
-import { Disclosure } from '@/components/affiliate/Disclosure';
 import { blogPosts } from '@/data/blog-posts';
 import { authors, getAuthorBySlug } from '@/data/authors';
 import { useRouterStore } from '@/lib/router';
@@ -175,10 +174,7 @@ export function BlogPage() {
           </div>
         )}
 
-        {/* Affiliate Disclosure */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
-          <Disclosure />
-        </div>
+
       </div>
     </div>
   );

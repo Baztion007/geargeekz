@@ -8,7 +8,6 @@ import { getBuyingGuidesByCategory } from '@/data/buying-guides';
 import { useRouterStore } from '@/lib/router';
 import { Breadcrumbs } from '@/components/affiliate/Breadcrumbs';
 import { ProductCard } from '@/components/affiliate/ProductCard';
-import { Disclosure } from '@/components/affiliate/Disclosure';
 import { CheckPriceButton } from '@/components/affiliate/AffiliateLink';
 import {
   Select,
@@ -512,7 +511,6 @@ export function CategoryPage({ categorySlug }: CategoryPageProps) {
 
         {/* Category Description */}
         <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 mb-6 section-entrance category-accent-border">
-          <Disclosure />
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
             About {category.name}
           </h2>
