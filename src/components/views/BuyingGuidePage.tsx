@@ -48,6 +48,8 @@ import {
   Link2,
   Check,
 } from 'lucide-react';
+import { generateGuidePageJsonLd } from '@/lib/seo';
+import { JsonLdScript } from '@/components/affiliate/JsonLdScript';
 
 // Guide type badge configuration
 const guideTypeConfig: Record<string, { label: string; icon: React.ElementType; color: string }> = {
@@ -193,6 +195,8 @@ export function BuyingGuidePage({ guideSlug }: BuyingGuidePageProps) {
   return (
     <div className="min-h-screen bg-[#eaeded] dark:bg-gray-900">
       <div className="max-w-5xl mx-auto px-4 py-6">
+        {/* Guide structured data for SEO (includes FAQPage) */}
+        <JsonLdScript data={generateGuidePageJsonLd(guide)} />
         <Breadcrumbs
           items={[
             { label: guide.category, route: { page: 'category', slug: guide.categorySlug } as any },

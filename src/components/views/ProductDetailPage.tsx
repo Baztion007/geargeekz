@@ -51,6 +51,8 @@ import { ScoreBadge } from '@/components/affiliate/ScoreBadge';
 import { toast } from '@/hooks/use-toast';
 import { useCompareStore } from '@/lib/compare';
 import { GitCompare, Plus, X as XIcon, ArrowRight } from 'lucide-react';
+import { generateProductPageJsonLd } from '@/lib/seo';
+import { JsonLdScript } from '@/components/affiliate/JsonLdScript';
 
 interface ProductDetailPageProps {
   productSlug: string;
@@ -436,6 +438,8 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
 
   return (
     <article className="max-w-5xl mx-auto px-4 py-6 pb-28 md:pb-6 relative">
+      {/* Product structured data for SEO */}
+      <JsonLdScript data={generateProductPageJsonLd(product)} />
       {/* Subtle background pattern for visual depth */}
       <div className="fixed inset-0 dot-pattern pointer-events-none z-0 opacity-40" />
       <div className="relative z-10">

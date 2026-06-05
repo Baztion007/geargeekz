@@ -13,6 +13,8 @@ import { StarRating } from '@/components/affiliate/RatingBar';
 import { Breadcrumbs } from '@/components/affiliate/Breadcrumbs';
 import { Disclosure } from '@/components/affiliate/Disclosure';
 import { Building2, MapPin, Calendar, ExternalLink, ArrowLeft, Package, Globe, BookOpen, Users, ChevronDown, ChevronUp, Trophy, Sparkles } from 'lucide-react';
+import { generateBrandPageJsonLd } from '@/lib/seo';
+import { JsonLdScript } from '@/components/affiliate/JsonLdScript';
 
 interface BrandPageProps {
   brandSlug: string;
@@ -192,6 +194,8 @@ export function BrandPage({ brandSlug }: BrandPageProps) {
   return (
     <div className="min-h-screen bg-[#eaeded] dark:bg-gray-900" style={{ '--brand-accent': accent.color, '--brand-glow': accent.glow } as React.CSSProperties}>
       <div className="max-w-7xl mx-auto px-4 py-6">
+        {/* Brand structured data for SEO */}
+        <JsonLdScript data={generateBrandPageJsonLd(brand, brandProducts)} />
         {/* Breadcrumbs */}
         <Breadcrumbs
           items={[

@@ -14,7 +14,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GearScope — Expert Reviews. Smart Recommendations.",
+  title: {
+    default: "GearScope — Expert Reviews. Smart Recommendations.",
+    template: "%s | GearScope",
+  },
   description:
     "Premium product reviews and buying guides to help you discover the right gear. We research, test, and compare travel gear, electronics, home office, fitness, and more.",
   keywords: [
@@ -28,8 +31,18 @@ export const metadata: Metadata = {
     "buying guides",
     "gear recommendations",
     "GearScope",
+    "best travel gear 2026",
+    "gear comparison",
+    "expert product testing",
+    "unbiased reviews",
   ],
-  authors: [{ name: "GearScope" }],
+  authors: [{ name: "GearScope", url: "https://gearscope.com" }],
+  creator: "GearScope",
+  publisher: "GearScope",
+  metadataBase: new URL("https://gearscope.com"),
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: "/logo.svg",
   },
@@ -39,17 +52,28 @@ export const metadata: Metadata = {
       "Premium product reviews and buying guides to help you discover the right gear for your life.",
     siteName: "GearScope",
     type: "website",
+    url: "https://gearscope.com",
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
     title: "GearScope — Expert Reviews. Smart Recommendations.",
     description:
       "Premium product reviews and buying guides to help you discover the right gear for your life.",
+    creator: "@gearscope",
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
+  category: "Product Reviews & Buying Guides",
 };
 
 export default function RootLayout({

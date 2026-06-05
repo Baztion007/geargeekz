@@ -6,13 +6,13 @@ import { RatingBreakdown } from '@/lib/types';
 
 interface StarRatingProps {
   rating: number;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   showValue?: boolean;
   count?: number;
 }
 
 export function StarRating({ rating, size = 'md', showValue = true, count }: StarRatingProps) {
-  const sizeMap = { sm: 14, md: 18, lg: 24 };
+  const sizeMap = { xs: 10, sm: 14, md: 18, lg: 24 };
   const iconSize = sizeMap[size];
 
   return (
@@ -40,7 +40,7 @@ export function StarRating({ rating, size = 'md', showValue = true, count }: Sta
         })}
       </div>
       {showValue && (
-        <span className={`font-semibold text-gray-700 ${size === 'sm' ? 'text-xs' : size === 'lg' ? 'text-lg' : 'text-sm'}`}>
+        <span className={`font-semibold text-gray-700 ${size === 'xs' ? 'text-[10px]' : size === 'sm' ? 'text-xs' : size === 'lg' ? 'text-lg' : 'text-sm'}`}>
           {rating.toFixed(1)}
         </span>
       )}

@@ -1,0 +1,14 @@
+name = "gearscope"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+NEXT_PUBLIC_SITE_URL = "https://gearscope.com"
+
+# For production, set these in Cloudflare Pages dashboard:
+# NEXT_PUBLIC_AFFILIATE_TAG_AMAZON
+# NEXT_PUBLIC_AFFILIATE_TAG_WALMART
+# NEXT_PUBLIC_AFFILIATE_TAG_BESTBUY
+# NEXT_PUBLIC_AFFILIATE_TAG_TARGET
+# NEXT_PUBLIC_AFFILIATE_TAG_REI
+# NEXT_PUBLIC_AFFILIATE_TAG_BHPHOTO

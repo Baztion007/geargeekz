@@ -10,7 +10,7 @@ import { blogPosts } from '@/data/blog-posts';
 import { getAffiliateUrl, getMerchantName, siteData } from '@/lib/affiliate';
 import { getAffiliateLinkProps } from '@/lib/affiliate';
 import { ProductCard } from '@/components/affiliate/ProductCard';
-import { Disclosure } from '@/components/affiliate/Disclosure';
+
 import { StarRating } from '@/components/affiliate/RatingBar';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -532,9 +532,7 @@ function EditorsPicksSection() {
           </div>
         </div>
 
-        <Disclosure />
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4 stagger-children">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 stagger-children">
           {editorPicks.slice(0, 4).map((product, index) => (
             <div key={product.id} className="relative">
               {index === 0 && (

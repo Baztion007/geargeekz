@@ -32,6 +32,9 @@ import { BrandPage } from '@/components/views/BrandPage';
 import { TrendingPage } from '@/components/views/TrendingPage';
 import { BookmarksPage } from '@/components/views/BookmarksPage';
 import { GearFinderQuiz } from '@/components/affiliate/GearFinderQuiz';
+import { AffiliateSettingsPage } from '@/components/views/AffiliateSettingsPage';
+import { AdminPage } from '@/components/views/AdminPage';
+import { AdminProductsPage, AdminCategoriesPage, AdminBrandsPage, AdminAffiliatePage } from '@/components/views/AdminSubPages';
 import { CompareBar } from '@/components/affiliate/CompareBar';
 import { useThemeStore } from '@/lib/theme';
 import { MobileCompareFab } from '@/components/affiliate/MobileCompareFab';
@@ -114,6 +117,18 @@ export default function Home() {
         return <BookmarksPage />;
       case 'gear-finder':
         return <GearFinderQuiz />;
+      case 'affiliate-settings':
+        return <AffiliateSettingsPage />;
+      case 'admin':
+        return <AdminPage />;
+      case 'admin-products':
+        return <AdminProductsPage />;
+      case 'admin-categories':
+        return <AdminCategoriesPage />;
+      case 'admin-brands':
+        return <AdminBrandsPage />;
+      case 'admin-affiliate':
+        return <AdminAffiliatePage />;
       case 'not-found':
         return <NotFoundPage />;
       default:

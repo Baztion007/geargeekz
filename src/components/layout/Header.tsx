@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Search, Menu, X, ChevronDown, Heart, TrendingUp, BookOpen, Info, Compass, Sun, Moon, Monitor } from 'lucide-react';
+import { Search, Menu, X, ChevronDown, Heart, TrendingUp, BookOpen, Info, Compass, Sun, Moon, Monitor, Lock } from 'lucide-react';
 import { useRouterStore } from '@/lib/router';
 import { useWishlistStore } from '@/lib/wishlist';
 import { useThemeStore } from '@/lib/theme';
@@ -24,6 +24,7 @@ export function Header() {
   const goHome = useRouterStore((s) => s.goHome);
   const goToSearch = useRouterStore((s) => s.goToSearch);
   const goToWishlist = useRouterStore((s) => s.goToWishlist);
+  const goToAdmin = useRouterStore((s) => s.goToAdmin);
   const wishlistCount = useWishlistStore((s) => s.items.length);
   const theme = useThemeStore((s) => s.theme);
   const toggleTheme = useThemeStore((s) => s.toggleTheme);
@@ -132,6 +133,14 @@ export function Header() {
               >
                 <ThemeIcon size={22} className="text-[#febd69] transition-transform duration-200 hover:rotate-12" />
                 <span className="text-[11px] text-gray-400 hidden xl:inline">{theme === 'system' ? 'Auto' : theme === 'dark' ? 'Dark' : 'Light'}</span>
+              </button>
+              <button
+                className="flex items-center gap-1.5 hover:bg-[#37475a] rounded-lg p-2 transition-all duration-200 active:scale-95"
+                onClick={goToAdmin}
+                aria-label="Admin Panel"
+                title="Admin Panel"
+              >
+                <Lock size={22} className="text-[#febd69]/60 transition-transform duration-200 hover:rotate-12" />
               </button>
               <button
                 className="flex items-center gap-1.5 hover:bg-[#37475a] rounded-lg p-2 transition-all duration-200 active:scale-95"

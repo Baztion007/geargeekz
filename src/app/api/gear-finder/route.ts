@@ -190,7 +190,8 @@ export async function POST(request: NextRequest) {
     // Try LLM for personalized explanations
     let recommendations: GearFinderRecommendation[];
     try {
-      const ZAI = (await import('z-ai-web-dev-sdk')).default;
+      const ZAISDK = (await import('z-ai-web-dev-sdk')).default;
+      const zai = await ZAISDK.create();
       const productSummaries = top3.map(
         (item) =>
           `Product: ${item.product.title} | Brand: ${item.product.brand} | Rating: ${item.product.rating}/5 | Best For: ${item.product.bestFor.join(', ')} | Key Features: ${Object.entries(item.product.features)
@@ -215,21 +216,19 @@ Respond ONLY with a JSON array of objects with this format:
 
 Keep explanations concise (1-2 sentences), conversational, and specific to the user's preferences. Do not mention prices.`;
 
-      const response = await ZAI.chat.completions.create({
-        model: 'deepseek-chat',
+      const completion = await zai.chat.completions.create({
         messages: [
           {
-            role: 'system',
+            role: 'assistant',
             content:
               'You are a helpful product recommendation assistant. Always respond with valid JSON only, no markdown formatting.',
           },
           { role: 'user', content: prompt },
         ],
-        temperature: 0.7,
-        max_tokens: 500,
+        thinking: { type: 'disabled' },
       });
 
-      const content = response.choices?.[0]?.message?.content?.trim() || '';
+      const content = completion.choices?.[0]?.message?.content?.trim() || '';
 
       // Parse LLM response
       let llmRecs: GearFinderRecommendation[] = [];

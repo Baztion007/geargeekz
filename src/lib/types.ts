@@ -156,4 +156,10 @@ export type RoutePath =
   | { page: 'guides' }
   | { page: 'bookmarks' }
   | { page: 'gear-finder' }
+  | { page: 'affiliate-settings' }
+  | { page: 'admin' }
+  | { page: 'admin-products' }
+  | { page: 'admin-categories' }
+  | { page: 'admin-brands' }
+  | { page: 'admin-affiliate' }
   | { page: 'not-found' };

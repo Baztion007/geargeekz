@@ -62,3 +62,85 @@ model UserReview {
   helpful     Int      @default(0)
   createdAt   DateTime @default(now())
 }
+
+model AffiliateMerchantConfig {
+  id            String   @id @default(cuid())
+  merchantId    String   @unique
+  name          String
+  affiliateTag  String
+  baseUrl       String
+  urlTemplate   String
+  enabled       Boolean  @default(true)
+  priority      Int      @default(1)
+  color         String   @default("#FF9900")
+  icon          String   @default("shopping-bag")
+  updatedAt     DateTime @updatedAt
+}
+
+model AffiliateGlobalSettings {
+  id                  String   @id @default("default")
+  linkStrategy        String   @default("direct")
+  redirectPrefix      String   @default("/go/")
+  nofollowEnabled     Boolean  @default(true)
+  sponsoredEnabled    Boolean  @default(true)
+  noopenerEnabled     Boolean  @default(true)
+  openInNewTab        Boolean  @default(true)
+  clickTracking       Boolean  @default(true)
+  impressionTracking  Boolean  @default(false)
+  updatedAt           DateTime @updatedAt
+}
+
+model Product {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  title           String
+  image           String
+  gallery         String   @default("[]")
+  excerpt         String
+  category        String
+  categorySlug    String
+  subcategory     String   @default("")
+  brand           String
+  brandSlug       String
+  features        String   @default("{}")
+  pros            String   @default("[]")
+  cons            String   @default("[]")
+  rating          Float    @default(0)
+  ratingBreakdown String   @default("{}")
+  asin            String   @default("")
+  merchant        String   @default("amazon")
+  tags            String   @default("[]")
+  updatedAt       DateTime @updatedAt
+  publishedAt     DateTime @default(now())
+  authorSlug      String   @default("alex-rivera")
+  reviewStatus    String   @default("new")
+  bestFor         String   @default("[]")
+  summary         String   @default("")
+  fullReview      String   @default("")
+  whoIsItFor      String   @default("")
+  whoShouldSkip   String   @default("")
+  specifications  String   @default("{}")
+  relatedProducts String   @default("[]")
+}
+
+model CategoryDB {
+  id           String  @id @default(cuid())
+  slug         String  @unique
+  name         String
+  description  String
+  image        String
+  productCount Int     @default(0)
+  featured     Boolean @default(false)
+}
+
+model BrandDB {
+  slug         String @id
+  name         String
+  logo         String
+  description  String
+  founded      String?
+  headquarters String?
+  website      String?
+  categories   String @default("[]")
+  productCount Int    @default(0)
+}

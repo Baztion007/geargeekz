@@ -1,5 +1,7 @@
 import type { Merchant } from '@/lib/types';
+import { generateAffiliateUrl as generateUrl, getLinkAttributes as getConfigLinkAttributes, getMerchantConfig } from './affiliate-config';
 
+// Legacy hardcoded tags for backward compatibility (used only when trackingId is provided)
 const AFFILIATE_TAGS: Record<Merchant, string> = {
   amazon: 'productreview0b-20',
   walmart: 'productreview0b',
@@ -13,27 +15,37 @@ export type { Merchant };
 
 export function getAffiliateUrl(params: { merchant: Merchant; productId: string; trackingId?: string }): string {
   const { merchant, productId, trackingId } = params;
-  const tag = trackingId || AFFILIATE_TAGS[merchant];
 
-  switch (merchant) {
-    case 'amazon':
-      return `https://www.amazon.com/dp/${productId}?tag=${tag}`;
-    case 'walmart':
-      return `https://walmart.com/ip/${productId}?affid=${tag}`;
-    case 'bestbuy':
-      return `https://bestbuy.com/site/${productId}?ref=${tag}`;
-    case 'target':
-      return `https://target.com/s?searchTerm=${productId}&ref=${tag}`;
-    case 'rei':
-      return `https://rei.com/product/${productId}?ref=${tag}`;
-    case 'bhphoto':
-      return `https://bhpho.to/${productId}`;
-    default:
-      return `https://www.amazon.com/dp/${productId}?tag=${tag}`;
+  // If custom trackingId provided, use old direct method for backward compat
+  if (trackingId) {
+    const tag = trackingId;
+    switch (merchant) {
+      case 'amazon':
+        return `https://www.amazon.com/dp/${productId}?tag=${tag}`;
+      case 'walmart':
+        return `https://walmart.com/ip/${productId}?affid=${tag}`;
+      case 'bestbuy':
+        return `https://bestbuy.com/site/${productId}?ref=${tag}`;
+      case 'target':
+        return `https://target.com/s?searchTerm=${productId}&ref=${tag}`;
+      case 'rei':
+        return `https://rei.com/product/${productId}?ref=${tag}`;
+      case 'bhphoto':
+        return `https://bhpho.to/${productId}`;
+      default:
+        return `https://www.amazon.com/dp/${productId}?tag=${tag}`;
+    }
   }
+
+  // Otherwise use the centralized config
+  return generateUrl(merchant, productId);
 }
 
 export function getMerchantName(merchant: Merchant): string {
+  const config = getMerchantConfig(merchant);
+  if (config) return config.name;
+
+  // Fallback
   const names: Record<Merchant, string> = {
     amazon: 'Amazon',
     walmart: 'Walmart',
@@ -46,10 +58,11 @@ export function getMerchantName(merchant: Merchant): string {
 }
 
 export function getAffiliateLinkProps(url: string) {
+  const attrs = getConfigLinkAttributes();
   return {
     href: url,
-    target: '_blank' as const,
-    rel: 'nofollow sponsored noopener noreferrer',
+    target: attrs.target as '_blank',
+    rel: attrs.rel,
   };
 }
 

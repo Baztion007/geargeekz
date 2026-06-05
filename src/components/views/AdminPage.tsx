@@ -1,0 +1,436 @@
+'use client';
+
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  LayoutDashboard,
+  Package,
+  FolderOpen,
+  Building2,
+  Link2,
+  Lock,
+  ChevronRight,
+  Menu,
+  X,
+  TrendingUp,
+  Star,
+  Clock,
+  ArrowUpRight,
+  Loader2,
+  Database,
+} from 'lucide-react';
+import { useRouterStore } from '@/lib/router';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+
+type AdminTab = 'dashboard' | 'products' | 'categories' | 'brands' | 'affiliate';
+
+const sidebarItems: { id: AdminTab; label: string; icon: React.ComponentType<{ size?: number; className?: string }> }[] = [
+  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { id: 'products', label: 'Products', icon: Package },
+  { id: 'categories', label: 'Categories', icon: FolderOpen },
+  { id: 'brands', label: 'Brands', icon: Building2 },
+  { id: 'affiliate', label: 'Affiliate Settings', icon: Link2 },
+];
+
+interface ProductItem {
+  id: string;
+  slug: string;
+  title: string;
+  image: string;
+  category: string;
+  categorySlug: string;
+  brand: string;
+  brandSlug: string;
+  rating: number;
+  reviewStatus: string;
+  updatedAt: string;
+  asin: string;
+  merchant: string;
+}
+
+export function AdminPage() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useRouterStore((s) => s.navigate);
+  const [loading, setLoading] = useState(true);
+  const [seeding, setSeeding] = useState(false);
+  const [seedResult, setSeedResult] = useState<string | null>(null);
+
+  const [stats, setStats] = useState({
+    products: 0,
+    categories: 0,
+    brands: 0,
+    avgRating: 0,
+  });
+  const [verifiedCount, setVerifiedCount] = useState(0);
+  const [updatedCount, setUpdatedCount] = useState(0);
+  const [recentProducts, setRecentProducts] = useState<ProductItem[]>([]);
+
+  const fetchStats = useCallback(async () => {
+    try {
+      const [productsRes, categoriesRes, brandsRes] = await Promise.all([
+        fetch('/api/products'),
+        fetch('/api/categories'),
+        fetch('/api/brands'),
+      ]);
+
+      const productsData = productsRes.ok ? await productsRes.json() : { products: [] };
+      const categoriesData = categoriesRes.ok ? await categoriesRes.json() : { categories: [] };
+      const brandsData = brandsRes.ok ? await brandsRes.json() : { brands: [] };
+
+      const products: ProductItem[] = productsData.products || [];
+      const categories = categoriesData.categories || [];
+      const brands = brandsData.brands || [];
+
+      const avgRating = products.length > 0
+        ? (products.reduce((sum: number, p: any) => sum + (p.rating || 0), 0) / products.length).toFixed(1)
+        : '0';
+
+      setStats({
+        products: products.length,
+        categories: categories.length,
+        brands: brands.length,
+        avgRating: parseFloat(avgRating),
+      });
+
+      setVerifiedCount(products.filter((p: any) => p.reviewStatus === 'verified').length);
+      setUpdatedCount(products.filter((p: any) => p.reviewStatus === 'updated').length);
+      setRecentProducts(
+        [...products]
+          .sort((a: any, b: any) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+          .slice(0, 5)
+      );
+    } catch (err) {
+      console.error('Failed to fetch stats:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { fetchStats(); }, [fetchStats]);
+
+  const handleTabChange = (tab: AdminTab) => {
+    setSidebarOpen(false);
+    const pageMap: Record<AdminTab, string> = {
+      dashboard: 'admin',
+      products: 'admin-products',
+      categories: 'admin-categories',
+      brands: 'admin-brands',
+      affiliate: 'admin-affiliate',
+    };
+    navigate({ page: pageMap[tab] as any });
+  };
+
+  const handleSeed = async () => {
+    setSeeding(true);
+    setSeedResult(null);
+    try {
+      const res = await fetch('/api/seed', { method: 'POST' });
+      if (res.ok) {
+        const data = await res.json();
+        setSeedResult(`Seeded ${data.totalSeeded} items (${data.result?.products?.seeded || 0} products, ${data.result?.categories?.seeded || 0} categories, ${data.result?.brands?.seeded || 0} brands)`);
+        // Refresh stats after seeding
+        fetchStats();
+      } else {
+        const data = await res.json();
+        setSeedResult(`Error: ${data.error || 'Failed to seed'}`);
+      }
+    } catch {
+      setSeedResult('Error: Failed to connect to seed API');
+    } finally {
+      setSeeding(false);
+    }
+  };
+
+  const totalProducts = stats.products;
+
+  return (
+    <div className="min-h-screen bg-gray-950 text-white">
+      {/* Mobile sidebar overlay */}
+      {sidebarOpen && (
+        <div className="fixed inset-0 bg-black/60 z-40 lg:hidden" onClick={() => setSidebarOpen(false)} />
+      )}
+
+      {/* Sidebar */}
+      <aside className={`fixed top-0 left-0 bottom-0 w-64 bg-gray-900 border-r border-gray-800 z-50 transform transition-transform duration-200 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="flex items-center justify-between p-4 border-b border-gray-800">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-amber-500/20 rounded-lg flex items-center justify-center">
+              <Lock size={16} className="text-amber-500" />
+            </div>
+            <div>
+              <h2 className="font-bold text-sm">Admin Panel</h2>
+              <span className="text-[10px] text-gray-400">GearScope</span>
+            </div>
+          </div>
+          <button onClick={() => setSidebarOpen(false)} className="lg:hidden p-1 hover:bg-gray-800 rounded" aria-label="Close sidebar">
+            <X size={18} />
+          </button>
+        </div>
+
+        <nav className="p-3 space-y-1">
+          {sidebarItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = item.id === 'dashboard';
+            return (
+              <button
+                key={item.id}
+                onClick={() => handleTabChange(item.id)}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 ${
+                  isActive
+                    ? 'bg-amber-500/15 text-amber-400 border border-amber-500/20'
+                    : 'text-gray-400 hover:bg-gray-800 hover:text-gray-200 border border-transparent'
+                }`}
+              >
+                <Icon size={18} className={isActive ? 'text-amber-500' : ''} />
+                {item.label}
+                {isActive && <ChevronRight size={14} className="ml-auto text-amber-500" />}
+              </button>
+            );
+          })}
+        </nav>
+
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-800">
+          <Button variant="ghost" size="sm" className="w-full text-gray-400 hover:text-white" onClick={() => navigate({ page: 'home' })}>
+            ← Back to Site
+          </Button>
+        </div>
+      </aside>
+
+      {/* Main content */}
+      <div className="lg:ml-64">
+        {/* Top bar */}
+        <header className="sticky top-0 z-30 bg-gray-900/95 backdrop-blur-sm border-b border-gray-800 px-4 py-3 flex items-center gap-3">
+          <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-2 hover:bg-gray-800 rounded-lg" aria-label="Open sidebar">
+            <Menu size={20} />
+          </button>
+          <div className="flex items-center gap-2">
+            <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30 text-xs">
+              <Lock size={10} className="mr-1" />
+              Admin
+            </Badge>
+            <h1 className="text-lg font-semibold">Dashboard</h1>
+          </div>
+        </header>
+
+        {/* Dashboard content */}
+        <div className="p-4 sm:p-6 lg:p-8">
+          {loading ? (
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <Card key={i} className="bg-gray-900 border-gray-800">
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="h-4 w-16 bg-gray-800 rounded animate-pulse mb-2" />
+                      <div className="h-8 w-12 bg-gray-800 rounded animate-pulse mb-1" />
+                      <div className="h-3 w-20 bg-gray-800 rounded animate-pulse" />
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {/* Stats grid */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <Card className="bg-gray-900 border-gray-800">
+                  <CardContent className="p-4 sm:p-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <Package size={20} className="text-amber-500" />
+                      <Badge variant="outline" className="text-[10px] border-gray-700 text-gray-400">Total</Badge>
+                    </div>
+                    <p className="text-3xl font-bold text-white">{stats.products}</p>
+                    <p className="text-sm text-gray-400 mt-1">Products</p>
+                  </CardContent>
+                </Card>
+                <Card className="bg-gray-900 border-gray-800">
+                  <CardContent className="p-4 sm:p-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <FolderOpen size={20} className="text-amber-500" />
+                      <Badge variant="outline" className="text-[10px] border-gray-700 text-gray-400">Active</Badge>
+                    </div>
+                    <p className="text-3xl font-bold text-white">{stats.categories}</p>
+                    <p className="text-sm text-gray-400 mt-1">Categories</p>
+                  </CardContent>
+                </Card>
+                <Card className="bg-gray-900 border-gray-800">
+                  <CardContent className="p-4 sm:p-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <Building2 size={20} className="text-amber-500" />
+                      <Badge variant="outline" className="text-[10px] border-gray-700 text-gray-400">Partners</Badge>
+                    </div>
+                    <p className="text-3xl font-bold text-white">{stats.brands}</p>
+                    <p className="text-sm text-gray-400 mt-1">Brands</p>
+                  </CardContent>
+                </Card>
+                <Card className="bg-gray-900 border-gray-800">
+                  <CardContent className="p-4 sm:p-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <Star size={20} className="text-amber-500" />
+                      <Badge variant="outline" className="text-[10px] border-gray-700 text-gray-400">Avg</Badge>
+                    </div>
+                    <p className="text-3xl font-bold text-white">{stats.avgRating}</p>
+                    <p className="text-sm text-gray-400 mt-1">Avg Rating</p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Review Status Breakdown */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                <Card className="bg-gray-900 border-gray-800">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-base text-white flex items-center gap-2">
+                      <TrendingUp size={16} className="text-amber-500" />
+                      Review Status
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-400">Verified</span>
+                        <div className="flex items-center gap-2">
+                          <div className="w-32 h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div className="h-full bg-green-500 rounded-full" style={{ width: totalProducts > 0 ? `${(verifiedCount / totalProducts) * 100}%` : '0%' }} />
+                          </div>
+                          <span className="text-sm font-medium text-white w-8 text-right">{verifiedCount}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-400">Updated</span>
+                        <div className="flex items-center gap-2">
+                          <div className="w-32 h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div className="h-full bg-amber-500 rounded-full" style={{ width: totalProducts > 0 ? `${(updatedCount / totalProducts) * 100}%` : '0%' }} />
+                          </div>
+                          <span className="text-sm font-medium text-white w-8 text-right">{updatedCount}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-400">New</span>
+                        <div className="flex items-center gap-2">
+                          <div className="w-32 h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div className="h-full bg-blue-500 rounded-full" style={{ width: totalProducts > 0 ? `${((totalProducts - verifiedCount - updatedCount) / totalProducts) * 100}%` : '0%' }} />
+                          </div>
+                          <span className="text-sm font-medium text-white w-8 text-right">{totalProducts - verifiedCount - updatedCount}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-gray-900 border-gray-800">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-base text-white flex items-center gap-2">
+                      <Clock size={16} className="text-amber-500" />
+                      Quick Actions
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button variant="outline" className="h-auto py-3 flex flex-col items-center gap-1 bg-gray-800/50 border-gray-700 hover:border-amber-500/50 hover:bg-gray-800" onClick={() => handleTabChange('products')}>
+                        <Package size={18} className="text-amber-500" />
+                        <span className="text-xs">Add Product</span>
+                      </Button>
+                      <Button variant="outline" className="h-auto py-3 flex flex-col items-center gap-1 bg-gray-800/50 border-gray-700 hover:border-amber-500/50 hover:bg-gray-800" onClick={() => handleTabChange('categories')}>
+                        <FolderOpen size={18} className="text-amber-500" />
+                        <span className="text-xs">Add Category</span>
+                      </Button>
+                      <Button variant="outline" className="h-auto py-3 flex flex-col items-center gap-1 bg-gray-800/50 border-gray-700 hover:border-amber-500/50 hover:bg-gray-800" onClick={() => handleTabChange('brands')}>
+                        <Building2 size={18} className="text-amber-500" />
+                        <span className="text-xs">Add Brand</span>
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="h-auto py-3 flex flex-col items-center gap-1 bg-amber-500/10 border-amber-500/30 hover:border-amber-500/50 hover:bg-amber-500/20"
+                        onClick={handleSeed}
+                        disabled={seeding}
+                      >
+                        {seeding ? <Loader2 size={18} className="text-amber-500 animate-spin" /> : <Database size={18} className="text-amber-500" />}
+                        <span className="text-xs">{seeding ? 'Seeding...' : 'Seed Database'}</span>
+                      </Button>
+                    </div>
+                    {seedResult && (
+                      <div className={`mt-3 p-2 rounded-lg text-xs ${seedResult.startsWith('Error') ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-green-500/10 text-green-400 border border-green-500/20'}`}>
+                        {seedResult}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Recently Updated */}
+              <Card className="bg-gray-900 border-gray-800">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-base text-white flex items-center gap-2">
+                      <Clock size={16} className="text-amber-500" />
+                      Recently Updated Products
+                    </CardTitle>
+                    <Button variant="ghost" size="sm" className="text-amber-500 hover:text-amber-400 text-xs" onClick={() => handleTabChange('products')}>
+                      View All <ArrowUpRight size={12} className="ml-1" />
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {recentProducts.length === 0 ? (
+                    <div className="text-center py-6">
+                      <Package size={32} className="mx-auto text-gray-600 mb-2" />
+                      <p className="text-gray-400 text-sm">No products yet. Seed the database to get started.</p>
+                    </div>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="border-b border-gray-800">
+                            <th className="text-left py-2 pr-4 text-gray-400 font-medium">Product</th>
+                            <th className="text-left py-2 pr-4 text-gray-400 font-medium">Category</th>
+                            <th className="text-left py-2 pr-4 text-gray-400 font-medium">Rating</th>
+                            <th className="text-left py-2 text-gray-400 font-medium">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {recentProducts.map((product) => (
+                            <tr key={product.id} className="border-b border-gray-800/50 hover:bg-gray-800/30">
+                              <td className="py-2.5 pr-4">
+                                <div className="flex items-center gap-2">
+                                  {product.image && (
+                                    <div className="w-8 h-8 rounded bg-gray-800 overflow-hidden shrink-0">
+                                      <img src={product.image} alt="" className="w-full h-full object-cover" />
+                                    </div>
+                                  )}
+                                  <span className="text-white font-medium truncate max-w-[200px]">{product.title}</span>
+                                </div>
+                              </td>
+                              <td className="py-2.5 pr-4 text-gray-400">{product.category}</td>
+                              <td className="py-2.5 pr-4">
+                                <div className="flex items-center gap-1">
+                                  <Star size={12} className="text-amber-500 fill-amber-500" />
+                                  <span className="text-white">{product.rating}</span>
+                                </div>
+                              </td>
+                              <td className="py-2.5">
+                                <Badge
+                                  variant="outline"
+                                  className={`text-[10px] ${
+                                    product.reviewStatus === 'verified' ? 'border-green-500/30 text-green-400'
+                                      : product.reviewStatus === 'updated' ? 'border-amber-500/30 text-amber-400'
+                                        : 'border-blue-500/30 text-blue-400'
+                                  }`}
+                                >
+                                  {product.reviewStatus}
+                                </Badge>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

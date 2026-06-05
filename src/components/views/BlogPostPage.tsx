@@ -29,6 +29,8 @@ import {
   List,
 } from 'lucide-react';
 import { BlogComments } from '@/components/affiliate/BlogComments';
+import { generateBlogPostJsonLd } from '@/lib/seo';
+import { JsonLdScript } from '@/components/affiliate/JsonLdScript';
 
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr);
@@ -185,6 +187,8 @@ export function BlogPostPage({ postSlug }: { postSlug: string }) {
   return (
     <div className="min-h-screen bg-[#eaeded] dark:bg-gray-900">
       <div className="max-w-5xl mx-auto px-4 py-6">
+        {/* Blog post structured data for SEO */}
+        <JsonLdScript data={generateBlogPostJsonLd(post)} />
         <Breadcrumbs
           items={[
             { label: 'Blog', route: { page: 'blog' } },

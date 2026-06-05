@@ -18,6 +18,12 @@ interface RouterState {
   goToTrending: () => void;
   goToBookmarks: () => void;
   goToGearFinder: () => void;
+  goToAffiliateSettings: () => void;
+  goToAdmin: () => void;
+  goToAdminProducts: () => void;
+  goToAdminCategories: () => void;
+  goToAdminBrands: () => void;
+  goToAdminAffiliate: () => void;
   goToPage: (page: RoutePath['page']) => void;
 }
 
@@ -168,6 +174,60 @@ export const useRouterStore = create<RouterState>((set) => ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
     return { route };
   }),
+
+  goToAffiliateSettings: () => set((state) => {
+    const route: RoutePath = { page: 'affiliate-settings' };
+    if (typeof window !== 'undefined') {
+      window.history.pushState({ route }, '', '#affiliate-settings');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return { route };
+  }),
+
+  goToAdmin: () => set((state) => {
+    const route: RoutePath = { page: 'admin' };
+    if (typeof window !== 'undefined') {
+      window.history.pushState({ route }, '', '#admin');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return { route };
+  }),
+
+  goToAdminProducts: () => set((state) => {
+    const route: RoutePath = { page: 'admin-products' };
+    if (typeof window !== 'undefined') {
+      window.history.pushState({ route }, '', '#admin-products');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return { route };
+  }),
+
+  goToAdminCategories: () => set((state) => {
+    const route: RoutePath = { page: 'admin-categories' };
+    if (typeof window !== 'undefined') {
+      window.history.pushState({ route }, '', '#admin-categories');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return { route };
+  }),
+
+  goToAdminBrands: () => set((state) => {
+    const route: RoutePath = { page: 'admin-brands' };
+    if (typeof window !== 'undefined') {
+      window.history.pushState({ route }, '', '#admin-brands');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return { route };
+  }),
+
+  goToAdminAffiliate: () => set((state) => {
+    const route: RoutePath = { page: 'admin-affiliate' };
+    if (typeof window !== 'undefined') {
+      window.history.pushState({ route }, '', '#admin-affiliate');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return { route };
+  }),
 }))
 
 function routeToHash(route: RoutePath): string {
@@ -187,6 +247,12 @@ function routeToHash(route: RoutePath): string {
     case 'trending': return 'trending';
     case 'bookmarks': return 'bookmarks';
     case 'gear-finder': return 'gear-finder';
+    case 'affiliate-settings': return 'affiliate-settings';
+    case 'admin': return 'admin';
+    case 'admin-products': return 'admin-products';
+    case 'admin-categories': return 'admin-categories';
+    case 'admin-brands': return 'admin-brands';
+    case 'admin-affiliate': return 'admin-affiliate';
     case 'roundups': return 'roundups';
     default: return route.page;
   }
@@ -218,7 +284,7 @@ export function hashToRoute(hash: string): RoutePath {
       }
       return { page: 'blog' };
     default:
-      if (['about', 'contact', 'privacy', 'terms', 'editorial-policy', 'how-we-test', 'trending', 'roundups', 'wishlist', 'compare', 'guides', 'bookmarks', 'gear-finder', 'not-found'].includes(type)) {
+      if (['about', 'contact', 'privacy', 'terms', 'editorial-policy', 'how-we-test', 'trending', 'roundups', 'wishlist', 'compare', 'guides', 'bookmarks', 'gear-finder', 'affiliate-settings', 'admin', 'admin-products', 'admin-categories', 'admin-brands', 'admin-affiliate', 'not-found'].includes(type)) {
         return { page: type as RoutePath['page'] } as RoutePath;
       }
       return { page: 'not-found' };

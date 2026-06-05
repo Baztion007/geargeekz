@@ -34,6 +34,8 @@ import {
   Filter,
 } from 'lucide-react';
 import type { GuideType } from '@/lib/types';
+import { generateCategoryPageJsonLd } from '@/lib/seo';
+import { JsonLdScript } from '@/components/affiliate/JsonLdScript';
 
 interface CategoryPageProps {
   categorySlug: string;
@@ -223,6 +225,8 @@ export function CategoryPage({ categorySlug }: CategoryPageProps) {
   return (
     <div className={`min-h-screen bg-gray-50 dark:bg-gray-900 ${accentClass}`}>
       <div className="max-w-7xl mx-auto px-4 py-6">
+        {/* Category structured data for SEO */}
+        <JsonLdScript data={generateCategoryPageJsonLd(category, categoryProducts)} />
         {/* Breadcrumbs */}
         <Breadcrumbs
           items={[
