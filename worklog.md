@@ -1903,3 +1903,23 @@ Work Log:
 Stage Summary:
 - Product cards now have consistent height and aligned CTAs across the Trending Now grid
 - Quick View modal fully readable in dark mode with proper text contrast
+
+---
+Task ID: blog-post-layout-fix
+Agent: Main
+Task: Fix BlogPostPage layout — Related Products should be 3 columns, Newsletter and Comments should stretch to match full width
+
+Work Log:
+- Analyzed screenshot showing Related Products in 2-column layout and Newsletter/Comments not spanning full width
+- Identified root cause: Related Products, Newsletter, and Comments were inside the `lg:col-span-2` main content column instead of spanning the full 3-column grid width
+- Moved Related Products section out of the `lg:col-span-2` content div and placed it after the 3-column grid, making it full-width with `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3` (3 columns on large screens)
+- Moved Newsletter CTA section out of `lg:col-span-2` to full-width below the grid
+- Moved Comments section (BlogComments) out of `lg:col-span-2` to full-width below the grid
+- Increased related products limit from 4 to 6 to better fill the 3-column grid (2 rows × 3 columns)
+- Verified with agent-browser: Related Products shows 3 columns, Newsletter and Comments span full width matching the content grid above
+- Lint passes cleanly
+
+Stage Summary:
+- BlogPostPage layout fixed: Related Products now uses 3-column grid matching the "About the Author" sidebar width
+- Newsletter and Comments sections now stretch to match the full 3-column width above them
+- All three sections are now placed after the main content grid instead of being constrained inside the 2/3 content column

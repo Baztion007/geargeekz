@@ -151,8 +151,8 @@ export function BlogPostPage({ postSlug }: { postSlug: string }) {
     if (!post) return [];
     const matched = products
       .filter((p) => p.tags.some((t) => post.tags.includes(t)))
-      .slice(0, 4);
-    return matched.length > 0 ? matched : products.slice(0, 4);
+      .slice(0, 6);
+    return matched.length > 0 ? matched : products.slice(0, 6);
   }, [postSlug, post]);
 
   if (!post) {
@@ -278,45 +278,7 @@ export function BlogPostPage({ postSlug }: { postSlug: string }) {
               </div>
             </div>
 
-            {/* Related Products */}
-            {relatedProducts.length > 0 && (
-              <div className="mb-6">
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                  <Package size={20} className="text-[#c7511f]" />
-                  Related Products
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {relatedProducts.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-                </div>
-              </div>
-            )}
 
-            {/* Newsletter CTA */}
-            <div className="bg-gradient-to-r from-[#131921] to-[#37475a] rounded-lg p-6 md:p-8 text-white mb-6">
-              <div className="flex items-center gap-3 mb-3">
-                <Mail className="w-8 h-8 text-[#febd69]" />
-                <h3 className="text-xl font-bold">Stay Updated</h3>
-              </div>
-              <p className="text-gray-300 mb-4">
-                Get the latest gear guides, reviews, and recommendations delivered straight to your inbox. No spam, ever.
-              </p>
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="your@email.com"
-                  className="flex-1 px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#febd69]"
-                  aria-label="Email address for newsletter"
-                />
-                <Button className="bg-[#febd69] hover:bg-[#f3a847] text-[#131921] font-bold shrink-0">
-                  Subscribe
-                </Button>
-              </div>
-            </div>
-
-            {/* Comments Section */}
-            <BlogComments postSlug={postSlug} />
           </div>
 
           {/* Sidebar */}
@@ -458,6 +420,48 @@ export function BlogPostPage({ postSlug }: { postSlug: string }) {
               Back to Blog
             </Button>
           </div>
+        </div>
+
+        {/* Related Products - Full Width, 3 Columns */}
+        {relatedProducts.length > 0 && (
+          <div className="mt-6">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <Package size={20} className="text-[#c7511f]" />
+              Related Products
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {relatedProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Newsletter CTA - Full Width */}
+        <div className="bg-gradient-to-r from-[#131921] to-[#37475a] rounded-lg p-6 md:p-8 text-white mt-6">
+          <div className="flex items-center gap-3 mb-3">
+            <Mail className="w-8 h-8 text-[#febd69]" />
+            <h3 className="text-xl font-bold">Stay Updated</h3>
+          </div>
+          <p className="text-gray-300 mb-4">
+            Get the latest gear guides, reviews, and recommendations delivered straight to your inbox. No spam, ever.
+          </p>
+          <div className="flex gap-2">
+            <input
+              type="email"
+              placeholder="your@email.com"
+              className="flex-1 px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#febd69]"
+              aria-label="Email address for newsletter"
+            />
+            <Button className="bg-[#febd69] hover:bg-[#f3a847] text-[#131921] font-bold shrink-0">
+              Subscribe
+            </Button>
+          </div>
+        </div>
+
+        {/* Comments Section - Full Width */}
+        <div className="mt-6">
+          <BlogComments postSlug={postSlug} />
         </div>
       </div>
     </div>
