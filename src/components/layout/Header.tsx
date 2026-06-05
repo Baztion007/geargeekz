@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Search, Menu, X, ChevronDown, Heart, TrendingUp, BookOpen, Info, Compass, Sun, Moon, Monitor, Lock } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Search, Menu, X, ChevronDown, Heart, TrendingUp, BookOpen, Info, Compass, Sun, Moon, Monitor } from 'lucide-react';
 import { useRouterStore } from '@/lib/router';
 import { useWishlistStore } from '@/lib/wishlist';
 import { useThemeStore } from '@/lib/theme';
@@ -26,6 +26,8 @@ export function Header() {
   const goToWishlist = useRouterStore((s) => s.goToWishlist);
   const goToAdmin = useRouterStore((s) => s.goToAdmin);
   const wishlistCount = useWishlistStore((s) => s.items.length);
+  const logoClickCount = useRef(0);
+  const logoClickTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const theme = useThemeStore((s) => s.theme);
   const toggleTheme = useThemeStore((s) => s.toggleTheme);
   const themeIcon = theme === 'dark' ? Sun : theme === 'light' ? Moon : Monitor;
@@ -76,9 +78,23 @@ export function Header() {
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
 
-            {/* Logo */}
+            {/* Logo — triple-click within 1s to open admin */}
             <button
-              onClick={goHome}
+              onClick={() => {
+                logoClickCount.current += 1;
+                if (logoClickTimer.current) clearTimeout(logoClickTimer.current);
+                if (logoClickCount.current >= 3) {
+                  logoClickCount.current = 0;
+                  if (logoClickTimer.current) clearTimeout(logoClickTimer.current);
+                  goToAdmin();
+                } else {
+                  logoClickTimer.current = setTimeout(() => {
+                    const count = logoClickCount.current;
+                    logoClickCount.current = 0;
+                    if (count < 3) goHome();
+                  }, 800);
+                }
+              }}
               className="flex items-center gap-2 shrink-0 hover:opacity-90 rounded-lg p-1 transition-all duration-300 logo-hover"
               aria-label="Go to homepage"
             >
@@ -133,14 +149,6 @@ export function Header() {
               >
                 <ThemeIcon size={22} className="text-[#febd69] transition-transform duration-200 hover:rotate-12" />
                 <span className="text-[11px] text-gray-400 hidden xl:inline">{theme === 'system' ? 'Auto' : theme === 'dark' ? 'Dark' : 'Light'}</span>
-              </button>
-              <button
-                className="flex items-center gap-1.5 hover:bg-[#37475a] rounded-lg p-2 transition-all duration-200 active:scale-95"
-                onClick={goToAdmin}
-                aria-label="Admin Panel"
-                title="Admin Panel"
-              >
-                <Lock size={22} className="text-[#febd69]/60 transition-transform duration-200 hover:rotate-12" />
               </button>
               <button
                 className="flex items-center gap-1.5 hover:bg-[#37475a] rounded-lg p-2 transition-all duration-200 active:scale-95"

@@ -9,7 +9,6 @@ export function Footer() {
   const goToPage = useRouterStore((s) => s.goToPage);
   const goToWishlist = useRouterStore((s) => s.goToWishlist);
   const navigate = useRouterStore((s) => s.navigate);
-  const goToAdmin = useRouterStore((s) => s.goToAdmin);
 
   const footerLinks = {
     'Get to Know Us': [
@@ -18,7 +17,6 @@ export function Footer() {
       { label: 'Editorial Policy', action: () => goToPage('editorial-policy') },
       { label: 'How We Test', action: () => goToPage('how-we-test') },
       { label: 'Contact Us', action: () => goToPage('contact') },
-      { label: 'Admin Panel', action: () => goToAdmin() },
     ],
     'Categories': [
       { label: 'Travel Gear', action: () => navigate({ page: 'category', slug: 'travel-gear' }) },

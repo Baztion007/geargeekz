@@ -17,11 +17,15 @@ import {
   ArrowUpRight,
   Loader2,
   Database,
+  LogOut,
+  ShieldAlert,
 } from 'lucide-react';
 import { useRouterStore } from '@/lib/router';
+import { useAdminAuth } from '@/lib/admin-auth';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 type AdminTab = 'dashboard' | 'products' | 'categories' | 'brands' | 'affiliate';
 
@@ -49,9 +53,88 @@ interface ProductItem {
   merchant: string;
 }
 
-export function AdminPage() {
+// ─── Login Gate Component ──────────────────────────────────────────────────────
+function AdminLoginGate() {
+  const navigate = useRouterStore((s) => s.navigate);
+  const { login } = useAdminAuth();
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState(false);
+  const [loginAttempts, setLoginAttempts] = useState(0);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    const success = login(password);
+    if (success) {
+      setLoginError(false);
+      setLoginAttempts(0);
+    } else {
+      setLoginError(true);
+      setLoginAttempts((prev) => prev + 1);
+    }
+    setPassword('');
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4">
+      <div className="w-full max-w-sm">
+        <Card className="bg-gray-900 border-gray-800 shadow-2xl">
+          <CardContent className="p-8">
+            <div className="flex flex-col items-center text-center mb-6">
+              <div className="w-16 h-16 bg-amber-500/20 rounded-2xl flex items-center justify-center mb-4">
+                <Lock size={28} className="text-amber-500" />
+              </div>
+              <h1 className="text-xl font-bold text-white">Admin Access</h1>
+              <p className="text-sm text-gray-400 mt-1">Enter the admin password to continue</p>
+            </div>
+
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={(e) => { setPassword(e.target.value); setLoginError(false); }}
+                  placeholder="Password"
+                  className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 focus:border-amber-500 focus:ring-amber-500/20"
+                  autoFocus
+                />
+                {loginError && (
+                  <p className="text-red-400 text-xs mt-2 flex items-center gap-1">
+                    <ShieldAlert size={12} />
+                    Incorrect password. {loginAttempts >= 3 ? 'Slow down — too many attempts.' : `Attempt ${loginAttempts} of 5.`}
+                  </p>
+                )}
+              </div>
+              <Button
+                type="submit"
+                disabled={loginAttempts >= 5}
+                className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-gray-900 font-bold"
+              >
+                Unlock Admin Panel
+              </Button>
+            </form>
+
+            {loginAttempts >= 5 && (
+              <p className="text-center text-red-400 text-sm mt-4">Too many failed attempts. Refresh the page to try again.</p>
+            )}
+
+            <button
+              onClick={() => navigate({ page: 'home' })}
+              className="w-full text-center text-gray-500 hover:text-gray-300 text-sm mt-4 transition-colors"
+            >
+              ← Back to site
+            </button>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main Admin Page (authenticated) ──────────────────────────────────────────
+function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useRouterStore((s) => s.navigate);
+  const { logout } = useAdminAuth();
   const [loading, setLoading] = useState(true);
   const [seeding, setSeeding] = useState(false);
   const [seedResult, setSeedResult] = useState<string | null>(null);
@@ -80,7 +163,7 @@ export function AdminPage() {
 
       const products: ProductItem[] = productsData.products || [];
       const categories = categoriesData.categories || [];
-      const brands = brandsData.brands || [];
+      const brands = categoriesData.brands || [];
 
       const avgRating = products.length > 0
         ? (products.reduce((sum: number, p: any) => sum + (p.rating || 0), 0) / products.length).toFixed(1)
@@ -129,7 +212,6 @@ export function AdminPage() {
       if (res.ok) {
         const data = await res.json();
         setSeedResult(`Seeded ${data.totalSeeded} items (${data.result?.products?.seeded || 0} products, ${data.result?.categories?.seeded || 0} categories, ${data.result?.brands?.seeded || 0} brands)`);
-        // Refresh stats after seeding
         fetchStats();
       } else {
         const data = await res.json();
@@ -190,9 +272,13 @@ export function AdminPage() {
           })}
         </nav>
 
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-800">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-800 space-y-2">
           <Button variant="ghost" size="sm" className="w-full text-gray-400 hover:text-white" onClick={() => navigate({ page: 'home' })}>
             ← Back to Site
+          </Button>
+          <Button variant="ghost" size="sm" className="w-full text-red-400 hover:text-red-300 hover:bg-red-500/10" onClick={() => { logout(); navigate({ page: 'home' }); }}>
+            <LogOut size={14} className="mr-1" />
+            Sign Out
           </Button>
         </div>
       </aside>
@@ -210,6 +296,12 @@ export function AdminPage() {
               Admin
             </Badge>
             <h1 className="text-lg font-semibold">Dashboard</h1>
+          </div>
+          <div className="ml-auto">
+            <Button variant="ghost" size="sm" className="text-gray-400 hover:text-red-400 hover:bg-red-500/10" onClick={() => { logout(); navigate({ page: 'home' }); }}>
+              <LogOut size={14} className="mr-1" />
+              Sign Out
+            </Button>
           </div>
         </header>
 
@@ -433,4 +525,25 @@ export function AdminPage() {
       </div>
     </div>
   );
+}
+
+// ─── Exported Admin Page (with auth gate) ──────────────────────────────────────
+export function AdminPage() {
+  const { isAuthenticated, isChecking, checkSession } = useAdminAuth();
+
+  useEffect(() => { checkSession(); }, [checkSession]);
+
+  if (isChecking) {
+    return (
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-amber-500 animate-spin" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <AdminLoginGate />;
+  }
+
+  return <AdminDashboard />;
 }

@@ -16,6 +16,7 @@ import {
   ImagePlus,
 } from 'lucide-react';
 import { useRouterStore } from '@/lib/router';
+import { useAdminAuth } from '@/lib/admin-auth';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -87,20 +88,43 @@ const sidebarItems: { id: AdminTab; label: string; icon: React.ComponentType<{ s
   { id: 'affiliate', label: 'Affiliate Settings', icon: Link2 },
 ];
 
+// Auth guard for admin sub-pages
+function AdminAuthGuard({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated, isChecking, checkSession } = useAdminAuth();
+  const navigate = useRouterStore((s) => s.navigate);
+
+  useEffect(() => { checkSession(); }, [checkSession]);
+
+  if (isChecking) {
+    return (
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-amber-500 animate-spin" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    navigate({ page: 'admin' });
+    return null;
+  }
+
+  return <>{children}</>;
+}
+
 export function AdminProductsPage() {
-  return <AdminShell activeTab="products" />;
+  return <AdminAuthGuard><AdminShell activeTab="products" /></AdminAuthGuard>;
 }
 
 export function AdminCategoriesPage() {
-  return <AdminShell activeTab="categories" />;
+  return <AdminAuthGuard><AdminShell activeTab="categories" /></AdminAuthGuard>;
 }
 
 export function AdminBrandsPage() {
-  return <AdminShell activeTab="brands" />;
+  return <AdminAuthGuard><AdminShell activeTab="brands" /></AdminAuthGuard>;
 }
 
 export function AdminAffiliatePage() {
-  return <AdminShell activeTab="affiliate" />;
+  return <AdminAuthGuard><AdminShell activeTab="affiliate" /></AdminAuthGuard>;
 }
 
 function AdminShell({ activeTab }: { activeTab: AdminTab }) {
