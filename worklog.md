@@ -1923,3 +1923,20 @@ Stage Summary:
 - BlogPostPage layout fixed: Related Products now uses 3-column grid matching the "About the Author" sidebar width
 - Newsletter and Comments sections now stretch to match the full 3-column width above them
 - All three sections are now placed after the main content grid instead of being constrained inside the 2/3 content column
+
+---
+Task ID: quickview-dark-mode-and-logo-security
+Agent: Main
+Task: Fix Quick View dark mode text readability and remove logo double-click admin shortcut
+
+Work Log:
+- Analyzed QuickViewModal.tsx: DialogContent uses `bg-background` from shadcn which maps to `--background: 222 47% 11%` in dark mode. Added explicit `bg-white dark:bg-gray-800` and `border-gray-200 dark:border-gray-700` classes to DialogContent for guaranteed opaque background in dark mode
+- Added `bg-white dark:bg-gray-800` to the right-side product info panel for consistent opaque background
+- Analyzed Header.tsx: Logo had a triple-click-within-800ms shortcut that navigated to admin. Removed the triple-click handler entirely, replacing with simple `goHome()` click
+- Removed unused `goToAdmin` import and `useRef` import from Header.tsx
+- Verified with agent-browser: logo click goes home (not admin), triple-click also goes home, admin page still accessible via #admin URL with login gate
+
+Stage Summary:
+- QuickViewModal: Added explicit opaque backgrounds (`bg-white dark:bg-gray-800`) to DialogContent and product info panel for dark mode readability
+- Header: Removed triple-click admin shortcut from logo. Logo now only goes home. Admin only accessible via #admin URL (requires password)
+- Security improvement: No more easy accidental access to admin section
