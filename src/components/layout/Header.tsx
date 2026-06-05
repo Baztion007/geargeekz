@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { Search, Menu, X, ChevronDown, Heart, TrendingUp, BookOpen, Info, Compass, Sun, Moon, Monitor } from 'lucide-react';
+import { Search, Menu, X, ChevronDown, Heart, TrendingUp, BookOpen, Info, Compass, Sun, Moon, Monitor, Award, Tag } from 'lucide-react';
 import { useRouterStore } from '@/lib/router';
 import { useWishlistStore } from '@/lib/wishlist';
 import { useThemeStore } from '@/lib/theme';
@@ -10,6 +10,8 @@ import { Input } from '@/components/ui/input';
 
 const navItems = [
   { label: 'Trending', page: 'trending' as const, icon: TrendingUp },
+  { label: 'Best Sellers', page: 'best-sellers' as const, icon: Award },
+  { label: 'Deals', page: 'deals' as const, icon: Tag },
   { label: 'Guides', page: 'guides' as const, icon: Compass },
   { label: 'Blog', page: 'blog' as const, icon: BookOpen },
   { label: 'About', page: 'about' as const, icon: Info },

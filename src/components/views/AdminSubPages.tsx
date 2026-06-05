@@ -20,6 +20,7 @@ import { useAdminAuth } from '@/lib/admin-auth';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { AffiliateSettingsPage } from '@/components/views/AffiliateSettingsPage';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -207,12 +208,8 @@ function AdminShell({ activeTab }: { activeTab: AdminTab }) {
           {activeTab === 'categories' && <CategoriesContent />}
           {activeTab === 'brands' && <BrandsContent />}
           {activeTab === 'affiliate' && (
-            <div className="text-center py-12">
-              <Link2 size={40} className="mx-auto text-gray-600 mb-4" />
-              <p className="text-gray-400 mb-4">Redirecting to full Affiliate Settings page...</p>
-              <Button onClick={() => navigate({ page: 'affiliate-settings' })} className="bg-amber-500 hover:bg-amber-400 text-black">
-                Open Affiliate Settings
-              </Button>
+            <div className="dark">
+              <AffiliateSettingsPage />
             </div>
           )}
         </div>

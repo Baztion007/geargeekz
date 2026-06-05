@@ -8,6 +8,8 @@ export function Footer() {
   const goHome = useRouterStore((s) => s.goHome);
   const goToPage = useRouterStore((s) => s.goToPage);
   const goToWishlist = useRouterStore((s) => s.goToWishlist);
+  const goToBestSellers = useRouterStore((s) => s.goToBestSellers);
+  const goToDeals = useRouterStore((s) => s.goToDeals);
   const navigate = useRouterStore((s) => s.navigate);
 
   const footerLinks = {
@@ -17,6 +19,13 @@ export function Footer() {
       { label: 'Editorial Policy', action: () => goToPage('editorial-policy') },
       { label: 'How We Test', action: () => goToPage('how-we-test') },
       { label: 'Contact Us', action: () => goToPage('contact') },
+    ],
+    'Shop': [
+      { label: 'Best Sellers', action: () => goToBestSellers() },
+      { label: 'Deals', action: () => goToDeals() },
+      { label: 'Trending', action: () => goToPage('trending') },
+      { label: 'Roundups', action: () => goToPage('roundups') },
+      { label: 'Buying Guides', action: () => goToPage('guides') },
     ],
     'Categories': [
       { label: 'Travel Gear', action: () => navigate({ page: 'category', slug: 'travel-gear' }) },
