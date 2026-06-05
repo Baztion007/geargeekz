@@ -128,10 +128,10 @@ function AnimatedCounter({ end, label, suffix = '' }: { end: number; label: stri
 
   return (
     <div ref={ref} className="text-center counter-animate">
-      <div className="text-3xl sm:text-4xl font-extrabold text-white text-shimmer">
+      <div className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white text-shimmer">
         {count}{suffix}
       </div>
-      <div className="text-xs text-gray-400 mt-1 font-medium uppercase tracking-wider">{label}</div>
+      <div className="text-[10px] sm:text-xs text-gray-400 mt-1 font-medium uppercase tracking-wider">{label}</div>
     </div>
   );
 }
@@ -165,7 +165,7 @@ function StatsCounterBar() {
   return (
     <section ref={ref} className="py-8 bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#0f172a]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6">
           {stats.map((stat, idx) => (
             <div key={idx} className="flex items-center gap-3 justify-center">
               <div className="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center shrink-0">
@@ -176,8 +176,8 @@ function StatsCounterBar() {
                   <AnimatedCounter end={stat.end} label={stat.label} suffix={stat.suffix} />
                 ) : (
                   <div className="text-center">
-                    <div className="text-3xl sm:text-4xl font-extrabold text-white">0{stat.suffix}</div>
-                    <div className="text-xs text-gray-400 mt-1 font-medium uppercase tracking-wider">{stat.label}</div>
+                    <div className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white">0{stat.suffix}</div>
+                    <div className="text-[10px] sm:text-xs text-gray-400 mt-1 font-medium uppercase tracking-wider">{stat.label}</div>
                   </div>
                 )}
               </div>
@@ -221,11 +221,11 @@ function GearFinderCTA() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4 text-center sm:text-left">
-            <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shrink-0 shadow-lg" style={{ animation: 'float1 3s ease-in-out infinite' }}>
-              <Target className="w-7 h-7 text-white" />
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shrink-0 shadow-lg" style={{ animation: 'float1 3s ease-in-out infinite' }}>
+              <Target className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
             </div>
             <div>
-              <h2 className="text-xl sm:text-2xl font-extrabold text-white">
+              <h2 className="text-lg sm:text-xl md:text-2xl font-extrabold text-white">
                 Not sure what to buy?
               </h2>
               <p className="text-amber-100 text-sm mt-0.5">
@@ -235,11 +235,11 @@ function GearFinderCTA() {
           </div>
           <Button
             onClick={() => navigate({ page: 'gear-finder' } as any)}
-            className="bg-white text-amber-700 hover:bg-gray-100 font-bold px-8 py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all active:scale-[0.98] text-base shrink-0"
+            className="bg-white text-amber-700 hover:bg-gray-100 font-bold px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all active:scale-[0.98] text-sm sm:text-base shrink-0"
           >
-            <Target className="w-5 h-5 mr-2" />
+            <Target className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
             Find Your Gear
-            <ArrowRight className="w-5 h-5 ml-2" />
+            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
           </Button>
         </div>
       </div>
@@ -290,11 +290,11 @@ function HeroSection() {
               <Compass className="w-3.5 h-3.5 mr-1.5" />
               Featured Guide
             </Badge>
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.05] mb-6 tracking-tight">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.05] mb-6 tracking-tight">
               Discover the
               <span className="block text-shimmer">Right Gear</span>
             </h1>
-            <p className="text-lg sm:text-xl lg:text-2xl text-gray-300/90 mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed font-light">
+            <p className="text-base sm:text-lg lg:text-2xl text-gray-300/90 mb-6 sm:mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed font-light">
               Expert reviews, honest ratings, and curated buying guides to help you find the perfect gear for every adventure.
             </p>
 
@@ -328,7 +328,7 @@ function HeroSection() {
             </div>
 
             {/* Animated statistics counter */}
-            <div className="mt-10 grid grid-cols-3 gap-6 sm:gap-8 max-w-md mx-auto lg:mx-0">
+            <div className="mt-8 sm:mt-10 grid grid-cols-3 gap-3 sm:gap-6 sm:gap-8 max-w-md mx-auto lg:mx-0">
               <AnimatedCounter end={25} suffix="+" label="Products Reviewed" />
               <AnimatedCounter end={8} label="Categories" />
               <AnimatedCounter end={6} label="Buying Guides" />

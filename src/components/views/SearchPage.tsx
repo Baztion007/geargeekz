@@ -799,7 +799,7 @@ export function SearchPage({ query }: SearchPageProps) {
                 <div className={`grid gap-3 ${
                   activeTab === 'categories'
                     ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
-                    : 'grid-cols-2 sm:grid-cols-4'
+                    : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-4'
                 }`}>
                   {(activeTab === 'all' ? searchResults.categories.slice(0, 4) : searchResults.categories).map((cat) => (
                     <Card
@@ -839,7 +839,7 @@ export function SearchPage({ query }: SearchPageProps) {
                 <div className={`grid gap-3 ${
                   activeTab === 'brands'
                     ? 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6'
-                    : 'grid-cols-3 sm:grid-cols-6'
+                    : 'grid-cols-2 sm:grid-cols-3 md:grid-cols-6'
                 }`}>
                   {(activeTab === 'all' ? searchResults.brands.slice(0, 6) : searchResults.brands).map((b) => (
                     <Card

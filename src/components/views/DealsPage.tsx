@@ -178,7 +178,7 @@ export function DealsPage() {
 
         {/* ─── Hero Section ────────────────────────────────────────── */}
         <div className="relative rounded-2xl overflow-hidden mb-8 shadow-xl ring-1 ring-black/5">
-          <div className="bg-gradient-to-r from-[#131921] via-[#1e293b] to-[#0f172a] p-8 md:p-12 text-white">
+          <div className="bg-gradient-to-r from-[#131921] via-[#1e293b] to-[#0f172a] p-6 md:p-8 lg:p-12 text-white">
             {/* Decorative floating elements */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
               <div className="absolute top-[10%] right-[8%] w-24 h-24 rounded-full border-2 border-amber-500/10 bg-amber-500/5 hero-float-1" />
@@ -199,11 +199,11 @@ export function DealsPage() {
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/20 hero-float-3">
                   <Tag className="w-7 h-7 text-white" />
                 </div>
-                <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
                   Latest <span className="text-gradient">Deals &amp; Offers</span>
                 </h1>
               </div>
-              <p className="text-lg text-gray-300 max-w-3xl leading-relaxed mb-5">
+              <p className="text-base sm:text-lg text-gray-300 max-w-3xl leading-relaxed mb-5">
                 Find the best deals on expert-reviewed gear through our affiliate links.
                 We connect you directly to trusted retailers so you always see the most current pricing.
               </p>
@@ -338,7 +338,7 @@ export function DealsPage() {
             Browse deals from our trusted retail partners. Each link takes you directly to the retailer for the most current pricing and availability.
           </p>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {merchantDeals.map((md) => {
               const Icon = md.icon;
               const url = getAffiliateUrl({ merchant: md.merchant, productId: getMerchantProductId(md.merchant) });

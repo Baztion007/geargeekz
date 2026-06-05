@@ -94,7 +94,7 @@ export function ComparePage() {
     return (
       <div className="max-w-5xl mx-auto px-4 py-8">
         <Breadcrumbs items={[{ label: 'Compare Products' }]} />
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-12 shadow-sm text-center">
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 sm:p-8 md:p-12 shadow-sm text-center">
           <div className="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
             <BarChart3 size={32} className="text-gray-400" />
           </div>

@@ -60,8 +60,8 @@ function SocialShareButtons({ title, slug }: { title: string; slug: string }) {
   };
 
   return (
-    <div className="flex items-center gap-2">
-      <span className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
+    <div className="flex items-center gap-2 flex-wrap">
+      <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
         <Share2 size={14} />
         Share:
       </span>
@@ -69,7 +69,7 @@ function SocialShareButtons({ title, slug }: { title: string; slug: string }) {
         href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-10 h-10 rounded-full bg-sky-100 hover:bg-sky-200 dark:bg-sky-900/30 dark:hover:bg-sky-900/50 flex items-center justify-center transition-colors"
+        className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-sky-100 hover:bg-sky-200 dark:bg-sky-900/30 dark:hover:bg-sky-900/50 flex items-center justify-center transition-colors"
         aria-label="Share on Twitter"
       >
         <Twitter size={14} className="text-sky-600 dark:text-sky-400" />
@@ -78,14 +78,14 @@ function SocialShareButtons({ title, slug }: { title: string; slug: string }) {
         href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-10 h-10 rounded-full bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 flex items-center justify-center transition-colors"
+        className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 flex items-center justify-center transition-colors"
         aria-label="Share on Facebook"
       >
         <Facebook size={14} className="text-blue-600 dark:text-blue-400" />
       </a>
       <button
         onClick={handleCopyLink}
-        className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 flex items-center justify-center transition-colors"
+        className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 flex items-center justify-center transition-colors"
         aria-label="Copy link"
       >
         {copied ? (
@@ -210,12 +210,12 @@ export function BlogPostPage({ postSlug }: { postSlug: string }) {
               </Badge>
 
               {/* Title */}
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
                 {post.title}
               </h1>
 
               {/* Meta */}
-              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-4">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-4">
                 {author && (
                   <button
                     onClick={() => goToAuthor(author.slug)}

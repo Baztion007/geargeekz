@@ -56,17 +56,17 @@ export function Footer() {
 
       {/* Footer links — centered */}
       <div className="max-w-7xl mx-auto px-4 py-10">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center md:text-left">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center justify-items-center">
           {Object.entries(footerLinks).map(([title, links]) => (
-            <div key={title} className="flex flex-col items-center md:items-start">
+            <div key={title} className="flex flex-col items-center">
               <h3 className="text-white font-bold mb-3 text-sm uppercase tracking-wider">{title}</h3>
               <div className="h-0.5 w-10 bg-gradient-to-r from-[#febd69] to-transparent mb-3 rounded-full" />
-              <ul className="space-y-2">
+              <ul className="space-y-2 flex flex-col items-center">
                 {links.map((link) => (
                   <li key={link.label}>
                     <button
                       onClick={link.action}
-                      className="text-gray-400 hover:text-[#febd69] text-sm transition-colors duration-200 amazon-link py-0.5 footer-link-hover"
+                      className="text-gray-400 hover:text-[#febd69] text-sm transition-colors duration-200 amazon-link py-0.5 footer-link-hover whitespace-nowrap"
                     >
                       {link.label}
                     </button>

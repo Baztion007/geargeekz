@@ -146,7 +146,7 @@ function SocialShareButtons({ title }: { title: string }) {
         href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-8 h-8 rounded-full bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 flex items-center justify-center hover:bg-sky-200 dark:hover:bg-sky-900/50 transition-colors"
+        className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 flex items-center justify-center hover:bg-sky-200 dark:hover:bg-sky-900/50 transition-colors"
         aria-label="Share on X / Twitter"
       >
         <Twitter size={14} />
@@ -155,14 +155,14 @@ function SocialShareButtons({ title }: { title: string }) {
         href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
+        className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
         aria-label="Share on Facebook"
       >
         <Facebook size={14} />
       </a>
       <button
         onClick={handleEmailShare}
-        className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center hover:bg-emerald-200 dark:hover:bg-emerald-900/50 transition-colors"
+        className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center hover:bg-emerald-200 dark:hover:bg-emerald-900/50 transition-colors"
         aria-label="Share via email"
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -172,7 +172,7 @@ function SocialShareButtons({ title }: { title: string }) {
       </button>
       <button
         onClick={handleCopyLink}
-        className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+        className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-colors ${
           copied
           ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400'
           : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
@@ -184,7 +184,7 @@ function SocialShareButtons({ title }: { title: string }) {
       {canShare && (
         <button
           onClick={handleNativeShare}
-          className="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 flex items-center justify-center hover:bg-amber-200 dark:hover:bg-amber-900/50 transition-colors"
+          className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 flex items-center justify-center hover:bg-amber-200 dark:hover:bg-amber-900/50 transition-colors"
           aria-label="Share via device"
         >
           <Share2 size={14} />
@@ -437,7 +437,7 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
   const affiliateLinkProps = getAffiliateLinkProps(affiliateUrl);
 
   return (
-    <article className="max-w-5xl mx-auto px-4 py-6 pb-28 md:pb-6 relative">
+    <article className="max-w-5xl mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-28 md:pb-6 relative">
       {/* Product structured data for SEO */}
       <JsonLdScript data={generateProductPageJsonLd(product)} />
       {/* Subtle background pattern for visual depth */}
@@ -483,7 +483,7 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
 
         {/* Product Details */}
         <div className="flex flex-col justify-center">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white leading-tight mb-3 tracking-tight">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white leading-tight mb-3 tracking-tight">
             {product.title}
           </h1>
 
@@ -571,13 +571,13 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
         <div>
           {/* Verdict Box */}
           <Card id="verdict" className="bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800/30 mb-8 shadow-sm hover:shadow-md transition-shadow duration-300 section-entrance">
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-start gap-3">
                 <div className="bg-amber-500 rounded-full p-2 shrink-0 mt-0.5 shadow-md shadow-amber-200/50 dark:shadow-amber-900/30">
-                  <Award size={20} className="text-white" />
+                  <Award size={18} className="text-white" />
                 </div>
-                <div>
-                  <h2 className="text-lg font-bold text-amber-900 dark:text-amber-200 mb-2">Our Verdict</h2>
+                <div className="min-w-0">
+                  <h2 className="text-base sm:text-lg font-bold text-amber-900 dark:text-amber-200 mb-2">Our Verdict</h2>
                   <p className="text-amber-800 dark:text-amber-300 leading-relaxed">{product.summary}</p>
                 </div>
               </div>
@@ -586,7 +586,7 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
 
           {/* Features Table */}
           <section id="features" className="mb-8 section-entrance">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Key Features</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-4">Key Features</h2>
             <Card className="overflow-hidden">
               <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
                 <Table>
@@ -613,7 +613,7 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
 
           {/* Full Review Content */}
           <section id="full-review" className="mb-8 section-entrance">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Full Review</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-4">Full Review</h2>
             <div className="prose prose-gray max-w-none">
               {product.fullReview.split('\n\n').map((paragraph, index) => (
                 <p key={index} className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
@@ -627,7 +627,7 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
 
           {/* Pros and Cons */}
           <section id="pros-cons" className="mb-8">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Pros & Cons</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-4">Pros & Cons</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Pros */}
               <Card className="border-emerald-200 dark:border-emerald-800/30 pros-card rounded-xl shadow-sm">
@@ -679,7 +679,7 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
 
           {/* Rating Breakdown */}
           <section id="rating" className="mb-8 section-entrance">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Rating Breakdown</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-4">Rating Breakdown</h2>
             <Card>
               <CardContent className="p-6">
                 <div className="flex flex-col md:flex-row items-start gap-6">
@@ -702,7 +702,7 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
 
           {/* Specifications Table */}
           <section id="specifications" className="mb-8 section-entrance">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Specifications</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-4">Specifications</h2>
             <Card className="overflow-hidden rounded-xl shadow-sm">
               <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
                 <Table>
@@ -731,7 +731,7 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
 
           {/* Who Is It For / Who Should Skip */}
           <section id="who-is-it-for" className="mb-8 section-entrance">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Is This Right for You?</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-4">Is This Right for You?</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Card className="border-emerald-200 dark:border-emerald-800/30">
                 <CardContent className="p-5">
@@ -851,8 +851,8 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
           {/* Decorative gradient orbs */}
           <div className="absolute top-0 right-0 w-48 h-48 bg-amber-500/5 rounded-full -translate-y-1/2 translate-x-1/4 blur-2xl" />
           <div className="absolute bottom-0 left-0 w-36 h-36 bg-orange-500/5 rounded-full translate-y-1/2 -translate-x-1/4 blur-2xl" />
-          <CardContent className="p-8 md:p-10 relative z-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-3 tracking-tight">
+          <CardContent className="p-6 sm:p-8 md:p-10 relative z-10">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-3 tracking-tight">
               Ready to Check the {product.brand} {product.title.split(' ').slice(-2).join(' ')}?
             </h2>
             <p className="text-gray-300 mb-5">
@@ -878,7 +878,7 @@ export default function ProductDetailPage({ productSlug }: ProductDetailPageProp
       {/* Related Products */}
       {relatedProducts.length > 0 && (
         <section className="mb-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Related Products</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-4">Related Products</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {relatedProducts.map((relatedProduct) => (
               <ProductCard key={relatedProduct.id} product={relatedProduct} />

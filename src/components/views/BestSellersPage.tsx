@@ -80,12 +80,12 @@ export function BestSellersPage() {
 
         {/* Header */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden mb-6">
-          <div className="bg-gradient-to-r from-[#131921] to-[#37475a] p-8 md:p-12 text-white">
+          <div className="bg-gradient-to-r from-[#131921] to-[#37475a] p-6 md:p-8 lg:p-12 text-white">
             <div className="flex items-center gap-3 mb-4">
               <Trophy className="w-10 h-10 text-[#febd69]" />
-              <h1 className="text-3xl md:text-4xl font-bold">Best Sellers</h1>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">Best Sellers</h1>
             </div>
-            <p className="text-lg text-gray-300 max-w-3xl">
+            <p className="text-base sm:text-lg text-gray-300 max-w-3xl">
               Our highest-rated gear and products, ranked by expert review scores. Every product
               on this list has been thoroughly tested and approved by our team.
             </p>
@@ -224,14 +224,14 @@ export function BestSellersPage() {
               return (
                 <div
                   key={product.id}
-                  className="flex items-center gap-4 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-[#007185]/30 hover:shadow-md transition-all cursor-pointer"
+                  className="flex items-center gap-2 sm:gap-4 p-3 sm:p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-[#007185]/30 hover:shadow-md transition-all cursor-pointer"
                   onClick={() => goToProduct(product.slug)}
                 >
                   {/* Rank */}
                   <div className="shrink-0">{getRankBadge(displayRank)}</div>
 
                   {/* Image */}
-                  <div className="w-20 h-20 shrink-0 bg-gray-50 rounded-lg overflow-hidden">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 bg-gray-50 rounded-lg overflow-hidden">
                     {product.image ? (
                       <img
                         src={product.image}
@@ -251,7 +251,7 @@ export function BestSellersPage() {
 
                   {/* Content */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
+                    <div className="flex items-center gap-1 sm:gap-2 mb-1 flex-wrap">
                       <span className="text-xs text-[#007185] dark:text-[#5bc0de]">{product.category}</span>
                       {product.reviewStatus === 'verified' && (
                         <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 text-[10px] px-1.5">
@@ -264,7 +264,7 @@ export function BestSellersPage() {
                         </Badge>
                       )}
                     </div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white text-sm leading-tight mb-1 line-clamp-1 hover:text-[#c7511f] dark:hover:text-[#e8753a]">
+                    <h3 className="font-semibold text-gray-900 dark:text-white text-sm leading-tight mb-1 line-clamp-2 sm:line-clamp-1 hover:text-[#c7511f] dark:hover:text-[#e8753a]">
                       {product.title}
                     </h3>
                     <StarRating rating={product.rating} size="sm" />

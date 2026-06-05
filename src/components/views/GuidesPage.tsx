@@ -104,7 +104,7 @@ export function GuidesPage() {
 
         {/* ─── Hero Section with Compass Decorative Element ────────────── */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden mb-6 ring-1 ring-black/5">
-          <div className="relative bg-gradient-to-r from-[#131921] to-[#37475a] p-8 md:p-12 text-white animated-gradient" style={{ backgroundSize: '200% 200%' }}>
+          <div className="relative bg-gradient-to-r from-[#131921] to-[#37475a] p-6 md:p-8 lg:p-12 text-white animated-gradient" style={{ backgroundSize: '200% 200%' }}>
             {/* Decorative Compass */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
               <div className="absolute top-1/2 right-[8%] -translate-y-1/2 hero-float-1">
@@ -121,8 +121,8 @@ export function GuidesPage() {
                 <Compass className="w-8 h-8 text-white" />
               </div>
               <div>
-                <h1 className="text-3xl md:text-4xl font-bold mb-2 tracking-tight">Buying Guides</h1>
-                <p className="text-lg text-gray-300 max-w-3xl">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 tracking-tight">Buying Guides</h1>
+                <p className="text-base sm:text-lg text-gray-300 max-w-3xl">
                   Expert-curated guides to help you find the perfect gear for your needs. From travel essentials to home office setups, we&apos;ve got you covered.
                 </p>
                 <div className="flex items-center gap-4 mt-4 text-sm">
@@ -309,7 +309,7 @@ export function GuidesPage() {
             })}
           </div>
         ) : (
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-12 text-center mb-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 sm:p-8 md:p-12 text-center mb-6">
             <Compass className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">No Guides Found</h2>
             <p className="text-gray-600 dark:text-gray-400 mb-6">No guides available in this category yet.</p>

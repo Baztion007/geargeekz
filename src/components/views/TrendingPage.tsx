@@ -112,7 +112,7 @@ export function TrendingPage() {
 
         {/* ─── Dynamic Hero with Animated Gradient ─────────────────────── */}
         <div className="relative rounded-2xl overflow-hidden mb-6 shadow-xl ring-1 ring-black/5">
-          <div className="bg-gradient-to-r from-[#131921] via-[#1e293b] to-[#0f172a] p-8 md:p-12 text-white animated-gradient" style={{ backgroundSize: '200% 200%' }}>
+          <div className="bg-gradient-to-r from-[#131921] via-[#1e293b] to-[#0f172a] p-6 md:p-8 lg:p-12 text-white animated-gradient" style={{ backgroundSize: '200% 200%' }}>
             {/* ─── Decorative elements with flame shapes ──────────────── */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
               {/* Floating geometric shapes */}
@@ -139,14 +139,14 @@ export function TrendingPage() {
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/20 hero-float-3">
                   <TrendingUp className="w-7 h-7 text-white" />
                 </div>
-                <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
                   Trending on <span className="text-gradient">GearGeekz</span>
                 </h1>
               </div>
-              <p className="text-lg text-gray-300 max-w-3xl leading-relaxed">
+              <p className="text-base sm:text-lg text-gray-300 max-w-3xl leading-relaxed">
                 The gear our editors and readers are most excited about right now. Expert-tested, honestly reviewed.
               </p>
-              <div className="flex items-center gap-4 mt-5 text-sm">
+              <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-5 text-sm">
                 <span className="flex items-center gap-1.5 text-[#febd69]">
                   <Sparkles size={14} />
                   {allProducts.length} Trending Products
@@ -204,9 +204,9 @@ export function TrendingPage() {
                   </div>
                 </div>
                 {/* Product Detail Overlay */}
-                <CardContent className="md:w-3/5 p-6 md:p-8 flex flex-col justify-center">
+                <CardContent className="md:w-3/5 p-4 sm:p-6 md:p-8 flex flex-col justify-center">
                   <p className="text-xs font-medium text-amber-600 dark:text-amber-400 mb-1">{filteredProducts[0].category}</p>
-                  <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-3 leading-tight">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-3 leading-tight">
                     {filteredProducts[0].title}
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">

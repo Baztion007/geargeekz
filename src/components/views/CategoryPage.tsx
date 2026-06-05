@@ -238,7 +238,7 @@ export function CategoryPage({ categorySlug }: CategoryPageProps) {
 
         {/* ─── Parallax-style Hero Section ─────────────────────────────── */}
         <div className="relative rounded-2xl overflow-hidden mb-6 shadow-xl ring-1 ring-black/5">
-          <div className="aspect-[21/9] sm:aspect-[3/1] relative">
+          <div className="aspect-[16/9] sm:aspect-[21/9] lg:aspect-[3/1] relative">
             {category.image ? (
               <img
                 src={category.image}
@@ -278,15 +278,15 @@ export function CategoryPage({ categorySlug }: CategoryPageProps) {
 
             {/* Hero Content */}
             <div className="absolute inset-0 flex items-center">
-              <div className="px-6 sm:px-10 max-w-2xl">
+              <div className="px-4 sm:px-6 md:px-10 max-w-2xl">
                 <Badge className="mb-3 text-xs font-semibold pulse-badge-enhanced" style={{ background: 'var(--accent-light, rgba(251, 191, 36, 0.2))', color: 'var(--accent-color, #f59e0b)', borderColor: 'var(--accent-glow, rgba(251, 191, 36, 0.25))', borderWidth: '1px' }}>
                   <Package className="w-3 h-3 mr-1" />
                   {category.productCount} Product{category.productCount !== 1 ? 's' : ''}
                 </Badge>
-                <h1 className="text-2xl sm:text-3xl lg:text-5xl font-extrabold text-white mb-3 tracking-tight">
+                <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-extrabold text-white mb-3 tracking-tight">
                   {category.name}
                 </h1>
-                <p className="text-sm sm:text-base text-gray-300 leading-relaxed max-w-lg">
+                <p className="text-xs sm:text-sm md:text-base text-gray-300 leading-relaxed max-w-lg">
                   {category.description}
                 </p>
               </div>

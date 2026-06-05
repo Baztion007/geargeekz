@@ -78,12 +78,12 @@ export function BlogPage() {
 
         {/* Header */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden mb-6">
-          <div className="bg-gradient-to-r from-[#131921] to-[#37475a] p-8 md:p-12 text-white">
+          <div className="bg-gradient-to-r from-[#131921] to-[#37475a] p-6 md:p-8 lg:p-12 text-white">
             <div className="flex items-center gap-3 mb-4">
-              <BookOpen className="w-10 h-10 text-[#febd69]" />
-              <h1 className="text-3xl md:text-4xl font-bold">GearGeekz Blog</h1>
+              <BookOpen className="w-8 h-8 sm:w-10 sm:h-10 text-[#febd69]" />
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">GearGeekz Blog</h1>
             </div>
-            <p className="text-lg text-gray-300 max-w-3xl">
+            <p className="text-base sm:text-lg text-gray-300 max-w-3xl">
               Expert guides, comparisons, and insights for gear enthusiasts and savvy shoppers
             </p>
             <div className="flex items-center gap-4 mt-4 text-sm">
@@ -213,7 +213,7 @@ function FeaturedArticleHero({ post, author, onReadMore }: FeaturedArticleHeroPr
       </div>
 
       {/* Content overlay */}
-      <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white">
+      <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8 text-white">
         <div className="max-w-3xl">
           {/* Badges */}
           <Badge
@@ -229,12 +229,12 @@ function FeaturedArticleHero({ post, author, onReadMore }: FeaturedArticleHeroPr
           </Badge>
 
           {/* Title */}
-          <h2 className="text-2xl md:text-3xl font-bold leading-tight mb-3 group-hover:text-[#febd69] transition-colors line-clamp-2">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold leading-tight mb-3 group-hover:text-[#febd69] transition-colors line-clamp-2">
             {post.title}
           </h2>
 
           {/* Author, date, reading time */}
-          <div className="flex items-center gap-4 text-sm text-gray-300 mb-3">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-300 mb-3">
             {author && (
               <button
                 onClick={(e) => {
@@ -258,7 +258,7 @@ function FeaturedArticleHero({ post, author, onReadMore }: FeaturedArticleHeroPr
           </div>
 
           {/* Excerpt */}
-          <p className="text-gray-300 text-sm md:text-base leading-relaxed line-clamp-2 mb-4 max-w-2xl">
+          <p className="text-gray-300 text-xs sm:text-sm md:text-base leading-relaxed line-clamp-2 mb-4 max-w-2xl">
             {post.excerpt}
           </p>
 

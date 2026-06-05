@@ -163,11 +163,11 @@ export function BrandPage({ brandSlug }: BrandPageProps) {
     return (
       <div className="min-h-screen bg-[#eaeded] dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-12 shadow-sm">
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 sm:p-8 md:p-12 shadow-sm">
             <div className="w-20 h-20 mx-auto mb-4 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
               <Building2 size={32} className="text-gray-400" />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Brand Not Found</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-4">Brand Not Found</h1>
             <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
               We couldn&apos;t find the brand you&apos;re looking for. Browse our featured brands to discover more.
             </p>

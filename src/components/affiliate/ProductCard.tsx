@@ -93,7 +93,7 @@ export function ProductCard({ product, showAffiliate = true, hideDisclosure = fa
               if (isBookmarked) removeBookmark(product.slug);
               else addBookmark(product.slug);
             }}
-            className="w-10 h-10 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-200 hover:scale-110"
+            className="w-10 h-10 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-200 hover:scale-110 min-w-[44px] min-h-[44px]"
             aria-label={mounted && isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
           >
             <Bookmark
@@ -106,7 +106,7 @@ export function ProductCard({ product, showAffiliate = true, hideDisclosure = fa
               e.stopPropagation();
               toggleWishlist(product.slug);
             }}
-            className="w-10 h-10 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-200 hover:scale-110"
+            className="w-10 h-10 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-200 hover:scale-110 min-w-[44px] min-h-[44px]"
             aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
             style={{ color: isWishlisted ? '#ef4444' : undefined }}
           >
@@ -167,7 +167,7 @@ export function ProductCard({ product, showAffiliate = true, hideDisclosure = fa
               e.stopPropagation();
               toggleCompare(product.slug);
             }}
-            className={`flex items-center gap-1.5 sm:mt-1 text-xs font-medium transition-colors duration-200 ${
+            className={`flex items-center gap-1.5 sm:mt-1 text-xs font-medium transition-colors duration-200 py-1.5 px-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 ${
               isCompared
                 ? 'text-amber-700 dark:text-amber-400 hover:text-amber-900'
                 : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
@@ -183,7 +183,7 @@ export function ProductCard({ product, showAffiliate = true, hideDisclosure = fa
               e.stopPropagation();
               setQuickViewOpen(true);
             }}
-            className="flex items-center gap-1.5 sm:mt-1.5 text-xs font-medium text-gray-400 hover:text-[#007185] dark:hover:text-[#5cc7d4] transition-colors duration-200"
+            className="flex items-center gap-1.5 sm:mt-1.5 text-xs font-medium text-gray-400 hover:text-[#007185] dark:hover:text-[#5cc7d4] transition-colors duration-200 py-1.5 px-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
             aria-label="Quick view"
           >
             <Eye size={14} />

@@ -43,7 +43,7 @@ export function QuickViewModal({ productSlug, isOpen, onClose }: QuickViewModalP
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto p-0 gap-0 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 shadow-2xl">
+      <DialogContent className="sm:max-w-3xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto p-0 gap-0 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 shadow-2xl">
         <DialogTitle className="sr-only">Quick View: {product.title}</DialogTitle>
         <DialogDescription className="sr-only">
           Quick overview of {product.title} including rating, pros, and cons.
@@ -51,7 +51,7 @@ export function QuickViewModal({ productSlug, isOpen, onClose }: QuickViewModalP
 
         <div className="flex flex-col md:flex-row">
           {/* Product Image - Left Side */}
-          <div className="md:w-2/5 shrink-0 bg-gray-50 dark:bg-gray-700 flex items-center justify-center p-6 md:rounded-l-lg">
+          <div className="md:w-2/5 shrink-0 bg-gray-50 dark:bg-gray-700 flex items-center justify-center p-4 sm:p-6 md:rounded-l-lg">
             <div className="w-full aspect-square relative">
               {product.image && !imgError ? (
                 <img
@@ -69,14 +69,14 @@ export function QuickViewModal({ productSlug, isOpen, onClose }: QuickViewModalP
           </div>
 
           {/* Product Info - Right Side */}
-          <div className="md:w-3/5 p-5 md:p-6 flex flex-col gap-3 bg-white dark:bg-gray-900">
+          <div className="md:w-3/5 p-4 sm:p-5 md:p-6 flex flex-col gap-3 bg-white dark:bg-gray-900">
             {/* Category Badge */}
             <Badge variant="outline" className="w-fit text-xs text-[#007185] dark:text-[#5cc7d4] border-[#007185]/30 dark:border-[#5cc7d4]/30">
               {product.category}
             </Badge>
 
             {/* Title */}
-            <h2 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white leading-tight">
+            <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 dark:text-white leading-tight">
               {product.title}
             </h2>
 
