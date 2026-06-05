@@ -97,7 +97,7 @@ export function Header() {
                   }, 800);
                 }
               }}
-              className="flex items-center gap-2 shrink-0 hover:opacity-90 rounded-lg p-1 transition-all duration-300 logo-hover"
+              className="flex items-center gap-2 shrink-0 hover:opacity-90 rounded-lg p-1 transition-all duration-300"
               aria-label="Go to homepage"
             >
               <div className="w-9 h-9 bg-gradient-to-br from-[#febd69] to-[#f59e0b] rounded-full flex items-center justify-center shadow-md shadow-amber-500/30">
@@ -117,8 +117,8 @@ export function Header() {
             {/* Search Bar — premium focus animation */}
             <form onSubmit={handleSearch} className="hidden sm:flex flex-1 max-w-3xl">
               <div className={`flex w-full rounded-full overflow-hidden transition-all duration-300 border ${searchFocused ? 'ring-2 ring-[#febd69]/70 shadow-lg shadow-amber-500/15 scale-[1.02] border-[#febd69]/40' : 'border-[#3a4a5c] hover:border-[#4a5a6d]'}`}>
-                <div className="flex items-center pl-4 bg-white">
-                  <Search size={18} className="text-gray-400" />
+                <div className="flex items-center pl-4 bg-white dark:bg-gray-800">
+                  <Search size={18} className="text-gray-400 dark:text-gray-500" />
                 </div>
                 <Input
                   type="text"
@@ -127,7 +127,7 @@ export function Header() {
                   onFocus={() => setSearchFocused(true)}
                   onBlur={() => setSearchFocused(false)}
                   placeholder="Search gear, reviews, and guides..."
-                  className="border-0 bg-white text-gray-900 placeholder:text-gray-500 focus-visible:ring-0 focus-visible:ring-offset-0 h-11 text-sm rounded-none shadow-none min-w-[200px]"
+                  className="border-0 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0 h-11 text-sm rounded-none shadow-none min-w-[200px]"
                   aria-label="Search"
                 />
                 <Button
@@ -183,7 +183,7 @@ export function Header() {
                 onFocus={() => setSearchFocused(true)}
                 onBlur={() => setSearchFocused(false)}
                 placeholder="Search gear, reviews, and guides..."
-                className="rounded-r-none border-0 bg-white text-gray-900 placeholder:text-gray-500 focus-visible:ring-0 focus-visible:ring-offset-0 h-11 text-sm"
+                className="rounded-r-none border-0 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0 h-11 text-sm"
                 aria-label="Search mobile"
               />
               <Button

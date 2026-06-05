@@ -1042,7 +1042,9 @@ function MessagesContent() {
 
   const fetchMessages = useCallback(async () => {
     try {
-      const res = await fetch('/api/contact?limit=100');
+      const token = useAdminAuth.getState().token;
+      const url = token ? `/api/contact?token=${encodeURIComponent(token)}&limit=100` : '/api/contact?limit=100';
+      const res = await fetch(url);
       if (res.ok) {
         const data = await res.json();
         setMessages(data.messages || []);

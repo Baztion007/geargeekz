@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouterStore } from '@/lib/router';
-import { Shield, Award, RefreshCw, Search, Compass, Twitter, Github, Youtube, Rss, Lock } from 'lucide-react';
+import { Twitter, Github, Youtube, Rss } from 'lucide-react';
 
 export function Footer() {
   const goHome = useRouterStore((s) => s.goHome);
@@ -54,37 +54,9 @@ export function Footer() {
         Back to top
       </button>
 
-      {/* Trust badges */}
-      <div className="bg-[#37475a] py-8">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            {[
-              { icon: Compass, label: 'Expert-Tested Gear', desc: 'Real-world product testing' },
-              { icon: Award, label: 'Unbiased Reviews', desc: 'Independent editorial process' },
-              { icon: RefreshCw, label: 'Updated Regularly', desc: 'Reviews kept current' },
-              { icon: Shield, label: 'Multi-Retailer', desc: 'Amazon, Walmart, Best Buy & more' },
-            ].map((badge, index) => (
-              <div
-                key={badge.label}
-                className="flex flex-col items-center gap-2 group cursor-default"
-              >
-                <div className="w-12 h-12 rounded-full bg-[#232f3e]/60 flex items-center justify-center group-hover:bg-[#232f3e] transition-colors duration-300 group-hover:scale-110 transform">
-                  <badge.icon className="text-[#febd69] transition-transform duration-300" size={22} />
-                </div>
-                <span className="text-white text-sm font-semibold group-hover:text-[#febd69] transition-colors duration-200">{badge.label}</span>
-                <span className="text-gray-400 text-xs">{badge.desc}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Gradient separator */}
-      <div className="h-px bg-gradient-to-r from-transparent via-gray-500/30 to-transparent" />
-
       {/* Footer links */}
       <div className="max-w-7xl mx-auto px-4 py-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {Object.entries(footerLinks).map(([title, links], idx) => (
             <div key={title}>
               <h3 className="text-white font-bold mb-4 text-sm uppercase tracking-wider">{title}</h3>
@@ -170,7 +142,7 @@ export function Footer() {
       {/* Bottom bar with social links */}
       <div className="bg-[#131921] py-5">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <button onClick={goHome} className="text-white font-bold text-lg hover:opacity-90 transition-opacity logo-hover">
+          <button onClick={goHome} className="text-white font-bold text-lg hover:opacity-80 transition-opacity">
             Gear<span className="gradient-text">Scope</span>
           </button>
           {/* Social media icons */}

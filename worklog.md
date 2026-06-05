@@ -1744,3 +1744,45 @@ Stage Summary:
 - Contact messages persist in database, admin can manage them
 - Cron job runs every 15 minutes for ongoing QA and feature development
 - ESLint passes cleanly, no runtime errors
+
+---
+Task ID: 1
+Agent: Main Agent
+Task: Fix dark mode search bar text visibility, remove footer trust badges, footer layout 4-col, remove logo tilt
+
+Work Log:
+- Fixed search bar text color in dark mode across Header.tsx (desktop + mobile inputs) and SearchPage.tsx (2 input locations)
+  - Changed bg-white → bg-white dark:bg-gray-800 for search input containers
+  - Changed text-gray-900 → text-gray-900 dark:text-gray-100 for input text
+  - Changed placeholder:text-gray-500 → placeholder:text-gray-500 dark:placeholder:text-gray-400
+  - Added text-foreground to base Input component (src/components/ui/input.tsx) for proper dark mode text defaults
+- Fixed large space gap under "Why Trust GearScope" section on homepage
+  - Added section-divider-wave class to TrustBlock section
+  - Reduced padding from py-12 sm:py-16 to py-10 sm:py-14
+- Added Messages tab to AdminPage sidebar (was missing compared to AdminSubPages)
+  - Added MessageSquare import
+  - Added messages to sidebarItems and pageMap
+  - Added Messages quick action button on dashboard
+- Fixed contact API auth (GET /api/contact was returning 400)
+  - Updated contact route.ts to use adminSecurity.validateSession() for proper token validation
+  - Updated all 3 admin endpoints (GET, PATCH, DELETE) with consistent auth pattern
+  - Fixed MessagesContent in AdminSubPages.tsx to pass admin token via query parameter
+- Removed dead BackToTop duplicate component from Breadcrumbs.tsx
+- Removed footer trust badges section (Expert-Tested Gear, Unbiased Reviews, Updated Regularly, Multi-Retailer)
+  - Removed the entire bg-[#37475a] section with 4 trust badge cards
+  - Removed unused imports (Shield, Award, RefreshCw, Search, Compass, Lock)
+- Changed footer links from 3 columns (2 rows) to 4 columns on one row
+  - Changed grid from grid-cols-1 sm:grid-cols-2 md:grid-cols-3 to grid-cols-2 md:grid-cols-4
+- Removed logo hover tilt effect
+  - Changed .logo-hover CSS from scale(1.05) rotate(-2deg) to simple opacity: 0.85
+  - Removed logo-hover class from Header.tsx logo button
+  - Removed logo-hover class from Footer.tsx logo button
+
+Stage Summary:
+- Dark mode search bar text now fully visible with proper contrast
+- Footer is more compact: trust badges removed, links in 4-col single row
+- Logo no longer tilts on hover (subtle opacity change only)
+- Admin sidebar now includes Messages tab consistently
+- Contact API auth fixed for proper admin session validation
+- All lint checks pass, no runtime errors
+- Cron job (15 min) created for ongoing QA

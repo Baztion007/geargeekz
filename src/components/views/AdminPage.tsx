@@ -22,6 +22,7 @@ import {
   ShieldCheck,
   Eye,
   AlertTriangle,
+  MessageSquare,
 } from 'lucide-react';
 import { useRouterStore } from '@/lib/router';
 import { useAdminAuth } from '@/lib/admin-auth';
@@ -30,7 +31,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-type AdminTab = 'dashboard' | 'products' | 'categories' | 'brands' | 'affiliate';
+type AdminTab = 'dashboard' | 'products' | 'categories' | 'brands' | 'affiliate' | 'messages';
 
 const sidebarItems: { id: AdminTab; label: string; icon: React.ComponentType<{ size?: number; className?: string }> }[] = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -38,6 +39,7 @@ const sidebarItems: { id: AdminTab; label: string; icon: React.ComponentType<{ s
   { id: 'categories', label: 'Categories', icon: FolderOpen },
   { id: 'brands', label: 'Brands', icon: Building2 },
   { id: 'affiliate', label: 'Affiliate Settings', icon: Link2 },
+  { id: 'messages', label: 'Messages', icon: MessageSquare },
 ];
 
 interface ProductItem {
@@ -308,6 +310,7 @@ function AdminDashboard() {
       categories: 'admin-categories',
       brands: 'admin-brands',
       affiliate: 'admin-affiliate',
+      messages: 'admin-messages',
     };
     navigate({ page: pageMap[tab] as any });
   };
@@ -361,7 +364,7 @@ function AdminDashboard() {
         <nav className="p-3 space-y-1">
           {sidebarItems.map((item) => {
             const Icon = item.icon;
-            const isActive = item.id === 'dashboard';
+            const isActive = item.id === 'dashboard'; // AdminPage only renders on dashboard route
             return (
               <button
                 key={item.id}
@@ -537,6 +540,10 @@ function AdminDashboard() {
                       <Button variant="outline" className="h-auto py-3 flex flex-col items-center gap-1 bg-gray-800/50 border-gray-700 hover:border-amber-500/50 hover:bg-gray-800" onClick={() => handleTabChange('brands')}>
                         <Building2 size={18} className="text-amber-500" />
                         <span className="text-xs">Add Brand</span>
+                      </Button>
+                      <Button variant="outline" className="h-auto py-3 flex flex-col items-center gap-1 bg-gray-800/50 border-gray-700 hover:border-amber-500/50 hover:bg-gray-800" onClick={() => handleTabChange('messages')}>
+                        <MessageSquare size={18} className="text-amber-500" />
+                        <span className="text-xs">Messages</span>
                       </Button>
                       <Button
                         variant="outline"

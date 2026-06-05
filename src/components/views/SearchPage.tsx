@@ -354,7 +354,7 @@ export function SearchPage({ query }: SearchPageProps) {
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
                   placeholder={searchPlaceholder}
-                  className="pl-10 h-10 text-sm"
+                  className="pl-10 h-10 text-sm bg-transparent dark:bg-gray-700/50 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
               </div>
               <Button type="submit" className="bg-[#febd69] hover:bg-[#f3a847] text-[#131921] font-semibold h-10 px-6">
@@ -492,7 +492,7 @@ export function SearchPage({ query }: SearchPageProps) {
                   onFocus={() => setShowSuggestions(true)}
                   onKeyDown={handleSearchKeyDown}
                   placeholder={searchPlaceholder}
-                  className="pl-10 h-10 text-sm"
+                  className="pl-10 h-10 text-sm bg-transparent dark:bg-gray-700/50 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
                 {searchInput && (
                   <button

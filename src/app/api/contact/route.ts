@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
+import { adminSecurity } from '@/lib/admin-security';
 
 // Rate limiting: max 3 messages per IP per hour (kept in-memory for perf)
 const contactRateLimit = new Map<string, { count: number; resetAt: number }>();
@@ -99,13 +100,25 @@ export async function POST(request: NextRequest) {
 // GET endpoint for admin to retrieve messages (protected by admin session)
 export async function GET(request: NextRequest) {
   try {
-    // Simple auth check — verify admin cookie
-    const token = request.cookies.get('gs_admin_token')?.value;
-    if (!token) {
+    // Validate admin session
+    const cookieToken = request.cookies.get('gs_admin_token')?.value;
+    const url = new URL(request.url);
+    const queryToken = url.searchParams.get('token');
+    const effectiveToken = queryToken || cookieToken;
+
+    if (!effectiveToken) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const url = new URL(request.url);
+    const forwarded = request.headers.get('x-forwarded-for');
+    const realIP = request.headers.get('x-real-ip');
+    const ip = (forwarded ? forwarded.split(',')[0].trim() : realIP?.trim()) || 'unknown';
+    const result = adminSecurity.validateSession(effectiveToken, ip);
+
+    if (!result.valid) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const limit = parseInt(url.searchParams.get('limit') || '50');
 
     // Fetch messages from database, newest first
@@ -131,8 +144,16 @@ export async function GET(request: NextRequest) {
 // PATCH endpoint to mark a message as read/unread
 export async function PATCH(request: NextRequest) {
   try {
-    const token = request.cookies.get('gs_admin_token')?.value;
-    if (!token) {
+    // Validate admin session
+    const cookieToken = request.cookies.get('gs_admin_token')?.value;
+    if (!cookieToken) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const forwarded = request.headers.get('x-forwarded-for');
+    const realIP = request.headers.get('x-real-ip');
+    const ip = (forwarded ? forwarded.split(',')[0].trim() : realIP?.trim()) || 'unknown';
+    const authResult = adminSecurity.validateSession(cookieToken, ip);
+    if (!authResult.valid) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -157,8 +178,16 @@ export async function PATCH(request: NextRequest) {
 // DELETE endpoint to remove a message
 export async function DELETE(request: NextRequest) {
   try {
-    const token = request.cookies.get('gs_admin_token')?.value;
-    if (!token) {
+    // Validate admin session
+    const cookieToken = request.cookies.get('gs_admin_token')?.value;
+    if (!cookieToken) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const forwarded = request.headers.get('x-forwarded-for');
+    const realIP = request.headers.get('x-real-ip');
+    const ip = (forwarded ? forwarded.split(',')[0].trim() : realIP?.trim()) || 'unknown';
+    const authResult = adminSecurity.validateSession(cookieToken, ip);
+    if (!authResult.valid) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

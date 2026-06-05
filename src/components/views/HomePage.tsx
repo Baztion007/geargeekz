@@ -835,7 +835,7 @@ function TrustBlock() {
   ];
 
   return (
-    <section className="py-12 sm:py-16 bg-white dark:bg-gray-900">
+    <section className="py-10 sm:py-14 bg-white dark:bg-gray-900 section-divider-wave">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Why Trust GearScope?</h2>
