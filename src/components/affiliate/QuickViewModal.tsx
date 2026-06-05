@@ -87,7 +87,7 @@ export function QuickViewModal({ productSlug, isOpen, onClose }: QuickViewModalP
             {product.bestFor && product.bestFor.length > 0 && (
               <div className="flex flex-wrap gap-1.5">
                 {product.bestFor.map((tag) => (
-                  <Badge key={tag} className="bg-[#febd69] text-[#131921] hover:bg-[#f3a847] text-xs font-semibold">
+                  <Badge key={tag} className="bg-[#febd69] text-[#131921] hover:bg-[#f3a847] dark:bg-amber-500/80 dark:text-white text-xs font-semibold">
                     <Tag size={10} className="mr-1" />
                     {tag}
                   </Badge>

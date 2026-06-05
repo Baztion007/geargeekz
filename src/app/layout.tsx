@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "GearGeekz — Expert Reviews. Smart Recommendations.",
+    default: "GearGeekz — Gear Up Smart",
     template: "%s | GearGeekz",
   },
   description:
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     icon: "/logo.svg",
   },
   openGraph: {
-    title: "GearGeekz — Expert Reviews. Smart Recommendations.",
+    title: "GearGeekz — Gear Up Smart",
     description:
       "Premium product reviews and buying guides to help you discover the right gear for your life.",
     siteName: "GearGeekz",
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "GearGeekz — Expert Reviews. Smart Recommendations.",
+    title: "GearGeekz — Gear Up Smart",
     description:
       "Premium product reviews and buying guides to help you discover the right gear for your life.",
     creator: "@geargeekz",

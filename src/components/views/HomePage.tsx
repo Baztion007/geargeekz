@@ -15,7 +15,6 @@ import { StarRating } from '@/components/affiliate/RatingBar';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
   Package,
   ShieldCheck,
@@ -25,12 +24,10 @@ import {
   Clock,
   ChevronRight,
   ChevronDown,
-  Mail,
   ArrowRight,
   TrendingUp,
   BookOpen,
   Zap,
-  Loader2,
   Quote,
   CheckCircle,
   Compass,
@@ -49,7 +46,6 @@ import {
   Eye,
   UsersRound,
 } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
 import type { GuideType } from '@/lib/types';
 import { RecentlyViewedWidget } from '@/components/affiliate/RecentlyViewedWidget';
 
@@ -953,140 +949,6 @@ function TestimonialsSection() {
   );
 }
 
-// ─── Newsletter CTA ─────────────────────────────────────────────────────────
-function NewsletterCTA() {
-  const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim()) return;
-
-    setLoading(true);
-    setError('');
-
-    try {
-      const response = await fetch('/api/newsletter', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim() }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        if (response.status === 409) {
-          setError('This email is already subscribed.');
-          toast({
-            title: 'Already subscribed',
-            description: 'This email is already on our newsletter list.',
-            variant: 'destructive',
-          });
-        } else {
-          setError(data.error || 'Something went wrong.');
-          toast({
-            title: 'Error',
-            description: data.error || 'Failed to subscribe. Please try again.',
-            variant: 'destructive',
-          });
-        }
-        return;
-      }
-
-      setSubmitted(true);
-      setEmail('');
-      toast({
-        title: 'Subscribed!',
-        description: data.message || 'You\'ve been subscribed to our newsletter.',
-      });
-    } catch {
-      setError('Network error. Please try again.');
-      toast({
-        title: 'Error',
-        description: 'Something went wrong. Please try again later.',
-        variant: 'destructive',
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <section className="py-12 sm:py-16 bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#0f172a] relative overflow-hidden dark:from-[#0b1120] dark:via-[#162033] dark:to-[#0b1120]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-          <div className="text-center lg:text-left flex-1">
-            <Mail className="w-10 h-10 text-amber-400 mx-auto lg:mx-0 mb-3 gentle-float" />
-            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2 tracking-tight">
-              Never Miss a Review
-            </h2>
-            <p className="text-gray-400 text-sm max-w-md mx-auto lg:mx-0">
-              Get the latest gear reviews, buying guides, and product recommendations from GearGeekz delivered to your inbox. No spam, unsubscribe anytime.
-            </p>
-          </div>
-
-          <div className="w-full max-w-md">
-            {submitted ? (
-              <Card className="bg-emerald-900/30 border border-emerald-500/30 rounded-xl">
-                <CardContent className="p-6 text-center">
-                  <ShieldCheck className="w-10 h-10 text-emerald-400 mx-auto mb-2" />
-                  <h3 className="text-white font-bold text-lg">You&apos;re In!</h3>
-                  <p className="text-emerald-200 text-sm mt-1">
-                    Check your inbox for a confirmation email from GearGeekz.
-                  </p>
-                  <Button
-                    variant="outline"
-                    className="mt-4 border-emerald-500/50 text-emerald-300 hover:text-white hover:border-emerald-400 bg-transparent"
-                    onClick={() => setSubmitted(false)}
-                  >
-                    Subscribe another email
-                  </Button>
-                </CardContent>
-              </Card>
-            ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
-                <div className="flex-1">
-                  <Input
-                    type="email"
-                    placeholder="your@email.com"
-                    value={email}
-                    onChange={(e) => { setEmail(e.target.value); setError(''); }}
-                    required
-                    disabled={loading}
-                    className="bg-white/10 border-gray-600 text-white placeholder:text-gray-500 focus:border-amber-400 focus:ring-amber-400 h-12 disabled:opacity-50"
-                  />
-                  {error && (
-                    <p className="text-red-400 text-xs mt-1">{error}</p>
-                  )}
-                </div>
-                <Button
-                  type="submit"
-                  disabled={loading}
-                  className="bg-gradient-to-r from-[#febd69] via-[#f3a847] to-[#febd69] hover:from-[#f3a847] hover:to-[#e8a23a] text-[#0f172a] font-bold h-12 px-6 shrink-0 disabled:opacity-50 transition-all hover:shadow-lg hover:shadow-amber-500/20 rounded-lg cta-shimmer"
-                >
-                  {loading ? (
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                  ) : (
-                    <>
-                      Subscribe
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </>
-                  )}
-                </Button>
-              </form>
-            )}
-            <p className="text-xs text-gray-500 mt-3 text-center lg:text-left">
-              By subscribing, you agree to our privacy policy. We respect your inbox.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 // ─── Browse All Categories Section ─────────────────────────────────────────
 function BrowseAllCategoriesSection() {
   const goToCategory = useRouterStore((s) => s.goToCategory);
@@ -1168,7 +1030,6 @@ export default function HomePage() {
       <TestimonialsSection />
       <BrowseAllCategoriesSection />
       <RecentlyViewedWidget />
-      <NewsletterCTA />
     </div>
   );
 }

@@ -70,7 +70,7 @@ export const siteData = {
   name: 'GearGeekz',
   url: 'https://geargeekz.com',
   logo: '/logo.svg',
-  tagline: 'Expert Reviews. Smart Recommendations.',
+  tagline: 'Gear Up Smart',
   description: 'Premium product reviews and buying guides to help you discover the right gear for your life.',
   contactEmail: 'hello@geargeekz.com',
   socialProfiles: [

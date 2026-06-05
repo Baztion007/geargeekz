@@ -19,7 +19,6 @@ import {
   Package,
   Tag,
   BookOpen,
-  Mail,
   Share2,
   Twitter,
   Facebook,
@@ -436,30 +435,6 @@ export function BlogPostPage({ postSlug }: { postSlug: string }) {
             </div>
           </div>
         )}
-
-        {/* Newsletter CTA - Full Width, Compact */}
-        <div className="bg-gradient-to-r from-[#131921] to-[#37475a] rounded-lg px-8 md:px-16 py-5 text-white mt-6">
-          <div className="max-w-xl mx-auto text-center">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <Mail className="w-5 h-5 text-[#febd69]" />
-              <h3 className="text-lg font-bold">Stay Updated</h3>
-            </div>
-            <p className="text-gray-300 mb-3 text-sm">
-              Get the latest gear guides, reviews, and recommendations delivered straight to your inbox. No spam, ever.
-            </p>
-            <div className="flex gap-2">
-              <input
-                type="email"
-                placeholder="your@email.com"
-                className="flex-1 px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#febd69] text-sm"
-                aria-label="Email address for newsletter"
-              />
-              <Button className="bg-[#febd69] hover:bg-[#f3a847] text-[#131921] font-bold shrink-0 text-sm">
-                Subscribe
-              </Button>
-            </div>
-          </div>
-        </div>
 
         {/* Comments Section - Full Width */}
         <div className="mt-6">

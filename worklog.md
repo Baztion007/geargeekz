@@ -1940,3 +1940,32 @@ Stage Summary:
 - QuickViewModal: Added explicit opaque backgrounds (`bg-white dark:bg-gray-800`) to DialogContent and product info panel for dark mode readability
 - Header: Removed triple-click admin shortcut from logo. Logo now only goes home. Admin only accessible via #admin URL (requires password)
 - Security improvement: No more easy accidental access to admin section
+
+---
+Task ID: 7-brand-polish
+Agent: Main Agent
+Task: Remove duplicate newsletter, remove logo slogan, change icon to gear, fix admin bypass, fix Quick View dark mode, rename GearScope → GearGeekz
+
+Work Log:
+- Removed duplicate NewsletterCTA component from HomePage.tsx (was showing newsletter both in page body AND footer)
+- Removed inline newsletter section from BlogPostPage.tsx (footer newsletter is sufficient)
+- Cleaned up unused imports in HomePage.tsx (Mail, Loader2, Input, toast)
+- Removed logo slogan "Expert Reviews. Smart Recommendations." from Header.tsx
+- Changed logo icon from magnifying glass SVG to gear/cog SVG in Header.tsx (both desktop and mobile panel)
+- Changed favicon logo.svg from abstract Z icon to gear icon
+- Removed onDoubleClick handler from logo button (was bypassing admin auth)
+- Updated page title from "GearGeekz — Expert Reviews. Smart Recommendations." to "GearGeekz — Gear Up Smart" in layout.tsx
+- Updated OpenGraph and Twitter card titles to match
+- Updated siteData.tagline from "Expert Reviews. Smart Recommendations." to "Gear Up Smart" in affiliate.ts
+- Renamed remaining GearScope references: wrangler.toml (name + URL), .env (ADMIN_PASSWORD)
+- Fixed Quick View dark mode: BestFor badges now have `dark:bg-amber-500/80 dark:text-white` variant
+- Verified with agent-browser: gear icon visible, no slogan, navigation centered, only one newsletter in footer, page title updated
+
+Stage Summary:
+- Duplicate newsletter sections removed — only Footer newsletter remains
+- Logo icon changed to gear/cog (matching "GearGeekz" brand)
+- Slogan removed from header, updated tagline to "Gear Up Smart"
+- Admin auth bypass via double-click on logo fixed (removed handler)
+- Quick View BestFor badges now readable in dark mode
+- All "GearScope" references in config files renamed to "GearGeekz"
+- Lint passes cleanly, dev server compiles without errors

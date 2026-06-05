@@ -80,22 +80,26 @@ export function Header() {
             {/* Logo */}
             <button
               onClick={() => goHome()}
-              onDoubleClick={(e) => { e.preventDefault(); goHome(); }}
               className="flex items-center gap-2 shrink-0 rounded-lg p-1 select-none"
               aria-label="Go to homepage"
             >
               <div className="w-9 h-9 bg-gradient-to-br from-[#febd69] to-[#f59e0b] rounded-full flex items-center justify-center shadow-md shadow-amber-500/30">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#131921" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8" />
-                  <path d="m21 21-4.3-4.3" />
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#131921" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z" />
+                  <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
+                  <path d="M12 2v2" />
+                  <path d="M12 20v2" />
+                  <path d="m4.93 4.93 1.41 1.41" />
+                  <path d="m17.66 17.66 1.41 1.41" />
+                  <path d="M2 12h2" />
+                  <path d="M20 12h2" />
+                  <path d="m6.34 17.66-1.41 1.41" />
+                  <path d="m19.07 4.93-1.41 1.41" />
                 </svg>
               </div>
-              <div className="flex flex-col">
-                <span className="text-xl font-bold tracking-tight leading-none">
-                  Gear<span className="gradient-text">Geekz</span>
-                </span>
-                <span className="text-[9px] text-gray-400 leading-none hidden sm:block tracking-wide">Expert Reviews. Smart Recommendations.</span>
-              </div>
+              <span className="text-xl font-bold tracking-tight leading-none">
+                Gear<span className="gradient-text">Geekz</span>
+              </span>
             </button>
 
             {/* Search Bar — premium focus animation */}
@@ -217,9 +221,17 @@ export function Header() {
                 <div className="flex items-center justify-between p-4 bg-gradient-to-r from-[#131921] to-[#1e293b]">
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 bg-gradient-to-br from-[#febd69] to-[#f59e0b] rounded-full flex items-center justify-center">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#131921" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="11" cy="11" r="8" />
-                        <path d="m21 21-4.3-4.3" />
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#131921" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z" />
+                        <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
+                        <path d="M12 2v2" />
+                        <path d="M12 20v2" />
+                        <path d="m4.93 4.93 1.41 1.41" />
+                        <path d="m17.66 17.66 1.41 1.41" />
+                        <path d="M2 12h2" />
+                        <path d="M20 12h2" />
+                        <path d="m6.34 17.66-1.41 1.41" />
+                        <path d="m19.07 4.93-1.41 1.41" />
                       </svg>
                     </div>
                     <span className="font-bold text-lg">Gear<span className="gradient-text">Geekz</span></span>
