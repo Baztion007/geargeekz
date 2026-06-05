@@ -835,39 +835,39 @@ function TrustBlock() {
   ];
 
   return (
-    <section className="py-16 sm:py-20 bg-white dark:bg-gray-900 section-divider-wave">
+    <section className="py-12 sm:py-16 bg-white dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Why Trust GearScope?</h2>
           <div className="w-16 h-1 bg-gradient-to-r from-emerald-400 to-emerald-500 mx-auto mt-4 rounded-full" />
-          <p className="text-gray-500 dark:text-gray-400 mt-4 max-w-2xl mx-auto text-sm font-medium">
+          <p className="text-gray-500 dark:text-gray-400 mt-3 max-w-2xl mx-auto text-sm font-medium">
             We take our reviews seriously. Here&apos;s what sets GearScope apart from other review sites.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 stagger-children">
           {trustItems.map((item, idx) => (
             <Card
               key={idx}
-              className="border border-emerald-100 dark:border-gray-700 bg-white dark:bg-gray-800 hover:shadow-xl transition-all duration-300 text-center card-hover-lift rounded-xl glow-pulse"
+              className="border border-emerald-100 dark:border-gray-700 bg-white dark:bg-gray-800 hover:shadow-xl transition-all duration-300 text-center card-hover-lift rounded-xl"
             >
-              <CardContent className="p-6 flex flex-col items-center">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/30 dark:to-emerald-800/30 flex items-center justify-center mb-4">
-                  {item.icon}
+              <CardContent className="p-4 sm:p-5 flex flex-col items-center">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/30 dark:to-emerald-800/30 flex items-center justify-center mb-3">
+                  {React.cloneElement(item.icon as React.ReactElement, { className: 'w-6 h-6 text-emerald-600' })}
                 </div>
-                <h3 className="font-bold text-gray-900 dark:text-white text-base mb-2">{item.title}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{item.description}</p>
+                <h3 className="font-bold text-gray-900 dark:text-white text-sm mb-1">{item.title}</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{item.description}</p>
               </CardContent>
             </Card>
           ))}
         </div>
 
         {/* Editorial Independence Statement */}
-        <div className="mt-10 bg-white dark:bg-gray-800 border border-emerald-200 dark:border-gray-700 rounded-xl p-6 sm:p-8 max-w-3xl mx-auto shadow-sm hover:shadow-md transition-shadow duration-300 glow-pulse-amber">
-          <div className="flex items-start gap-4">
-            <ShieldCheck className="w-10 h-10 text-emerald-600 shrink-0 mt-1" />
+        <div className="mt-6 bg-white dark:bg-gray-800 border border-emerald-200 dark:border-gray-700 rounded-xl p-5 sm:p-6 max-w-3xl mx-auto shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div className="flex items-start gap-3">
+            <ShieldCheck className="w-8 h-8 text-emerald-600 shrink-0 mt-0.5" />
             <div>
-              <h3 className="font-bold text-gray-900 dark:text-white text-lg mb-2">Our Editorial Pledge</h3>
+              <h3 className="font-bold text-gray-900 dark:text-white text-base mb-1.5">Our Editorial Pledge</h3>
               <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
                 GearScope operates with complete editorial independence. While we earn commissions through
                 affiliate programs, this never affects which products we recommend or how we rate them.

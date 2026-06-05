@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useRouterStore, hashToRoute } from '@/lib/router';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { BackToTop } from '@/components/affiliate/Breadcrumbs';
+
 import { generateOrganizationJsonLd } from '@/lib/affiliate';
 
 // View imports
@@ -34,7 +34,7 @@ import { BookmarksPage } from '@/components/views/BookmarksPage';
 import { GearFinderQuiz } from '@/components/affiliate/GearFinderQuiz';
 import { AffiliateSettingsPage } from '@/components/views/AffiliateSettingsPage';
 import { AdminPage } from '@/components/views/AdminPage';
-import { AdminProductsPage, AdminCategoriesPage, AdminBrandsPage, AdminAffiliatePage } from '@/components/views/AdminSubPages';
+import { AdminProductsPage, AdminCategoriesPage, AdminBrandsPage, AdminAffiliatePage, AdminMessagesPage } from '@/components/views/AdminSubPages';
 import { BestSellersPage } from '@/components/views/BestSellersPage';
 import { DealsPage } from '@/components/views/DealsPage';
 import { CompareBar } from '@/components/affiliate/CompareBar';
@@ -131,6 +131,8 @@ export default function Home() {
         return <AdminBrandsPage />;
       case 'admin-affiliate':
         return <AdminAffiliatePage />;
+      case 'admin-messages':
+        return <AdminMessagesPage />;
       case 'best-sellers':
         return <BestSellersPage />;
       case 'deals':
@@ -143,7 +145,7 @@ export default function Home() {
   };
 
   // Check if current page is an admin page
-  const isAdminPage = route.page === 'admin' || route.page === 'admin-products' || route.page === 'admin-categories' || route.page === 'admin-brands' || route.page === 'admin-affiliate';
+  const isAdminPage = route.page === 'admin' || route.page === 'admin-products' || route.page === 'admin-categories' || route.page === 'admin-brands' || route.page === 'admin-affiliate' || route.page === 'admin-messages';
 
   return (
     <div className={`min-h-screen flex flex-col ${isAdminPage ? 'bg-gray-950' : 'bg-gray-50 dark:bg-gray-950'}`}>
@@ -173,7 +175,6 @@ export default function Home() {
       </main>
 
       {!isAdminPage && <Footer />}
-      {!isAdminPage && <BackToTop />}
       {!isAdminPage && <BackToTopButton />}
       {!isAdminPage && <CompareBar />}
       {!isAdminPage && <MobileCompareFab />}

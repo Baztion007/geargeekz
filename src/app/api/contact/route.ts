@@ -1,20 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { db } from '@/lib/db';
 
-// Simple in-memory store for contact messages (replace with email service or database in production)
-interface ContactMessage {
-  id: string;
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-  timestamp: number;
-  ip: string;
-}
-
-const contactMessages: ContactMessage[] = [];
-const MAX_MESSAGES = 500;
-
-// Rate limiting: max 3 messages per IP per hour
+// Rate limiting: max 3 messages per IP per hour (kept in-memory for perf)
 const contactRateLimit = new Map<string, { count: number; resetAt: number }>();
 const MAX_MESSAGES_PER_HOUR = 3;
 
@@ -86,26 +73,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Store message
-    const contactMessage: ContactMessage = {
-      id: `msg_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
-      name: name.trim(),
-      email: email.trim(),
-      subject: (subject || '').trim(),
-      message: message.trim(),
-      timestamp: Date.now(),
-      ip,
-    };
-
-    contactMessages.push(contactMessage);
-    if (contactMessages.length > MAX_MESSAGES) {
-      contactMessages.splice(0, contactMessages.length - MAX_MESSAGES);
-    }
-
-    // In production, you would also:
-    // 1. Send an email notification to the admin
-    // 2. Send a confirmation auto-reply to the user
-    // 3. Store in a database for the admin panel
+    // Store message in the database
+    await db.contactMessage.create({
+      data: {
+        name: name.trim(),
+        email: email.trim(),
+        subject: (subject || '').trim(),
+        message: message.trim(),
+        ipAddress: ip,
+      },
+    });
 
     return NextResponse.json({
       success: true,
@@ -131,15 +108,72 @@ export async function GET(request: NextRequest) {
     const url = new URL(request.url);
     const limit = parseInt(url.searchParams.get('limit') || '50');
 
-    const messages = contactMessages
-      .slice(-limit)
-      .reverse()
-      .map(({ ip, ...rest }) => rest); // Don't expose IPs via API
+    // Fetch messages from database, newest first
+    const messages = await db.contactMessage.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: limit,
+    });
+
+    const total = await db.contactMessage.count();
+
+    // Don't expose IPs via API
+    const safeMessages = messages.map(({ ipAddress, ...rest }) => rest);
 
     return NextResponse.json({
-      messages,
-      total: contactMessages.length,
+      messages: safeMessages,
+      total,
     });
+  } catch {
+    return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
+  }
+}
+
+// PATCH endpoint to mark a message as read/unread
+export async function PATCH(request: NextRequest) {
+  try {
+    const token = request.cookies.get('gs_admin_token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const body = await request.json();
+    const { id, isRead } = body;
+
+    if (!id) {
+      return NextResponse.json({ error: 'Message ID is required' }, { status: 400 });
+    }
+
+    const updated = await db.contactMessage.update({
+      where: { id },
+      data: { isRead: isRead === undefined ? true : isRead },
+    });
+
+    return NextResponse.json({ success: true, message: updated });
+  } catch {
+    return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
+  }
+}
+
+// DELETE endpoint to remove a message
+export async function DELETE(request: NextRequest) {
+  try {
+    const token = request.cookies.get('gs_admin_token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const url = new URL(request.url);
+    const id = url.searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ error: 'Message ID is required' }, { status: 400 });
+    }
+
+    await db.contactMessage.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
   }

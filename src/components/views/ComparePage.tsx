@@ -89,8 +89,8 @@ export function ComparePage() {
     el.scrollBy({ left: direction === 'left' ? -amount : amount, behavior: 'smooth' });
   };
 
-  // Empty state
-  if (products.length < 2) {
+  // Empty state (0 items)
+  if (products.length === 0) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-8">
         <Breadcrumbs items={[{ label: 'Compare Products' }]} />
@@ -111,11 +111,91 @@ export function ComparePage() {
               Browse Products
             </Button>
           </div>
-          {products.length === 1 && (
-            <p className="text-sm text-gray-400 dark:text-gray-500 mt-4">
-              You have 1 product selected. Add {2 - products.length} more to start comparing.
-            </p>
-          )}
+        </div>
+      </div>
+    );
+  }
+
+  // 1 item state — show product card with search to add more
+  if (products.length === 1) {
+    const product = products[0]!;
+    return (
+      <div className="max-w-5xl mx-auto px-4 py-8">
+        <Breadcrumbs items={[{ label: 'Compare Products' }]} />
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Compare Products</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">1 product selected — add 1 more to start comparing</p>
+          </div>
+          <Button variant="outline" size="sm" onClick={clearCompare} className="text-gray-500 hover:text-red-600">Clear All</Button>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Current product */}
+          <Card className="border-amber-200 dark:border-amber-800/40">
+            <CardContent className="p-6 text-center">
+              <div className="w-full aspect-square max-w-[200px] mx-auto rounded-lg overflow-hidden bg-gray-50 dark:bg-gray-700 mb-3">
+                {product.image ? (
+                  <img src={product.image} alt={product.title} className="w-full h-full object-contain p-4" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center"><Package size={40} className="text-amber-400" /></div>
+                )}
+              </div>
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{product.title}</h3>
+              <div className="flex justify-center mb-2"><ScoreBadge rating={product.rating} size="sm" /></div>
+              <CheckPriceButton merchant={product.merchant} productId={product.asin} size="sm" className="w-full" />
+              <Button variant="ghost" size="sm" className="mt-2 text-gray-400 hover:text-red-500" onClick={() => removeItem(product.slug)}>Remove</Button>
+            </CardContent>
+          </Card>
+
+          {/* Add product search */}
+          <Card className="border-dashed border-2 border-gray-300 dark:border-gray-600 bg-gray-50/50 dark:bg-gray-800/50">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <Plus size={20} className="text-amber-500" />
+                <h3 className="font-semibold text-gray-900 dark:text-white">Add a Product to Compare</h3>
+              </div>
+              <div className="relative">
+                <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <Input
+                  type="text"
+                  value={addSearchQuery}
+                  onChange={(e) => setAddSearchQuery(e.target.value)}
+                  placeholder="Search for a product to add..."
+                  className="pl-10 h-10 text-sm"
+                />
+              </div>
+              {addSearchResults.length > 0 && (
+                <div className="mt-3 space-y-2 max-h-64 overflow-y-auto custom-scrollbar">
+                  {addSearchResults.map((p) => (
+                    <button
+                      key={p.id}
+                      onClick={() => {
+                        addItem(p.slug);
+                        setAddSearchQuery('');
+                      }}
+                      className="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900/30 transition-colors text-left"
+                    >
+                      <div className="w-10 h-10 rounded-md bg-gray-50 dark:bg-gray-700 overflow-hidden shrink-0">
+                        {p.image ? <img src={p.image} alt={p.title} className="w-full h-full object-contain p-0.5" /> : <div className="w-full h-full flex items-center justify-center"><Package size={16} className="text-gray-400" /></div>}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium text-gray-900 dark:text-white line-clamp-1">{p.title}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">{p.category} · {p.rating.toFixed(1)}★</p>
+                      </div>
+                      <Plus size={16} className="text-amber-600 shrink-0" />
+                    </button>
+                  ))}
+                </div>
+              )}
+              {addSearchQuery.trim() && addSearchResults.length === 0 && (
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 text-center">No products found. Try a different search.</p>
+              )}
+              {!addSearchQuery.trim() && (
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-3 text-center">Type to search for products to compare</p>
+              )}
+            </CardContent>
+          </Card>
         </div>
       </div>
     );

@@ -14,6 +14,11 @@ import {
   Loader2,
   Upload,
   ImagePlus,
+  MessageSquare,
+  Mail,
+  MailOpen,
+  Trash2,
+  RefreshCw,
 } from 'lucide-react';
 import { useRouterStore } from '@/lib/router';
 import { useAdminAuth } from '@/lib/admin-auth';
@@ -79,7 +84,7 @@ interface BrandItem {
   productCount: number;
 }
 
-type AdminTab = 'dashboard' | 'products' | 'categories' | 'brands' | 'affiliate';
+type AdminTab = 'dashboard' | 'products' | 'categories' | 'brands' | 'affiliate' | 'messages';
 
 const sidebarItems: { id: AdminTab; label: string; icon: React.ComponentType<{ size?: number; className?: string }> }[] = [
   { id: 'dashboard', label: 'Dashboard', icon: Lock },
@@ -87,6 +92,7 @@ const sidebarItems: { id: AdminTab; label: string; icon: React.ComponentType<{ s
   { id: 'categories', label: 'Categories', icon: FolderOpen },
   { id: 'brands', label: 'Brands', icon: Building2 },
   { id: 'affiliate', label: 'Affiliate Settings', icon: Link2 },
+  { id: 'messages', label: 'Messages', icon: MessageSquare },
 ];
 
 // Auth guard for admin sub-pages
@@ -128,6 +134,10 @@ export function AdminAffiliatePage() {
   return <AdminAuthGuard><AdminShell activeTab="affiliate" /></AdminAuthGuard>;
 }
 
+export function AdminMessagesPage() {
+  return <AdminAuthGuard><AdminShell activeTab="messages" /></AdminAuthGuard>;
+}
+
 function AdminShell({ activeTab }: { activeTab: AdminTab }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useRouterStore((s) => s.navigate);
@@ -139,6 +149,7 @@ function AdminShell({ activeTab }: { activeTab: AdminTab }) {
       categories: 'admin-categories',
       brands: 'admin-brands',
       affiliate: 'admin-affiliate',
+      messages: 'admin-messages',
     };
     navigate({ page: pageMap[tab] as any });
   };
@@ -199,7 +210,7 @@ function AdminShell({ activeTab }: { activeTab: AdminTab }) {
               Admin
             </Badge>
             <h1 className="text-lg font-semibold capitalize">
-              {activeTab === 'affiliate' ? 'Affiliate Settings' : activeTab}
+              {activeTab === 'affiliate' ? 'Affiliate Settings' : activeTab === 'messages' ? 'Contact Messages' : activeTab}
             </h1>
           </div>
         </header>
@@ -212,6 +223,7 @@ function AdminShell({ activeTab }: { activeTab: AdminTab }) {
               <AffiliateSettingsPage />
             </div>
           )}
+          {activeTab === 'messages' && <MessagesContent />}
         </div>
       </div>
     </div>
@@ -1006,6 +1018,275 @@ function BrandsContent() {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+// ── Messages Content ─────────────────────────────────────────────────────────
+
+interface ContactMessageItem {
+  id: string;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  createdAt: string;
+  isRead: boolean;
+}
+
+function MessagesContent() {
+  const [messages, setMessages] = useState<ContactMessageItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [total, setTotal] = useState(0);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  const fetchMessages = useCallback(async () => {
+    try {
+      const res = await fetch('/api/contact?limit=100');
+      if (res.ok) {
+        const data = await res.json();
+        setMessages(data.messages || []);
+        setTotal(data.total || 0);
+      }
+    } catch (err) {
+      console.error('Failed to fetch messages:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { fetchMessages(); }, [fetchMessages]);
+
+  const toggleRead = async (id: string, currentIsRead: boolean) => {
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, isRead: !currentIsRead }),
+      });
+      if (res.ok) {
+        setMessages((prev) =>
+          prev.map((m) => (m.id === id ? { ...m, isRead: !currentIsRead } : m))
+        );
+      }
+    } catch (err) {
+      console.error('Failed to toggle read status:', err);
+    }
+  };
+
+  const deleteMessage = async (id: string) => {
+    try {
+      const res = await fetch(`/api/contact?id=${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        setMessages((prev) => prev.filter((m) => m.id !== id));
+        setTotal((prev) => prev - 1);
+      }
+    } catch (err) {
+      console.error('Failed to delete message:', err);
+    }
+  };
+
+  const markAllRead = async () => {
+    const unread = messages.filter((m) => !m.isRead);
+    for (const msg of unread) {
+      await toggleRead(msg.id, false);
+    }
+  };
+
+  const unreadCount = messages.filter((m) => !m.isRead).length;
+
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
+
+  const truncate = (str: string, len: number) =>
+    str.length > len ? str.slice(0, len) + '…' : str;
+
+  if (loading) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center gap-4">
+          <div className="h-10 w-48 bg-gray-800 rounded-lg animate-pulse" />
+          <div className="h-10 w-32 bg-gray-800 rounded-lg animate-pulse" />
+        </div>
+        <Card className="bg-gray-900 border-gray-800 overflow-hidden">
+          <TableSkeleton rows={5} cols={6} />
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 text-sm text-gray-400">
+            <MessageSquare size={16} />
+            <span>{total} message{total !== 1 ? 's' : ''}</span>
+          </div>
+          {unreadCount > 0 && (
+            <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30 text-xs">
+              {unreadCount} unread
+            </Badge>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={fetchMessages}
+            className="border-gray-700 text-gray-400 hover:text-white"
+          >
+            <RefreshCw size={14} className="mr-1.5" />
+            Refresh
+          </Button>
+          {unreadCount > 0 && (
+            <Button
+              size="sm"
+              onClick={markAllRead}
+              className="bg-amber-500 hover:bg-amber-400 text-black font-medium"
+            >
+              <MailOpen size={14} className="mr-1.5" />
+              Mark All Read
+            </Button>
+          )}
+        </div>
+      </div>
+
+      <Card className="bg-gray-900 border-gray-800 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-gray-800 bg-gray-900/50">
+                <th className="text-left py-3 px-4 text-gray-400 font-medium">Status</th>
+                <th className="text-left py-3 px-4 text-gray-400 font-medium">Name</th>
+                <th className="text-left py-3 px-4 text-gray-400 font-medium">Email</th>
+                <th className="text-left py-3 px-4 text-gray-400 font-medium">Subject</th>
+                <th className="text-left py-3 px-4 text-gray-400 font-medium">Message</th>
+                <th className="text-left py-3 px-4 text-gray-400 font-medium">Date</th>
+                <th className="text-left py-3 px-4 text-gray-400 font-medium">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {messages.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="py-12 text-center text-gray-500">
+                    <MessageSquare size={32} className="mx-auto mb-2 text-gray-600" />
+                    <p>No messages yet.</p>
+                    <p className="text-xs mt-1">Messages from the contact form will appear here.</p>
+                  </td>
+                </tr>
+              ) : (
+                messages.map((msg, idx) => (
+                  <React.Fragment key={msg.id}>
+                    <tr
+                      className={`border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors cursor-pointer ${
+                        idx % 2 === 0 ? 'bg-gray-900/30' : ''
+                      } ${!msg.isRead ? 'bg-amber-500/5' : ''}`}
+                      onClick={() => setExpandedId(expandedId === msg.id ? null : msg.id)}
+                    >
+                      <td className="py-2.5 px-4">
+                        {msg.isRead ? (
+                          <MailOpen size={16} className="text-gray-500" />
+                        ) : (
+                          <Mail size={16} className="text-amber-500" />
+                        )}
+                      </td>
+                      <td className="py-2.5 px-4">
+                        <span className={`font-medium ${!msg.isRead ? 'text-white' : 'text-gray-300'}`}>
+                          {msg.name}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-4 text-gray-400 text-xs">{msg.email}</td>
+                      <td className="py-2.5 px-4 text-gray-300 max-w-[150px] truncate">
+                        {msg.subject || <span className="text-gray-600 italic">No subject</span>}
+                      </td>
+                      <td className="py-2.5 px-4 text-gray-400 max-w-[200px] truncate">
+                        {truncate(msg.message, 60)}
+                      </td>
+                      <td className="py-2.5 px-4 text-gray-500 text-xs whitespace-nowrap">
+                        {formatDate(msg.createdAt)}
+                      </td>
+                      <td className="py-2.5 px-4" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex items-center gap-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className={`h-7 px-2 ${msg.isRead ? 'text-gray-400 hover:text-amber-400' : 'text-amber-400 hover:text-amber-300'}`}
+                            onClick={() => toggleRead(msg.id, msg.isRead)}
+                            title={msg.isRead ? 'Mark as unread' : 'Mark as read'}
+                          >
+                            {msg.isRead ? <Mail size={14} /> : <MailOpen size={14} />}
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-7 px-2 text-gray-400 hover:text-red-400"
+                            onClick={() => deleteMessage(msg.id)}
+                            title="Delete message"
+                          >
+                            <Trash2 size={14} />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                    {expandedId === msg.id && (
+                      <tr className="bg-gray-800/20">
+                        <td colSpan={7} className="px-4 py-4">
+                          <div className="space-y-2">
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-semibold text-amber-400 uppercase tracking-wider">From:</span>
+                              <span className="text-white font-medium">{msg.name}</span>
+                              <span className="text-gray-500 text-xs">({msg.email})</span>
+                            </div>
+                            {msg.subject && (
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs font-semibold text-amber-400 uppercase tracking-wider">Subject:</span>
+                                <span className="text-gray-300">{msg.subject}</span>
+                              </div>
+                            )}
+                            <div>
+                              <span className="text-xs font-semibold text-amber-400 uppercase tracking-wider">Message:</span>
+                              <p className="text-gray-300 mt-1 whitespace-pre-wrap text-sm leading-relaxed">{msg.message}</p>
+                            </div>
+                            <div className="flex items-center gap-2 pt-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className={`border-gray-700 ${msg.isRead ? 'text-gray-400' : 'text-amber-400'}`}
+                                onClick={() => toggleRead(msg.id, msg.isRead)}
+                              >
+                                {msg.isRead ? <Mail size={14} className="mr-1" /> : <MailOpen size={14} className="mr-1" />}
+                                {msg.isRead ? 'Mark Unread' : 'Mark as Read'}
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="border-gray-700 text-gray-400 hover:text-red-400"
+                                onClick={() => deleteMessage(msg.id)}
+                              >
+                                <Trash2 size={14} className="mr-1" />
+                                Delete
+                              </Button>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </Card>
     </div>
   );
 }

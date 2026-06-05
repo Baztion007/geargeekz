@@ -144,3 +144,16 @@ model BrandDB {
   categories   String @default("[]")
   productCount Int    @default(0)
 }
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String   @default("")
+  message   String
+  createdAt DateTime @default(now())
+  isRead    Boolean  @default(false)
+  ipAddress String?  @map("ip_address")
+
+  @@map("contact_messages")
+}

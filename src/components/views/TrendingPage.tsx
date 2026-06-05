@@ -23,10 +23,13 @@ import {
 
 type SortOption = 'rating' | 'recent' | 'reviewed';
 
+const ITEMS_PER_PAGE = 12;
+
 export function TrendingPage() {
   const goToProduct = useRouterStore((s) => s.goToProduct);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [sortBy, setSortBy] = useState<SortOption>('rating');
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Ref for sliding indicator
   const pillsRef = useRef<HTMLDivElement>(null);
@@ -80,6 +83,13 @@ export function TrendingPage() {
     { key: 'recent', label: 'Recently Updated', icon: Clock },
     { key: 'reviewed', label: 'Most Reviewed', icon: Flame },
   ];
+
+  // Reset page on filter/sort change
+  useEffect(() => { setCurrentPage(1); }, [selectedCategory, sortBy]);
+
+  // Pagination
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+  const paginatedProducts = filteredProducts.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   // Update sliding indicator position
   useEffect(() => {
@@ -381,10 +391,10 @@ export function TrendingPage() {
 
           {filteredProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {filteredProducts.map((product, index) => (
+              {paginatedProducts.map((product, index) => (
                 <div key={product.id} className={`relative card-entrance card-entrance-delay-${Math.min(index + 1, 12)}`}>
                   {/* Trending badge for top products */}
-                  {index < 3 && (
+                  {index < 3 && currentPage === 1 && (
                     <div className="absolute top-2 right-2 z-20">
                       <Badge className="pulse-badge-enhanced bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[9px] font-bold border-0 shadow-md">
                         <Flame className="w-2.5 h-2.5 mr-0.5" />
@@ -400,6 +410,41 @@ export function TrendingPage() {
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-10 text-center">
               <Package className="w-12 h-12 text-gray-300 mx-auto mb-3" />
               <p className="text-gray-500 dark:text-gray-400">No trending products found in this category.</p>
+            </div>
+          )}
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-2 mt-8">
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
+              >
+                Previous
+              </Button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <Button
+                  key={page}
+                  variant={currentPage === page ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setCurrentPage(page)}
+                  className={currentPage === page ? 'bg-amber-500 text-black hover:bg-amber-400' : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'}
+                >
+                  {page}
+                </Button>
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
+              >
+                Next
+              </Button>
             </div>
           )}
         </div>

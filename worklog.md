@@ -1578,3 +1578,169 @@ Priority Recommendations for Next Phase:
 - Add product import/export (CSV/JSON)
 - Add bulk product editing
 - Add content scheduling (publish date)
+
+---
+Task ID: 4
+Agent: Deals Page Developer
+Task: Enhance Deals page with actual content
+
+Work Log:
+- Read project context from worklog.md to understand GearScope site architecture
+- Reviewed existing DealsPage.tsx (was a minimal placeholder)
+- Reviewed key data sources: products.ts (getBestSellers, getTrending), categories.ts, affiliate.ts (getAffiliateUrl, getMerchantName, getAffiliateLinkProps)
+- Reviewed existing components: ProductCard, Breadcrumbs, ScoreBadge, AffiliateLink (CheckPriceButton, ViewLatestDealButton)
+- Reviewed CSS utility classes in globals.css (section-entrance, card-hover-lift, cta-primary, cta-sweep, pulse-badge-enhanced, spotlight-card, text-gradient, hero-float-*, flame-flicker, card-entrance, card-entrance-delay-*)
+- Reviewed TrendingPage.tsx for style consistency reference
+
+- Complete rewrite of `/src/components/views/DealsPage.tsx` with 6 content-rich sections:
+
+1. **Hero Section**: Dark gradient background with floating decorative elements (Tag, Gift icons, geometric shapes, gradient orbs). "Latest Deals & Offers" heading with text-gradient. Description about finding best deals via affiliate links. Trust indicator pills (6 Trusted Retailers, No Hidden Fees, Updated Regularly, Expert-Curated). Amber-to-orange gradient bar at bottom.
+
+2. **Featured Deal Banner ("Deal of the Week")**: Uses top-rated product from `getBestSellers()[0]`. Full-width spotlight-card with product image + details side-by-side. "Deal of the Week" pulse badge overlay on image. ScoreBadge on image. Star rating with bestFor tag. Two CTAs: "Check Price on {Merchant}" (cta-primary cta-sweep) and "Read Full Review" (outline variant).
+
+3. **Merchant-Specific Deal Sections ("Shop by Retailer")**: 6 merchant cards in a 3-column grid (Amazon, Walmart, Best Buy, Target, REI, B&H Photo). Each card has:
+   - Merchant branding color for icon container, border, highlight badges
+   - Merchant-specific icon (Zap, ShoppingCart, Tag, Gift, Store, Sparkles)
+   - "Affiliate Partner" label in merchant color
+   - Description of deal types
+   - 3 highlight badges per merchant (e.g., "Prime Free Shipping", "Price Match Guarantee")
+   - "Shop {Merchant} Deals" CTA button styled in merchant's brand color
+   - All links use `getAffiliateUrl()` and `getAffiliateLinkProps()`
+
+4. **Hot Products Section**: 10 trending products from `getTrending()` in a 4-column grid. Top 4 products get a "Hot Right Now" pulse badge overlay. Uses ProductCard components with staggered card-entrance animations.
+
+5. **Deal Categories**: 8 category cards in a 4-column grid using `categories` data. Each card has image with gradient overlay, product count badge, category name, description, and "View Deals" arrow link. Cards navigate to category pages.
+
+6. **Deal Hunting Tips**: 6 tip cards in a 3-column grid with icons (Search, Bell, Clock, Scale, ShieldCheck, AlertCircle). Tips cover: comparing across retailers, setting price drop alerts, timing purchases, checking total cost, verifying seller authenticity, and beware of fake reviews.
+
+7. **Affiliate Disclosure**: Final section with ShieldCheck icon explaining GearScope's affiliate relationships with all 6 merchants.
+
+Key design decisions:
+- ZERO prices displayed anywhere — only "Check Price on {Merchant}" CTAs
+- Full dark mode support (dark: classes on all elements)
+- Mobile-first responsive design (1-col → 2-col → 3-col → 4-col grids)
+- Amber/orange color scheme (no indigo/blue)
+- Premium editorial style matching the rest of the site
+- Uses existing CSS utility classes for animations and effects
+- 'use client' directive for client-side interactivity
+
+- Ran `bun run lint` — passes cleanly with zero errors
+- Checked dev.log — no compilation errors
+
+Stage Summary:
+- DealsPage transformed from placeholder to content-rich page with 6 sections + disclosure
+- Hero section with dark gradient and trust indicators
+- Deal of the Week featured banner using top-rated product
+- 6 merchant-branded deal cards with brand colors and affiliate CTAs
+- 10 trending products with ProductCard and "Hot Right Now" badges
+- 8 category cards linking to category pages
+- 6 deal hunting tips
+- Full affiliate disclosure section
+- ESLint passes cleanly, dev server compiles without errors
+
+---
+Task ID: 6
+Agent: Backend Developer
+Task: Add Prisma database persistence for contact form and admin messages
+
+Work Log:
+- Added `ContactMessage` model to `/prisma/schema.prisma` with fields: id (cuid), name, email, subject, message, createdAt, isRead, ipAddress (mapped to ip_address), table mapped to contact_messages
+- Ran `bun run db:push` — schema synced successfully, Prisma Client generated
+- Rewrote `/src/app/api/contact/route.ts`:
+  - Kept in-memory rate limiting (3 messages per IP per hour) for performance
+  - POST: Now stores messages in database via `db.contactMessage.create()` instead of in-memory array
+  - GET: Now fetches from database via `db.contactMessage.findMany()` with ordering and pagination, strips ipAddress from response
+  - Added PATCH endpoint: Toggle message read/unread status via `db.contactMessage.update()`
+  - Added DELETE endpoint: Remove a message via `db.contactMessage.delete()`
+  - All admin endpoints (GET/PATCH/DELETE) protected by admin cookie check
+- Updated `/src/lib/db.ts`: Added `contactMessage` to Prisma client cache invalidation check in dev mode
+- Updated `/src/components/views/AdminSubPages.tsx`:
+  - Added `MessageSquare`, `Mail`, `MailOpen`, `Trash2`, `RefreshCw` icon imports
+  - Extended `AdminTab` type: `'dashboard' | 'products' | 'categories' | 'brands' | 'affiliate' | 'messages'`
+  - Added "Messages" sidebar item with MessageSquare icon
+  - Added `admin-messages` route mapping in pageMap
+  - Updated header to show "Contact Messages" for messages tab
+  - Added `MessagesContent` component: fetches from `/api/contact`, displays messages table with Status (read/unread icons), Name, Email, Subject, Message (truncated), Date, Actions columns
+  - Click to expand message with full details
+  - Mark as Read/Unread toggle, Delete button per message
+  - "Mark All Read" and "Refresh" buttons in toolbar
+  - Unread count badge
+  - Empty state with descriptive message
+  - Exported `AdminMessagesPage` component
+- Updated `/src/lib/types.ts`: Added `{ page: 'admin-messages' }` to RoutePath union type
+- Updated `/src/lib/router.ts`: Added `goToAdminMessages`, routeToHash case, and hashToRoute recognition for admin-messages
+- Updated `/src/app/page.tsx`: Added AdminMessagesPage import, admin-messages route case, and admin page detection
+
+Stage Summary:
+- Contact form messages now persist in SQLite database via Prisma (survives server restarts)
+- In-memory rate limiting preserved for performance
+- Full CRUD API for contact messages (POST=create, GET=list, PATCH=toggle read, DELETE=remove)
+- Admin panel "Messages" tab with table view, read/unread toggle, delete, expand for details, mark all read
+- All admin endpoints protected by admin cookie authentication
+- ESLint passes cleanly, dev server compiles without errors
+
+---
+Task ID: improvement-round
+Agent: Main Developer
+Task: Fix identified improvements - space gap, duplicate back-to-top, compare page, deals page, pagination, contact DB, cron job
+
+Work Log:
+
+### 1. Fixed big space gap under "Why Trust GearScope" section
+- Reduced section padding from `py-16 sm:py-20` to `py-12 sm:py-16`
+- Reduced header margin from `mb-12` to `mb-8`
+- Reduced grid gap from `gap-6` to `gap-4`, changed from 1-col mobile to 2-col mobile (`grid-cols-2 lg:grid-cols-4`)
+- Removed `glow-pulse` and `glow-pulse-amber` animation classes (caused visual "orange-outlined box" artifacts)
+- Removed `section-divider-wave` class (was adding 48px wave pseudo-element)
+- Made trust cards more compact: smaller icon (w-12 h-12), smaller padding (p-4 sm:p-5), smaller text
+- Reduced Editorial Pledge card margin from `mt-10` to `mt-6`, smaller padding and icon
+- VLM confirmed: "no excessive empty space" after fix
+
+### 2. Fixed duplicate Back-to-Top buttons
+- Removed `BackToTop` import from Breadcrumbs in page.tsx
+- Removed duplicate `<BackToTop />` render - kept only `<BackToTopButton />` (the nicer circular progress ring version)
+- Both components rendered at bottom-right fixed position, causing visual overlap
+
+### 3. Enhanced Compare page for 1-item state
+- Replaced generic "add at least 2 products" message with a proper split-view layout
+- Left card shows the selected product with image, rating, CTA, and remove button
+- Right card shows a search panel to find and add a second product
+- Search panel has live search with results dropdown and "Add" functionality
+- 0-item state still shows the generic "add at least 2 products" message
+
+### 4. Enhanced Deals page with full content (subagent)
+- Complete rewrite from placeholder to content-rich deals page
+- 6 sections: Hero, Deal of the Week, Shop by Retailer (6 merchant cards), Hot Products, Browse by Category, Deal Hunting Tips
+- Merchant cards with brand-specific colors (Amazon #FF9900, Walmart #0071DC, etc.)
+- Uses `getBestSellers()`, `getTrending()`, `getAffiliateUrl()` for real data
+- Zero prices displayed - only "Check Price on {Merchant}" CTAs
+
+### 5. Added pagination to Trending page
+- Added `ITEMS_PER_PAGE = 12` constant
+- Added `currentPage` state with reset on filter/sort change
+- Paginated product grid with Previous/1/2/3/Next buttons
+- Active page highlighted with amber color
+- Trending badges only show on page 1 for first 3 items
+
+### 6. Contact form database persistence (subagent)
+- Added `ContactMessage` model to Prisma schema (id, name, email, subject, message, createdAt, isRead, ipAddress)
+- Updated contact API: POST stores in database, GET fetches from database with pagination
+- Added PATCH endpoint for read/unread toggle, DELETE endpoint for message removal
+- Added "Messages" tab to admin panel with full table view, expand details, mark read/unread, delete
+- Added `admin-messages` route type and page rendering
+
+### 7. Created 15-minute cron job
+- Created fixed_rate cron job (every 900 seconds) for webDevReview
+- Job assesses project status, performs QA testing with agent-browser, fixes bugs or proposes new features
+- Updates worklog.md with progress
+
+Stage Summary:
+- All 7 identified improvements completed
+- Space gap fixed (VLM verified)
+- No duplicate UI elements
+- Compare page fully functional for 0, 1, and 2+ items
+- Deals page is now a real content page with merchant cards and deal content
+- Pagination on trending page (12 items/page, 3 pages for 25 products)
+- Contact messages persist in database, admin can manage them
+- Cron job runs every 15 minutes for ongoing QA and feature development
+- ESLint passes cleanly, no runtime errors

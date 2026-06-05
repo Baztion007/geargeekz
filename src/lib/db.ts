@@ -49,7 +49,10 @@ function createPrismaClient() {
 // by invalidating the cached instance when it's missing new models
 if (process.env.NODE_ENV !== 'production' && globalForPrisma.prisma) {
   try {
-    if (typeof (globalForPrisma.prisma as Record<string, unknown>).categoryDB === 'undefined') {
+    if (
+      typeof (globalForPrisma.prisma as Record<string, unknown>).categoryDB === 'undefined' ||
+      typeof (globalForPrisma.prisma as Record<string, unknown>).contactMessage === 'undefined'
+    ) {
       globalForPrisma.prisma = undefined as unknown as PrismaClient | undefined
     }
   } catch {
