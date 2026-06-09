@@ -12,8 +12,9 @@ const globalForPrisma = globalThis as unknown as {
  *   SQLite engine. This works in Node.js but NOT on Cloudflare Workers.
  *
  * - Cloudflare / Turso (libsql:// or https: URL): Uses @prisma/adapter-libsql
- *   which works in both Node.js and edge runtimes. The adapter uses the
- *   Web-standard API version of @libsql/client which only supports remote URLs.
+ *   which works in both Node.js and edge runtimes. When the bundler resolves
+ *   for the `workerd` runtime condition, it automatically uses the /web variant
+ *   of @libsql/client which uses fetch-based HTTP instead of native bindings.
  *
  * This dual-path approach ensures both environments work without race conditions.
  */

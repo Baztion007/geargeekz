@@ -5,7 +5,7 @@ const isStaticExport = process.env.STATIC_EXPORT === "true";
 const nextConfig: NextConfig = {
   // ─── Output Mode ──────────────────────────────────────────────────────────
   // STATIC_EXPORT=true → output: "export" (GitHub Pages, pure static HTML)
-  // Default            → output: "standalone" (Cloudflare Pages via @cloudflare/next-on-pages)
+  // Default            → output: "standalone" (Cloudflare Workers via @opennextjs/cloudflare)
   output: isStaticExport ? "export" : "standalone",
 
   reactStrictMode: false,
@@ -33,3 +33,5 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
+import('@opennextjs/cloudflare').then(m => m.initOpenNextCloudflareForDev());
