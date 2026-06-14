@@ -25,6 +25,8 @@ import {
   Search,
   Plus,
   Copy,
+  ExternalLink,
+  LinkIcon,
 } from 'lucide-react';
 import { useRouterStore, type SimplePage } from '@/lib/router';
 import { useAdminAuth } from '@/lib/admin-auth';
@@ -275,6 +277,7 @@ function ProductsContent() {
   const [filterCategory, setFilterCategory] = useState('all');
   const [filterBrand, setFilterBrand] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [filterAffiliate, setFilterAffiliate] = useState<'all' | 'missing'>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [showForm, setShowForm] = useState(false);
@@ -282,6 +285,11 @@ function ProductsContent() {
   const [deleteTarget, setDeleteTarget] = useState<ProductItem | null>(null);
   const [saving, setSaving] = useState(false);
   const [duplicating, setDuplicating] = useState<string | null>(null);
+
+  // Quick edit affiliate URL state
+  const [quickEditProduct, setQuickEditProduct] = useState<ProductItem | null>(null);
+  const [quickEditForm, setQuickEditForm] = useState({ affiliateUrl: '', priceUrl: '' });
+  const [quickEditSaving, setQuickEditSaving] = useState(false);
 
   // Bulk import state
   const [showBulkImport, setShowBulkImport] = useState(false);
@@ -326,7 +334,8 @@ function ProductsContent() {
     const matchesCategory = filterCategory === 'all' || p.categorySlug === filterCategory;
     const matchesBrand = filterBrand === 'all' || p.brandSlug === filterBrand;
     const matchesStatus = filterStatus === 'all' || p.reviewStatus === filterStatus;
-    return matchesSearch && matchesCategory && matchesBrand && matchesStatus;
+    const matchesAffiliate = filterAffiliate === 'all' || (!p.affiliateUrl && !p.priceUrl);
+    return matchesSearch && matchesCategory && matchesBrand && matchesStatus && matchesAffiliate;
   });
 
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
@@ -470,6 +479,18 @@ function ProductsContent() {
             <option value="updated">Updated</option>
             <option value="new">New</option>
           </select>
+          <button
+            onClick={() => { setFilterAffiliate(filterAffiliate === 'missing' ? 'all' : 'missing'); setCurrentPage(1); }}
+            className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 border ${
+              filterAffiliate === 'missing'
+                ? 'bg-red-500/15 border-red-500/30 text-red-400'
+                : 'bg-gray-800 border-gray-700 text-gray-400 hover:border-gray-600 hover:text-gray-300'
+            }`}
+          >
+            <LinkIcon size={14} />
+            No Affiliate
+            {filterAffiliate === 'missing' && <span className="ml-0.5 text-[10px] bg-red-500/20 px-1.5 py-0.5 rounded-full">Active</span>}
+          </button>
         </div>
         <div className="flex items-center gap-2">
           <Button onClick={() => { setEditingProduct(null); setShowForm(true); }} className="bg-amber-500 hover:bg-amber-400 text-black font-medium">
@@ -519,7 +540,7 @@ function ProductsContent() {
                     <td className="py-2.5 px-4"><div className="flex items-center gap-1"><Star size={12} className="text-amber-500 fill-amber-500" /><span className="text-white">{product.rating}</span></div></td>
                     <td className="py-2.5 px-4"><Badge variant="outline" className="text-[10px] border-gray-700 text-gray-400 capitalize">{product.merchant}</Badge>{(product.affiliateUrl || product.priceUrl) && <div className="mt-0.5"><Badge variant="outline" className="text-[9px] border-amber-500/30 text-amber-400">Custom Link</Badge></div>}</td>
                     <td className="py-2.5 px-4"><Badge variant="outline" className={`text-[10px] ${product.reviewStatus === 'verified' ? 'border-green-500/30 text-green-400' : product.reviewStatus === 'updated' ? 'border-amber-500/30 text-amber-400' : 'border-blue-500/30 text-blue-400'}`}>{product.reviewStatus}</Badge></td>
-                    <td className="py-2.5 px-4"><div className="flex items-center gap-1"><Button variant="ghost" size="sm" className="h-7 px-2 text-gray-400 hover:text-amber-400" onClick={() => { setEditingProduct(product); setShowForm(true); }}>Edit</Button><Button variant="ghost" size="sm" className="h-7 px-2 text-gray-400 hover:text-blue-400" onClick={() => handleDuplicate(product)} disabled={duplicating === product.id}>{duplicating === product.id ? <Loader2 size={12} className="animate-spin" /> : <Copy size={12} />}</Button><Button variant="ghost" size="sm" className="h-7 px-2 text-gray-400 hover:text-red-400" onClick={() => setDeleteTarget(product)}>Delete</Button></div></td>
+                    <td className="py-2.5 px-4"><div className="flex items-center gap-1"><Button variant="ghost" size="sm" className="h-7 px-2 text-gray-400 hover:text-amber-400" onClick={() => { setEditingProduct(product); setShowForm(true); }}>Edit</Button><Button variant="ghost" size="sm" className="h-7 px-2 text-gray-400 hover:text-blue-400" onClick={() => handleDuplicate(product)} disabled={duplicating === product.id}>{duplicating === product.id ? <Loader2 size={12} className="animate-spin" /> : <Copy size={12} />}</Button><Button variant="ghost" size="sm" className="h-7 px-2 text-gray-400 hover:text-cyan-400" title="Quick Edit Affiliate URLs" onClick={() => { setQuickEditProduct(product); setQuickEditForm({ affiliateUrl: product.affiliateUrl || '', priceUrl: product.priceUrl || '' }); }}><Link2 size={12} /></Button><Button variant="ghost" size="sm" className="h-7 px-2 text-gray-400 hover:text-green-400" title="View on Site" onClick={() => navigate({ page: 'product', slug: product.slug })}><ExternalLink size={12} /></Button><Button variant="ghost" size="sm" className="h-7 px-2 text-gray-400 hover:text-red-400" onClick={() => setDeleteTarget(product)}>Delete</Button></div></td>
                   </tr>
                 ))
               )}
@@ -558,6 +579,67 @@ function ProductsContent() {
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={() => setDeleteTarget(null)} className="border-gray-700 text-gray-400">Cancel</Button>
               <Button variant="destructive" onClick={handleDelete}>Delete</Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {quickEditProduct && (
+        <div className="fixed inset-0 bg-black/60 z-[60] flex items-center justify-center p-4">
+          <div className="bg-gray-900 border border-gray-800 rounded-xl w-full max-w-md">
+            <div className="flex items-center justify-between p-4 border-b border-gray-800">
+              <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                <Link2 size={18} className="text-amber-500" /> Quick Edit Affiliate URLs
+              </h3>
+              <button onClick={() => setQuickEditProduct(null)} className="p-1 hover:bg-gray-800 rounded" aria-label="Close"><X size={18} className="text-gray-400" /></button>
+            </div>
+            <div className="p-4 space-y-4">
+              <p className="text-sm text-gray-400">Editing links for <span className="text-white font-medium">{quickEditProduct.title}</span></p>
+              <div>
+                <label className="text-xs text-gray-400 mb-1 block">Custom Affiliate URL</label>
+                <input
+                  type="url"
+                  value={quickEditForm.affiliateUrl}
+                  onChange={(e) => setQuickEditForm((f) => ({ ...f, affiliateUrl: e.target.value }))}
+                  placeholder="https://www.amazon.com/dp/...?tag=yourtag-20"
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white font-mono focus:outline-none focus:border-amber-500"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-gray-400 mb-1 block">Custom Price Check URL</label>
+                <input
+                  type="url"
+                  value={quickEditForm.priceUrl}
+                  onChange={(e) => setQuickEditForm((f) => ({ ...f, priceUrl: e.target.value }))}
+                  placeholder="https://www.amazon.com/dp/...?tag=yourtag-20"
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white font-mono focus:outline-none focus:border-amber-500"
+                />
+              </div>
+            </div>
+            <div className="flex items-center justify-end gap-2 p-4 border-t border-gray-800">
+              <Button variant="outline" onClick={() => setQuickEditProduct(null)} className="border-gray-700 text-gray-400">Cancel</Button>
+              <Button
+                onClick={async () => {
+                  setQuickEditSaving(true);
+                  try {
+                    const res = await fetch('/api/products', {
+                      method: 'PATCH',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ slug: quickEditProduct.slug, affiliateUrl: quickEditForm.affiliateUrl, priceUrl: quickEditForm.priceUrl }),
+                    });
+                    if (res.ok) {
+                      fetchData();
+                      useDataStore.getState().invalidateProducts();
+                      setQuickEditProduct(null);
+                    }
+                  } catch { /* */ }
+                  setQuickEditSaving(false);
+                }}
+                disabled={quickEditSaving}
+                className="bg-amber-500 hover:bg-amber-400 text-black font-medium"
+              >
+                {quickEditSaving ? <><Loader2 size={14} className="mr-1.5 animate-spin" /> Saving...</> : 'Save Links'}
+              </Button>
             </div>
           </div>
         </div>
@@ -844,7 +926,7 @@ function ProductFormModal({ product, categories, brands, onClose, saving, setSav
             </div>
           </section>
           <section>
-            <h4 className="text-sm font-semibold text-amber-400 uppercase tracking-wider mb-3 flex items-center gap-2"><Link2 size={14} /> Affiliate Links</h4>
+            <h4 className="text-sm font-semibold text-amber-400 uppercase tracking-wider mb-3 flex items-center gap-2"><Link2 size={14} /> Affiliate Links <Badge variant="outline" className={`text-[10px] ml-1 ${(form.affiliateUrl ? 1 : 0) + (form.priceUrl ? 1 : 0) === 2 ? 'border-green-500/30 text-green-400' : (form.affiliateUrl ? 1 : 0) + (form.priceUrl ? 1 : 0) === 1 ? 'border-amber-500/30 text-amber-400' : 'border-red-500/30 text-red-400'}`}>{(form.affiliateUrl ? 1 : 0) + (form.priceUrl ? 1 : 0)}/2</Badge></h4>
             <p className="text-xs text-gray-500 mb-3">Override the auto-generated affiliate URLs. If left empty, URLs are generated from ASIN + Merchant + Affiliate Settings.</p>
             <div className="grid sm:grid-cols-2 gap-3">
               <div className="sm:col-span-2"><label className="text-xs text-gray-400 mb-1 block">Custom Affiliate URL (overrides &quot;View Latest Deal&quot; button)</label><input type="url" value={form.affiliateUrl} onChange={(e) => setForm((f) => ({ ...f, affiliateUrl: e.target.value }))} placeholder="https://www.amazon.com/dp/B08V8HS2Z4?tag=yourtag-20" className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white font-mono focus:outline-none focus:border-amber-500" />{form.affiliateUrl && <p className="text-[10px] text-green-400 mt-1">✓ Custom affiliate URL active — will override auto-generated URL</p>}</div>
@@ -1240,7 +1322,7 @@ function BrandsContent() {
                     <td className="py-2.5 px-4 text-white font-medium">{brand.name}</td>
                     <td className="py-2.5 px-4 text-gray-400 font-mono text-xs">{brand.slug}</td>
                     <td className="py-2.5 px-4 text-gray-400">{brand.productCount}</td>
-                    <td className="py-2.5 px-4"><div className="flex items-center gap-1"><Button variant="ghost" size="sm" className="h-7 px-2 text-gray-400 hover:text-amber-400" onClick={() => openEdit(brand)}>Edit</Button><Button variant="ghost" size="sm" className="h-7 px-2 text-gray-400 hover:text-red-400" onClick={() => setDeleteTarget(brand)}>Delete</Button></div></td>
+                    <td className="py-2.5 px-4"><div className="flex items-center gap-1"><Button variant="ghost" size="sm" className="h-7 px-2 text-gray-400 hover:text-amber-400" onClick={() => openEdit(brand)}>Edit</Button><Button variant="ghost" size="sm" className="h-7 px-2 text-gray-400 hover:text-green-400" title="View on Site" onClick={() => navigate({ page: 'brand', slug: brand.slug })}><ExternalLink size={12} /></Button><Button variant="ghost" size="sm" className="h-7 px-2 text-gray-400 hover:text-red-400" onClick={() => setDeleteTarget(brand)}>Delete</Button></div></td>
                   </tr>
                 ))
               )}
